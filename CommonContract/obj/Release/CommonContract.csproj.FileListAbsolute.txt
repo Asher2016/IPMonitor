@@ -1,0 +1,4 @@
+C:\workspace\2-11272015\AsherWorkspace\CommonContract\bin\Release\CommonContract.dll
+C:\workspace\2-11272015\AsherWorkspace\CommonContract\bin\Release\CommonContract.pdb
+C:\workspace\2-11272015\AsherWorkspace\CommonContract\obj\Release\CommonContract.dll
+C:\workspace\2-11272015\AsherWorkspace\CommonContract\obj\Release\CommonContract.pdb

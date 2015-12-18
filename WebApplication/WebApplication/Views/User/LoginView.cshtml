@@ -1,0 +1,74 @@
+﻿@model WebApplication.Models.LoginViewModel
+
+@{
+    ViewBag.Title = "LoginView";
+}
+
+<script>
+    var ShowLoginDiv = function (message) {
+        $("#UserLoginDiv").css({ "display": "block" });
+        $("#UserLoginDiv").empty();
+        $("#UserLoginDiv").html(message);
+        UserLoginDivDialog = $("#UserLoginDiv").dialog({
+            autoOpen: true,
+            width: 320,
+            modal: true,
+            title: "管理员登陆",
+            close: function () {
+                $("#UserLoginDiv").css({ "display": "none" });
+            }
+        });
+    }
+    $("#Login-btn-submit").bind("click", function ()
+    {
+        $.ajax({
+            type: "POST",
+            url: "/User/Login",
+            data: $("#Login_form").serialize(),
+            dataType: "html",
+            success: function (data) {
+                if (data == '') {
+                    $("#UserLoginDiv").css({ "display": "block" });
+                    $("#UserLoginDiv").empty();
+                    $("#UserLoginDiv").dialog("close");
+                    $("#OptionMenu").empty();
+                    $("#OptionMenu").append($("<div class='title-option map_site_login' onclick=Exit()>退出</div>"));
+                    $("#OptionMenu").append($("<div class='title-option' onclick=ChangePassword()>修改密码</div>"));
+                    $("#OptionMenu").append($("<div class='title-option' onclick=LoadLogInfoList()>网络日志</div>"));
+                    $("#OptionMenu").append($("<div class='title-option' id='ip_manage' onclick=LoadIPMonitorList()>IP监控</div>"));
+                }
+                else
+                {
+                    $("#UserLoginDiv").empty();
+                    $("#UserLoginDiv").html(data);
+                }
+            }
+        });
+    })
+
+</script>
+<style>
+    .validation-summary-errors {
+        width: 200px;
+        display: inline-block;
+    }
+</style>
+<div>
+    <div>
+        <form id="Login_form">
+            <div style="color: red; margin-left: 22px;">
+                @Html.ValidationSummary()
+            </div>
+            <div>
+                <label>用户名</label>: <input type="text" class="form-control" name="UserName" value="@Model.UserName"/>
+            </div>
+            <div>
+                <label>密码</label>: <input type="password" class="form-control" name="Password" value="@Model.Password" />
+            </div>
+            <div style=" float: right; margin-top: 13px;">
+                <input type="button" value="确定" class="btn" id="Login-btn-submit" />
+            </div>
+        </form>
+    </div>
+</div>
+

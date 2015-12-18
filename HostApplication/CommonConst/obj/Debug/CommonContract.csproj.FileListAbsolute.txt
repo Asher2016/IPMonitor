@@ -1,0 +1,9 @@
+D:\WorkSpace\HostApplication\CommonContract\bin\Debug\CommonContract.dll
+D:\WorkSpace\HostApplication\CommonContract\bin\Debug\CommonContract.pdb
+D:\WorkSpace\HostApplication\CommonContract\obj\Debug\CommonContract.dll
+D:\WorkSpace\HostApplication\CommonContract\obj\Debug\CommonContract.pdb
+D:\AsherWorkspace\HostApplication\CommonContract\bin\Debug\CommonContract.dll
+D:\AsherWorkspace\HostApplication\CommonContract\bin\Debug\CommonContract.pdb
+D:\AsherWorkspace\HostApplication\CommonContract\obj\Debug\CommonContract.csprojResolveAssemblyReference.cache
+D:\AsherWorkspace\HostApplication\CommonContract\obj\Debug\CommonContract.dll
+D:\AsherWorkspace\HostApplication\CommonContract\obj\Debug\CommonContract.pdb

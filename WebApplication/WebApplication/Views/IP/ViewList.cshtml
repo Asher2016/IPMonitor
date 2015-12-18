@@ -1,0 +1,109 @@
+﻿@model WebApplication.Models.IPViewModel
+
+@{
+    ViewBag.Title = "ViewList";
+}
+
+<link href="@Url.Content("~/Frontend/css/myPage.css")" rel="stylesheet" type="text/css" />
+
+
+<style>
+    .ip_manage_list_page {
+        position: relative;
+    }
+</style>
+
+<script type="text/javascript">
+
+    var loadData = function (num)
+    {
+        $("#PageCount").val(num);
+    }
+
+
+
+    var EditIPUserMapViewDialog;
+    var EditIPUserMapView = function (sid)
+    {
+        $.ajax({
+            type: "POST",
+            url: "/IP/EditItemView?sid=" + sid,
+            dataType: "html",
+            success: function (data) {
+                $("#edit-ip-user-page").css({ "display": "block" });
+                $("#edit-ip-user-page").empty();
+                $("#edit-ip-user-page").html(data);
+                EditIPUserMapViewDialog = $("#edit-ip-user-page").dialog({
+                    autoOpen: true,
+                    width: 250,
+                    modal: true,
+                    title: "asdas",
+                    close: function () {
+                        $("#edit-ip-user-page").css({ "display": "none" });
+                    }
+                });
+            }
+        });
+    }
+
+    $("#edit-ip-user-map-item-ok").click("click", function () {
+        $.ajax({
+            type: "POST",
+            url: "/IP/EditItem",
+            data: $("#ip-user-map-item-form").serialize(),
+            dataType: "json",
+            success: function (data) {
+                alert(data);
+                $("#edit-ip-user-page").css({ "display": "none" });
+                EditIPUserMapViewDialog.dialog("close");
+
+                $("#IpUserMapList").empty();
+                $.each(data, function (index) {
+                    $("#IpUserMapList").append($("<tr onclick='EditIPUserMapView(" + data[index].SID + ")'><td>" + data[index].IPAddress + "</td><td>" + data[index].MapUserName + "</td></tr>"));
+                });
+            }
+        });
+    })
+
+
+
+</script>
+
+<div class = "ip_manage_list_page">
+    <div class="log-search-box">
+        <div class="radio-group log-radio-search-div">
+            <input class="log-search-column" type="radio" name="LogSearchColumn" value="IP" />IP&nbsp;&nbsp;&nbsp;
+            <input class="log-search-column" type="radio" name="LogSearchColumn" value="LogLevel"/>风险等级&nbsp;&nbsp;&nbsp;
+            <input class="log-search-column" type="radio" name="LogSearchColumn" value="legMessage"/>信息&nbsp;&nbsp;&nbsp;
+            起始时间:<input type="text" value="2014/03/15 05:06" id="datetimepickek-from" />&nbsp;&nbsp;
+            终止时间:<input type="text" value="2014/03/15 05:06" id="datetimepicker-to" />&nbsp;&nbsp;
+        </div>
+        <div class="log-search-info-div">
+            <input id ="searchInfo" class="form-control" />
+        </div>
+        <div class="log-search-button">
+            <input type="button" class="btn btn-default" value="搜索" />
+            <input type="button" class="btn btn-default" value="添加" />
+        </div>
+    </div>
+    <div>
+        <table class="table">
+            <tr>
+                <th>IP</th>
+                <th>姓名</th>
+            </tr>
+        </table>
+        <table id ="IpUserMapList" class="table">
+        </table>
+    </div>
+    <div class="text-center">
+        <ul class="pagination" id="pagination"></ul>
+        <input type="hidden" id="PageCount" value="1" />
+        <input type="hidden" id="PageSize" value="8" />
+        <input type="hidden" id="countindex" value="10" />
+        <!--设置最多显示的页码数 可以手动设置 默认为7-->
+        <input type="hidden" id="visiblePages" value="7" />
+    </div>
+    <div id="edit-ip-user-page" style="display:none"></div>
+</div>
+

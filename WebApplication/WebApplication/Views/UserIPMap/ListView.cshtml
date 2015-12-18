@@ -1,0 +1,206 @@
+﻿
+@{
+    ViewBag.Title = "ListView";
+}
+<style>
+    #UserIPMapAddButton {
+        display: inherit;
+        position: absolute;
+        top: 30px;
+        left: 310px;
+    }
+    .IPUserMapSearchTextBox {
+        width: 235px;
+    }
+    .ip-user-map-table-th {
+        border: solid 1px;
+        border-color: gray;
+        margin: 23px 0px 0px 0px;
+    }
+        .ip-user-map-table-th th {
+            border: solid 1px;
+            border-color: gray;
+            position: relative;
+            margin: 42px 0px 0px 0px;
+        }
+
+    .ip-user-map-table-tr {
+        border: solid;
+        border-width: 0px 1px 1px 1px;
+        border-color: gray;
+    }
+
+        .ip-user-map-table-tr td {
+            border: solid;
+            border-color: gray;
+            border-width: 0px 0px 1px 1px;
+        }
+
+
+    .ip-user-map-option {
+        text-align: center;
+        width: 160px;
+    }
+    .ip-user-map-ip {
+        text-align: center;
+        width: 257px;
+    }
+    .ip-user-map-username {
+        text-align: center;
+        width: 144px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+    #UserIPMapSearchButton {
+        display: inline;
+        position: absolute;
+        top: 29px;
+        left: 439px;
+    }
+    #UserIPMapAddButton {
+        display: inherit;
+        position: absolute;
+        top: 29px;
+        left: 512px;
+    }
+</style>
+<script>
+
+    var IPUserMapDivDialog;
+    var RefreshUserIPMap = function () {
+        $.ajax({
+            type: "POST",
+            url: "/UserIPMap/Search",
+            data: $('#IPUserMapEditForm').serialize(),
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                $('#UserIPMapList').empty();
+                $.each(data.UserIPPageList, function (index) {
+                    $('#UserIPMapList').append($("<tr>" +
+                        "<td><div class='ip-user-map-option'><input class='btn btn-default' type='button' onclick=DeleteUserIPItem(" + data.UserIPPageList[index].SID + ") value='删除'/>" +
+                        "&nbsp;&nbsp;&nbsp;<input class='btn btn-default' type='button' onclick=EditUserIPItem(" + data.UserIPPageList[index].SID + ") value='编辑'/></div>" +
+                        "</td>" +
+                        "<td><div class='ip-user-map-ip'>" + data.UserIPPageList[index].IPAddress + "</td></div>" +
+                        "<td><div class='ip-user-map-username' title='" + data.UserIPPageList[index].UserName + "'>" + data.UserIPPageList[index].UserName + "</td></div>" +
+                        "</tr>"));
+                });
+
+                $('#UserIPMapPageCount').val(data.Count);
+                loadUserIPMapData($('#UserIPMapPageCount').val());
+                loadUserIPMappage();
+            }
+        });
+    }
+
+    var EditUserIPMapDialog;
+    var EditUserIPItem = function (sid)
+    {
+        $.ajax({
+            type: "GET",
+            url: "/UserIPMap/Edit?sid="+sid,
+            dataType: "HTML",
+            success: function (data) {
+                $("#UserIPMapCreateOrEdit").css({ "display": "block" });
+                $("#UserIPMapCreateOrEdit").empty();
+                $("#UserIPMapCreateOrEdit").html(data);
+                EditUserIPMapDialog = $("#UserIPMapCreateOrEdit").dialog({
+                    autoOpen: true,
+                    width: 340,
+                    modal: true,
+                    resizable: false,
+                    title: "IP用户编辑",
+                    close: function () {
+                        $("#UserIPMapCreateOrEdit").css({ "display": "none" });
+                    }
+                });
+            }
+        });
+    }
+
+    var DeleteUserIPItem = function (sid)
+    {
+        $.ajax({
+            type: "POST",
+            url: "/UserIPMap/Delete?sid="+sid,
+            success: function (data) {
+                $("#UserIPMapCurrentPage").val(1);
+                RefreshUserIPMap();
+            }
+        });
+    }
+
+    var ClickUserIPMapCreate = function ()
+    {
+        $.ajax({
+            type: "GET",
+            url: "/UserIPMap/CreateView",
+            dataType: "HTML",
+            success: function (data) {
+                $("#UserIPMapCreateOrEdit").css({ "display": "block" });
+                $("#UserIPMapCreateOrEdit").empty();
+                $("#UserIPMapCreateOrEdit").html(data);
+                EditUserIPMapDialog = $("#UserIPMapCreateOrEdit").dialog({
+                    autoOpen: true,
+                    width: 340,
+                    modal: true,
+                    resizable: false,
+                    title: "IP用户添加",
+                    close: function () {
+                        $("#UserIPMapCreateOrEdit").css({ "display": "none" });
+                    }
+                });
+            }
+        });
+    }
+
+    function loadUserIPMapData(num) {
+        $("#UserIPMapPageCount").val(num);
+    }
+
+    $(document).ready(function ()
+    {
+        RefreshUserIPMap();
+    });
+</script>
+<div>
+    <form id="IPUserMapEditForm">
+        <div>
+            <div>
+                <input class="log-search-column" type="radio" name="SearchColumn" value="ip_address" checked="checked" />IP&nbsp;&nbsp;&nbsp;
+                <input class="log-search-column" type="radio" name="SearchColumn" value="user_name" />用户姓名&nbsp;&nbsp;&nbsp;
+            </div>
+            <div class="form-group">
+                <input class="form-control" type="text" name="SearchText" value="" style="width: 411px;" />
+                <input class='btn btn-default' type="button" value="确定" id="UserIPMapSearchButton" onclick="RefreshUserIPMap()" />
+            </div>
+            <div>
+                <input class='btn btn-default' type="button" value="添加" id="UserIPMapAddButton" onclick="ClickUserIPMapCreate()" />
+            </div>
+        </div>
+        <table class="table-bordered table-striped">
+            <tr>
+                <th><div class="ip-user-map-option">操作</div></th>
+                <th><div class="ip-user-map-ip">IP地址</div></th>
+                <th><div class="ip-user-map-username">用户名</div></th>
+            </tr>
+        </table>
+        <table id="UserIPMapList" class="table-bordered table-striped"></table>
+        <div id="UserIPMapCreateOrEdit" style="display:none">
+
+        </div>
+        <div class="text-center">
+            <div>
+                <ul class="pagination" id="UserIPMapListPage"></ul>
+                <input type="hidden" id="UserIPMapCurrentPage" name="PageIndex" value="1" />
+                <input type="hidden" id="UserIPMapPageCount" runat="server" />
+                <input type="hidden" id="UserIPMapPageSize" name="PageSize" runat="server" value="8" />
+                <input type="hidden" id="UserIPMapCountindex" runat="server" value="10" />
+                <!--设置最多显示的页码数 可以手动设置 默认为7-->
+                <input type="hidden" id="UserIPMapVisiblePages" runat="server" value="7" />
+            </div>
+        </div>
+    </form>
+</div>
+

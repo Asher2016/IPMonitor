@@ -1,0 +1,4 @@
+C:\workspace\2-11272015\AsherWorkspace\HostApplication\CommonConst\bin\Release\CommonConst.dll
+C:\workspace\2-11272015\AsherWorkspace\HostApplication\CommonConst\bin\Release\CommonConst.pdb
+C:\workspace\2-11272015\AsherWorkspace\HostApplication\CommonConst\obj\Release\CommonConst.dll
+C:\workspace\2-11272015\AsherWorkspace\HostApplication\CommonConst\obj\Release\CommonConst.pdb

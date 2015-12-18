@@ -1,0 +1,308 @@
+﻿
+@{
+    ViewBag.Title = "IPMonitorListView";
+}
+<style>
+    .ip-monitor-option {
+        width: 170px;
+        text-align: center;
+        line-height: 37px;
+    }
+    .ip-monitor-ip {
+        width: 180px;
+        text-align: center;
+        line-height: 37px;
+    }
+    .ip-monitor-region {
+        width: 90px;
+        text-align: center;
+        line-height: 37px;
+    }
+    .ip-monitor-model {
+        width: 220px;
+        text-align: center;
+        line-height: 37px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+    .ip-monitor-telephone {
+        width: 229px;
+        text-align: center;
+        line-height: 37px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+    .ip-monitor-status {
+        width: 165px;
+        text-align: center;
+        line-height: 37px;
+    }
+</style>
+<script>
+    var AddIPMinotorItem = function ()
+    {
+        $.ajax({
+            type: "GET",
+            url: "/IPMonitor/CreateView",
+            dataType: "HTML",
+            success: function (data) {
+                $("#IPMonitorCreateOrEdit").css({ "display": "block" });
+                $("#IPMonitorCreateOrEdit").empty();
+                $("#IPMonitorCreateOrEdit").html(data);
+                EditUserIPMapDialog = $("#IPMonitorCreateOrEdit").dialog({
+                    autoOpen: true,
+                    width: 315,
+                    modal: true,
+                    resizable: false,
+                    title: "添加监听",
+                    close: function () {
+                        $("#IPMonitorCreateOrEdit").css({ "display": "none" });
+                    }
+                });
+            }
+        });
+    }
+
+    var DeleteIPMonotorItem = function (sid)
+    {
+        $.ajax({
+            type: "POST",
+            url: "/IPMonitor/Delete?sid=" + sid,
+            success: function (data) {
+                RefreshIPMinotorList();
+            }
+        });
+    }
+
+    var EditIPMonitorItem = function(sid)
+    {
+        $.ajax({
+            type: "GET",
+            url: "/IPMonitor/Edit?sid=" + sid,
+            dataType: "HTML",
+            success: function (data) {
+                $("#IPMonitorCreateOrEdit").css({ "display": "block" });
+                $("#IPMonitorCreateOrEdit").empty();
+                $("#IPMonitorCreateOrEdit").html(data);
+                EditUserIPMapDialog = $("#IPMonitorCreateOrEdit").dialog({
+                    autoOpen: true,
+                    width: 315,
+                    modal: true,
+                    resizable: false,
+                    title: "编辑监听",
+                    close: function () {
+                        $("#IPMonitorCreateOrEdit").css({ "display": "none" });
+                    }
+                });
+            }
+        });
+    }
+
+    var RefreshIPMinotorList = function ()
+    {
+        GetAllRegion();
+        $.ajax({
+            type: "POST",
+            url: "/IPMonitor/GetIPRegionList",
+            data: $("#IPMonitorForm").serialize(),
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                $('#IPMonitorListTable').empty();
+                $.each(data.IPRegionList, function (index) {
+                    $('#IPMonitorListTable').append($("<tr>" +
+                        "<td><div class='ip-monitor-option'><input type='button' class='btn btn-default' onclick=DeleteIPMonotorItem(" + data.IPRegionList[index].SID + ") value='删除'/>" +
+                        "<input type='button' class='btn btn-default' onclick=EditIPMonitorItem(" + data.IPRegionList[index].SID + ") value='编辑'/>" +
+                        "</div></td>" +
+                        "<td><div class='ip-monitor-ip'>" + data.IPRegionList[index].IP + "</div></td>" +
+                        "<td><div class='ip-monitor-region'>" + data.IPRegionList[index].RegionDisplayName + "</div></td>" +
+                        "<td><div class='ip-monitor-model' title='" + data.IPRegionList[index].Model + "'>" + data.IPRegionList[index].Model + "</div></td>" +
+                        "<td><div class='ip-monitor-telephone'>" + data.IPRegionList[index].Telephone + "</div></td>" +
+                        "<td><div class='ip-monitor-status' id = " + data.IPRegionList[index].Region + "-" + data.IPRegionList[index].IP.replace(/\./g, '') + "><div></td>" +
+                        "</tr>"));
+                });
+
+                $('#IPMonitorPageCount').val(data.Count);
+                loadIPMonitorData($('#IPMonitorPageCount').val());
+                loadIPMonitorPage();
+            }
+        });
+    }
+
+    var getNowFormatDate = function(isNow) {
+        var date = new Date();
+        var seperator1 = "/";
+        var seperator2 = ":";
+        var month = date.getMonth() + 1;
+        var strDate = date.getDate();
+
+        if (isNow == false) {
+            strDate = strDate + 1;
+        }
+        if (month >= 1 && month <= 9) {
+            month = "0" + month;
+        }
+        if (strDate >= 0 && strDate <= 9) {
+            strDate = "0" + strDate;
+        }
+        var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
+                + " " + date.getHours() + seperator2 + date.getMinutes()
+                + seperator2 + date.getSeconds();
+        return currentdate;
+    }
+
+    function loadIPMonitorData(num) {
+        $("#IPMonitorPageCount").val(num);
+    }
+
+    function GetAllRegion()
+    {
+        var region = "";
+        $('input:checkbox[name=Region-Checkbox]:checked').each(function (i) {
+            if (0 == i) {
+                region = $(this).val();
+            } else {
+                region += ("," + $(this).val());
+            }
+        });
+        $("#AllRegionValue").val(region);
+    }
+
+    var IPMonitorRecordListDialog;
+    var loadIPMonitorRecordList = function ()
+    {
+        $.ajax({
+            type: "GET",
+            url: "/IPMonitor/MonitorRecoedView",
+            dataType: "html",
+            success: function (msg) {
+                $("#IPMonitorRecordListPage").css({ "display": "block" });
+                $("#IPMonitorRecordListPage").empty();
+                $("#IPMonitorRecordListPage").html(msg);
+                IPMonitorRecordListDialog = $("#IPMonitorRecordListPage").dialog({
+                    autoOpen: true,
+                    width: 1100,
+                    modal: true,
+                    resizable: false,
+                    title: "IP监控记录",
+                    close: function () {
+                        $("#IPMonitorRecordListPage").css({ "display": "none" });
+                    }
+                });
+            }
+        });
+    }
+
+    var IPMonitorAlertInfoDialog;
+    var loadAlertInfoList = function ()
+    {
+        $.ajax({
+            type: "GET",
+            url: "/IPMonitor/AlertInfoView",
+            dataType: "html",
+            success: function (msg) {
+                $("#AlertInfoListPage").css({ "display": "block" });
+                $("#AlertInfoListPage").empty();
+                $("#AlertInfoListPage").html(msg);
+                IPMonitorRecordListDialog = $("#AlertInfoListPage").dialog({
+                    autoOpen: true,
+                    width: 1100,
+                    modal: true,
+                    resizable: false,
+                    title: "IP警报记录",
+                    close: function () {
+                        $("#AlertInfoListPage").css({ "display": "none" });
+                    }
+                });
+            }
+        });
+    }
+
+    var LoadMonitorStatus = function () {
+        $.ajax({
+            type: "POST",
+            url: "/IPMonitor/GetIPMonitorListStatus",
+            data: $("#IPMonitorForm").serialize(),
+            dataType: "json",
+            success: function (data) {
+                $.each(data, function (index) {
+                    ChangeIPRegionPairStatus(data[index].Location, data[index].Status);
+                })
+            }
+        });
+    }
+
+    var ChangeIPRegionPairStatus = function (location, status)
+    {
+        $("#" + location).text(status);
+    }
+
+    var ClickIPMinotorListSearch = function ()
+    {
+        $('#IPMonitorCurrentPage').val(1);
+        RefreshIPMinotorList();
+    }
+
+    $(document).ready(function ()
+    {
+        RefreshIPMinotorList();
+        setInterval(LoadMonitorStatus, 5000);
+    });
+</script>
+<form id="IPMonitorForm" method="post">
+    <div>
+        <div><input type="hidden" name ="Region" id ="AllRegionValue"/>
+            <input type="checkbox" value="PianGuan" name="Region-Checkbox" />偏关县&nbsp;&nbsp;
+            <input type="checkbox" value="HeQu" name="Region-Checkbox" />河曲县&nbsp;&nbsp;
+            <input type="checkbox" value="BaoDe" name="Region-Checkbox" />保德县&nbsp;&nbsp;
+            <input type="checkbox" value="ShenChi" name="Region-Checkbox" />神池县&nbsp;&nbsp;
+            <input type="checkbox" value="WuZhai" name="Region-Checkbox" />五寨县&nbsp;&nbsp;
+            <input type="checkbox" value="KeLan" name="Region-Checkbox" />岢岚县&nbsp;&nbsp;
+            <input type="checkbox" value="NingWu" name="Region-Checkbox" />宁武县&nbsp;&nbsp;
+            <input type="checkbox" value="JingLe" name="Region-Checkbox" />静乐县&nbsp;&nbsp;
+            <input type="checkbox" value="YuanPing" name="Region-Checkbox" />原平县&nbsp;&nbsp;
+            <input type="checkbox" value="XiFu" name="Region-Checkbox" />忻府区&nbsp;&nbsp;
+            <input type="checkbox" value="Dai" name="Region-Checkbox" />代县&nbsp;&nbsp;
+            <input type="checkbox" value="WuTai" name="Region-Checkbox" />五台县&nbsp;&nbsp;
+            <input type="checkbox" value="DingXiang" name="Region-Checkbox" />定襄县&nbsp;&nbsp;
+            <input type="checkbox" value="FanZhi" name="Region-Checkbox" />繁峙县&nbsp;&nbsp;
+        </div>
+        <div class="form-inline" style="margin-top:6px;">
+            <input class="log-search-column" type="radio" name="SearchColumn" value="IP" />IP&nbsp;&nbsp;&nbsp;
+            <input class="log-search-column" type="radio" name="SearchColumn" value="Model" />型号&nbsp;&nbsp;&nbsp;
+            <input id="IPMonitorSearchText" class="form-control" name="SearchText" value="" />
+            <input type="button" class="btn btn-default" onclick="ClickIPMinotorListSearch()" value="搜索" />
+            <input type="button" class="btn btn-default" onclick="AddIPMinotorItem()" value="添加" />
+        </div>
+
+        <table class="table-bordered table-striped" style="margin-top: 10px;">
+            <tr>
+                <th><div class="ip-monitor-option">操作</div></th>
+                <th><div class="ip-monitor-ip">IP</div></th>
+                <th><div class="ip-monitor-region">地区</div></th>
+                <th><div class="ip-monitor-model">型号</div></th>
+                <th><div class="ip-monitor-telephone">电话</div></th>
+                <th><div class="ip-monitor-status">状态</div></th>
+            </tr>
+        </table>
+        <table id="IPMonitorListTable" class="table-bordered table-striped"></table>
+        <div class="text-center">
+            <div>
+                <ul class="pagination" id="IPMonitorListPage"></ul>
+                <input type="hidden" id="IPMonitorCurrentPage" name="PageIndex" value="1" />
+                <input type="hidden" id="IPMonitorPageCount" runat="server" />
+                <input type="hidden" id="IPMonitorPageSize" name="PageSize" runat="server" value="8" />
+                <input type="hidden" id="IPMonitorCountindex" runat="server" value="10" />
+                <!--设置最多显示的页码数 可以手动设置 默认为7-->
+                <input type="hidden" id="IPMonitorVisiblePages" runat="server" value="7" />
+            </div>
+        </div>
+        <div id="IPMonitorCreateOrEdit"></div>
+    </div>
+    <input type="button" class="btn btn-default" value="IP监控记录" onclick="loadIPMonitorRecordList()" />
+    <input type="button" class="btn btn-default" value="IP警报记录" onclick="loadAlertInfoList()" />
+    <div id="IPMonitorRecordListPage" style="display:none"></div>
+    <div id="AlertInfoListPage" style="display:none"></div>
+</form>

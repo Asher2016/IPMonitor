@@ -1,0 +1,231 @@
+﻿
+@{
+    ViewBag.Title = "LogInformationListView";
+}
+
+<style>
+    .log-radio-search-div {
+        position: relative;
+        display: inline-block;
+        margin: 0px 0px 0px 44px;
+    }
+
+    .log-search-info-div {
+        position: relative;
+        display: inline-block;
+        margin-left: 28px;
+        margin-top: 11px;
+    }
+
+    .log-search-button {
+        position: relative;
+        display: inline-block;
+    }
+
+    .log-search-info-div input {
+        width: 820px;
+    }
+
+    .log-search-box {
+        position: relative;
+        top: 11px;
+    }
+    .log-info-table-th {
+        border: solid 1px;
+        border-color: gray;
+        margin: 23px 0px 0px 0px;
+    }
+
+        .log-info-table-th th {
+            border: solid 1px;
+            border-color: gray;
+            position: relative;
+            margin: 42px 0px 0px 0px;
+        }
+    .log-info-table-tr {
+        border: solid;
+        border-width: 0px 0px 1px 1px;
+        border-color: gray;
+    }
+        .log-info-table-tr td {
+            border: solid;
+            border-color: gray;
+            border-width: 0px 0px 1px 1px;
+        }
+    .log-info-ip {
+        width: 160px;
+        text-align: center;
+    }
+    .log-info-local-time {
+        width: 130px;
+        text-align: center;
+    }
+    .log-info-remote-time {
+        width: 130px;
+        text-align: center;
+    }
+    .log-info-level {
+        width: 100px;
+        text-align: center;
+    }
+    .log-info-message {
+        width: 480px;
+        text-align: center;
+    }
+    .log-info-base-page {
+        position: relative;
+        margin: 0px 0px 0px 20px;
+    }
+    #IPUserViewListButton {
+        display: inline;
+        position: absolute;
+        top: 8px;
+        left: 852px;
+    }
+    </style >
+<script>
+
+
+    function getNowFormatDate(isNow) {
+        var date = new Date();
+        var seperator1 = "/";
+        var seperator2 = ":";
+        var month = date.getMonth() + 1;
+        var strDate = date.getDate();
+
+        if (isNow == false) {
+            strDate = strDate + 1;
+        }
+        if (month >= 1 && month <= 9) {
+            month = "0" + month;
+        }
+        if (strDate >= 0 && strDate <= 9) {
+            strDate = "0" + strDate;
+        }
+        var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
+                + " " + date.getHours() + seperator2 + date.getMinutes()
+                + seperator2 + date.getSeconds();
+        return currentdate;
+    }
+
+    function loadLogInfoData(num) {
+        $("#LogInfoPageCount").val(num);
+    }
+
+    var RefreshList = function () {
+        $.ajax({
+            type: "POST",
+            url: "/LogInformation/SearchLogInfo",
+            data: $("#LogInfoForm").serialize(),
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                $("#LogInfoList").empty();
+                $.each(data.LogInfoList, function (index) {
+                    $("#LogInfoList").append($("<tr><td><div class='log-info-ip'>" + data.LogInfoList[index].IpAddress + "</div></td><td><div class='log-info-local-time'>"
+                        + data.LogInfoList[index].LocalTime + "</div></td><td><div class='log-info-remote-time'>"
+                        + data.LogInfoList[index].RemoteTime + "</div></td><td><div class='log-info-level'>"
+                        + data.LogInfoList[index].LogLevel + "</div></td><td><div class='log-info-message'>"
+                        + data.LogInfoList[index].LogMessage + "</div><td></tr>"));
+                })
+
+                $('#LogInfoPageCount').val(data.Count);
+            }
+        });
+    }
+
+    var ClickLogSearch = function ()
+    {
+        $('#LogInfoCurrentPage').val(1);
+        RefreshList();
+        var pageCount = $('#LogInfoPageCount').val();
+
+        if (pageCount == 0)
+        { $('#LogInfoPageCount').val(1) }
+        exeLogInfoData($('#LogInfoPageCount').val(), "change");
+    }
+
+    $(function () {
+        $('#LogInfoDatetimepickerFrom').datetimepicker({ value: getNowFormatDate(), step: 10 });
+        $('#LogInfoDatetimepickerTo').datetimepicker({ value: getNowFormatDate(), step: 10 });
+        RefreshList();
+        loadLogInfoData($('#LogInfoPageCount').val())
+        loadLogInfopage();
+    });
+
+    var IPUserMapDivDialog;
+    
+    var ClickIPUserViewListButton = function ()
+    {
+        $.ajax({
+            type: "GET",
+            url: "/UserIPMap/ListView",
+            dataType: "HTML",
+            success: function (data) {
+                $("#IpUserMapDIV").css({ "display": "block" });
+                $("#IpUserMapDIV").empty();
+                $("#IpUserMapDIV").html(data);
+                IPUserMapDivDialog = $("#IpUserMapDIV").dialog({
+                    autoOpen: true,
+                    width: 600,
+                    modal: true,
+                    resizable: false,
+                    title: "IP用户关联表",
+                    close: function () {
+                        $("#IpUserMapDIV").css({ "display": "none" });
+                    }
+                });
+            }
+        });
+    }
+</script>
+<div class="log-info-base-page">
+    <form id="LogInfoForm" method="post">
+        <div class="log-search-box">
+            <div class="radio-group log-radio-search-div">
+                <input class="log-search-column" type="radio" name="SearchColumn" value="ip_address" checked="checked" />IP&nbsp;&nbsp;&nbsp;
+                <input class="log-search-column" type="radio" name="SearchColumn" value="log_level" />风险等级&nbsp;&nbsp;&nbsp;
+                <input class="log-search-column" type="radio" name="SearchColumn" value="message" />信息&nbsp;&nbsp;&nbsp;
+                起始时间:<input type="text" id="LogInfoDatetimepickerFrom" name="FromDate" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                终止时间:<input type="text" id="LogInfoDatetimepickerTo" name="ToDate" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </div>
+            <div class="form-inline" style=" margin-top: 13px;">
+                <input id="searchInfo" class="form-control" name="SearchText" value="" style="width: 853px; margin-top: 2px;" />
+                <input type="button" class="btn btn-default" onclick="ClickLogSearch()" value="搜索" />
+            </div>
+        </div>
+        <div>
+            <table class="table-bordered table-striped" style="margin-top: 25px;">
+                <tr>
+                    <th><div class='log-info-ip'>IP地址</div></th>
+                    <th><div class='log-info-local-time'>本地时间</div></th>
+                    <th><div class='log-info-remote-time'>远程时间</div></th>
+                    <th><div class='log-info-level'>风险等级</div></th>
+                    <th><div class='log-info-message'>信息</div></th>
+                </tr>
+            </table>
+            <table id="LogInfoList" class="table-bordered table-striped"></table>
+            <div id="UserIpView">
+                <input type="button" class="btn btn-default" value="IP用户列表" id="IPUserViewListButton" onclick="ClickIPUserViewListButton()" />
+                <div id="IpUserMapDIV" style="display:none">
+
+                </div>
+            </div>
+        </div>
+        <div class="text-center">
+            <div>
+                <ul class="pagination" id="LofInfoListPage"></ul>
+                <input type="hidden" id="LogInfoCurrentPage" name="PageIndex" value="1" />
+                <input type="hidden" id="LogInfoPageCount" runat="server" />
+                <input type="hidden" id="LogInfoPageSize" name="PageSize" runat="server" value="8" />
+                <input type="hidden" id="LogInfoCountindex" runat="server" value="10" />
+                <!--设置最多显示的页码数 可以手动设置 默认为7-->
+                <input type="hidden" id="LogInfoVisiblePages" runat="server" value="7" />
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
+

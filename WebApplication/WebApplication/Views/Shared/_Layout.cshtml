@@ -1,0 +1,213 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <title>@ViewBag.Title</title>
+    <link href="@Url.Content("~/Frontend/css/jquery-ui.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Frontend/css/bootstrap.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Frontend/css/jquery-ui.theme.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Frontend/css/jquery-ui.structure.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Frontend/css/theme.css")" rel="stylesheet" type="text/css" />
+
+    <link href="@Url.Content("~/Frontend/css/dialog.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Frontend/css/theme.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Frontend/css/jquery.pagination.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Frontend/css/jquery.datetimepicker.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Frontend/css/myPage.css")" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="@Url.Content("~/Frontend/js/jquery.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Frontend/js/jquery.pagination-1.2.1.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Frontend/js/jquery-ui.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Frontend/js/dialog.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Frontend/js/bootstrap.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Frontend/js/jqPaginator.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Frontend/js/myPage.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Frontend/js/tableExport.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Frontend/js/jquery.base64.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Frontend/js/bootstrap-table.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Frontend/js/bootstrap-table-export.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Frontend/js/jquery.validate.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Frontend/js/jquery.datetimepicker.js")"></script>
+    <style>
+        .title-background {
+            background-color: black;
+            height: 50px;
+        }
+
+        .title-home {
+            height: 52px;
+            color: white;
+            font-size: 26px;
+            position: relative;
+            margin: 2px 39px;
+            display: inline-block;
+            text-align: center;
+            font-style: normal;
+            margin-top: 7px;
+        }
+
+        .title-option {
+            height: 32px;
+            color: white;
+            font-size: 20px;
+            position: relative;
+            margin: 2px 39px;
+            display: inline-block;
+            text-align: center;
+            font-style: normal;
+            float: right;
+            cursor: pointer;
+            margin-top: 5px;
+        }
+
+        #MessageDiv {
+            height: auto;
+            width: 740px;
+        }
+    </style>
+    <script>
+        $(document).ready(function ()
+        {
+        })
+
+        var LogInfoDivDialog;
+        var UserLoginDivDialog;
+        var UserLogin = function () {
+            $.ajax({
+                type: "GET",
+                url: "/User/LoginView",
+                success: function (msg) {
+                    ShowLoginDiv(msg);
+                }
+            });
+        }
+        var ShowLoginDiv = function (message) {
+            $("#UserLoginDiv").css({ "display": "block" });
+            $("#UserLoginDiv").empty();
+            $("#UserLoginDiv").html(message);
+            UserLoginDivDialog = $("#UserLoginDiv").dialog({
+                autoOpen: true,
+                width: 320,
+                modal: true,
+                resizable: false,
+                title: "管理员登陆",
+                close: function () {
+                    $("#UserLoginDiv").css({ "display": "none" });
+                }
+            });
+        }
+        var LogInfoDiv = function (message) {
+            $("#LogInfoDiv").css({ "display": "block" });
+            $("#LogInfoDiv").empty();
+            $("#LogInfoDiv").html(message);
+            LogInfoDivDialog = $("#LogInfoDiv").dialog({
+                autoOpen: true,
+                width: 1070,
+                modal: true,
+                resizable: true,
+                title: "路由器日志管理",
+                close: function () {
+                    $("#LogInfoDiv").css({ "display": "none" });
+                }
+            });
+        }
+
+        var LoadLogInfoList = function () {
+            $.ajax({
+                type: "GET",
+                url: "/LogInformation/ListView",
+                dataType: "html",
+                success: function (msg) {
+                    LogInfoDiv(msg);
+                }
+            });
+        }
+
+        var IPMonitorDivDialog;
+        var IPMonitorDiv = function (message) {
+            $("#IPMonitorDiv").css({ "display": "block" });
+            $("#IPMonitorDiv").empty();
+            $("#IPMonitorDiv").html(message);
+            IPMonitorDivDialog = $("#IPMonitorDiv").dialog({
+                autoOpen: true,
+                width: 1100,
+                modal: true,
+                resizable: true,
+                title: "IP监控管理",
+                close: function () {
+                    $("#IPMonitorDiv").css({ "display": "none" });
+                }
+            });
+        }
+
+        var LoadIPMonitorList = function () {
+            $.ajax({
+                type: "GET",
+                url: "/IPMonitor/ListView",
+                dataType: "html",
+                success: function (msg) {
+                    IPMonitorDiv(msg);
+                }
+            });
+        }
+        
+        var Exit = function() {
+            $("#OptionMenu").empty();
+            $("#OptionMenu").append("<div class=' title-option map_site_login' onclick=UserLogin()>登陆</div>");
+        }
+
+        var ChangePasswdDivDialog;
+        var ChangePassword = function ()
+        {
+            $.ajax({
+                type: "GET",
+                url: "/User/GetChangePasswdView",
+                dataType: "html",
+                success: function (msg) {
+                    ShowChangePasswdDiv(msg);
+                }
+            });
+        }
+
+        var ShowChangePasswdDiv = function (message)
+        {
+            $("#ChangePasswdDiv").css({ "display": "block" });
+            $("#ChangePasswdDiv").empty();
+            $("#ChangePasswdDiv").html(message);
+            UserLoginDivDialog = $("#ChangePasswdDiv").dialog({
+                autoOpen: true,
+                width: 320,
+                modal: true,
+                resizable: true,
+                title: "修改密码",
+                close: function () {
+                    $("#ChangePasswdDiv").css({ "display": "none" });
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="title-background">
+        <div class="title-home">IP监控平台</div>
+        <div id="OptionMenu" class="title-option">
+            <div class=" title-option map_site_login" onclick=UserLogin()>登陆</div>
+        </div>
+    </div>
+    <div id="LogInfoDiv" style="display:none"></div>
+    <div id="UserLoginDiv" style="display:none"></div>
+    <div id="IPMonitorDiv" style="display:none"></div>
+    <div id="ChangePasswdDiv" style="display:none"></div>
+    <div>
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - Net Workmonitor</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

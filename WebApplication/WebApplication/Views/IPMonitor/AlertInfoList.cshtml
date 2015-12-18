@@ -1,0 +1,166 @@
+﻿@{
+    ViewBag.Title = "AlertInfoList";
+}
+
+<style>
+    .alert-info-ip {
+        width: 180px;
+        text-align: center;
+        height: 40px;
+        line-height: 37px;
+    }
+
+    .alert-info-region {
+        width: 120px;
+        text-align: center;
+        height: 40px;
+        line-height: 37px;
+    }
+
+    .alert-info-model {
+        width: 170px;
+        text-align: center;
+        height: 40px;
+        line-height: 37px;
+    }
+
+    .alert-info-first-lost-time {
+        width: 210px;
+        text-align: center;
+        height: 40px;
+        line-height: 37px;
+    }
+
+    .alert-info-second-lost-time {
+        width: 210px;
+        text-align: center;
+        height: 40px;
+        line-height: 37px;
+    }
+
+    .alert-info-status {
+        width: 165px;
+        text-align: center;
+        height: 40px;
+        line-height: 37px;
+    }
+</style>
+<script>
+    function GetAllRegionIPForAlert() {
+        var region = "";
+        $('input:checkbox[name=Region-Checkbox-Alert]:checked').each(function (i) {
+            if (0 == i) {
+                region = $(this).val();
+            } else {
+                region += ("," + $(this).val());
+            }
+        });
+        $("#AllRegionValueIPMonitorAlert").val(region);
+    }
+
+    var RefreshIPMinotorAlert = function () {
+        GetAllRegionIPForAlert();
+        $.ajax({
+            type: "POST",
+            url: "/IPMonitor/GetAlertInfo",
+            data: $("#IPMonitorAlert-Form").serialize(),
+            dataType: "json",
+            async: false,
+            success: function (data) {
+
+                $('#IPMonitorAlertList-Table').empty();
+                $.each(data.BrefAlertInfoList, function (index) {
+                    $('#IPMonitorAlertList-Table').append($("<tr>" +
+                        "<td><div class='alert-info-ip'>" + data.BrefAlertInfoList[index].IP + "</div></td>" +
+                        "<td><div class='alert-info-region'>" + data.BrefAlertInfoList[index].Region + "</div></td>" +
+                        "<td><div class='alert-info-model'>" + data.BrefAlertInfoList[index].Model + "</div></td>" +
+                        "<td><div class='alert-info-first-lost-time'>" + data.BrefAlertInfoList[index].FirstLostTime + "</div></td>" +
+                        "<td><div class='alert-info-second-lost-time'>" + data.BrefAlertInfoList[index].SecondLostTime + "</div></td>" +
+                        "<td><div class='alert-info-status'>" + data.BrefAlertInfoList[index].IsSend + "</div></td>" +
+                        "</tr>"));
+                });
+
+                $('#IPMonitorAlertPageCount').val(data.Count);
+            }
+        });
+    }
+
+    function loadIPMonitorAlertData(num) {
+        $("#IPMonitorAlertPageCount").val(num);
+    }
+
+    var ClickIPMinotorAlertSearch = function()
+    {
+        $('#IPMonitorAlertCurrentPage').val(1);
+        RefreshIPMinotorAlert();
+    }
+
+    $(document).ready(function () {
+        $('#IPMonitorAlertFromDate').datetimepicker({ value: getNowFormatDate(), step: 10 });
+        $('#IPMonitorAlertToDate').datetimepicker({ value: getNowFormatDate(), step: 10 });
+        RefreshIPMinotorAlert();
+        loadIPMonitorAlertData($('#IPMonitorAlertPageCount').val());
+        loadIPMonitorAlertPage();
+    });
+</script>
+<style>
+
+</style>
+<div>
+    <form id="IPMonitorAlert-Form">
+        <div>
+            <div>
+                <input type="hidden" name="Region" id="AllRegionValueIPMonitorAlert" />
+                <input type="checkbox" value="PianGuan" name="Region-Checkbox-Alert" />偏关县&nbsp;&nbsp;
+                <input type="checkbox" value="HeQu" name="Region-Checkbox-Alert" />河曲县&nbsp;&nbsp;
+                <input type="checkbox" value="BaoDe" name="Region-Checkbox-Alert" />保德县&nbsp;&nbsp;
+                <input type="checkbox" value="ShenChi" name="Region-Checkbox-Alert" />神池县&nbsp;&nbsp;
+                <input type="checkbox" value="WuZhai" name="Region-Checkbox-Alert" />五寨县&nbsp;&nbsp;
+                <input type="checkbox" value="KeLan" name="Region-Checkbox-Alert" />岢岚县&nbsp;&nbsp;
+                <input type="checkbox" value="NingWu" name="Region-Checkbox-Alert" />宁武县&nbsp;&nbsp;
+                <input type="checkbox" value="JingLe" name="Region-Checkbox-Alert" />静乐县&nbsp;&nbsp;
+                <input type="checkbox" value="YuanPing" name="Region-Checkbox-Alert" />原平县&nbsp;&nbsp;
+                <input type="checkbox" value="XiFuQu" name="Region-Checkbox-Alert" />忻府区&nbsp;&nbsp;
+                <input type="checkbox" value="Dai" name="Region-Checkbox-Alert" />代县&nbsp;&nbsp;
+                <input type="checkbox" value="WuTai" name="Region-Checkbox-Alert" />五台县&nbsp;&nbsp;
+                <input type="checkbox" value="DingXiang" name="Region-Checkbox-Alert" />定襄县&nbsp;&nbsp;
+                <input type="checkbox" value="FanZhi" name="Region-Checkbox-Alert" />繁峙县&nbsp;&nbsp;
+            </div>
+            <div class="form-inline" style="margin-top:6px;">
+                <input type="radio" name="SearchColumn" value="IP" />IP&nbsp;&nbsp;
+                <input type="radio" name="SearchColumn" value="Model" />型号&nbsp;&nbsp;
+                起始时间:<input type="text" id="IPMonitorAlertFromDate" name="FromDate" />&nbsp;&nbsp;
+                终止时间:<input type="text" id="IPMonitorAlertToDate" name="ToDate" />&nbsp;&nbsp;
+                <input type="text" class="form-control" name="SearchText" />
+                <input type="button" class="btn btn-default" onclick="ClickIPMinotorAlertSearch()" value="搜索" />
+            </div>
+        </div>
+
+        <div style="margin-top:10px;">
+            <table class="table-bordered table-striped">
+                <tr>
+                    <th><div class="alert-info-ip">IP</div></th>
+                    <th><div class="alert-info-region">地区</div></th>
+                    <th><div class="alert-info-model">型号</div></th>
+                    <th><div class="alert-info-first-lost-time">丢失时间</div></th>
+                    <th><div class="alert-info-second-lost-time">第二次丢失时间</div></th>
+                    <th><div class="alert-info-status">状态</div></th>
+                </tr>
+            </table>
+            <table id="IPMonitorAlertList-Table" class="table-bordered table-striped"></table>
+        </div>
+        <div>
+            <div class="text-center">
+                <div>
+                    <ul class="pagination" id="IPMonitorAlertPage"></ul>
+                    <input type="hidden" id="IPMonitorAlertCurrentPage" name="PageIndex" value="1" />
+                    <input type="hidden" id="IPMonitorAlertPageCount" runat="server" />
+                    <input type="hidden" id="IPMonitorAlertPageSize" name="PageSize" runat="server" value="8" />
+                    <input type="hidden" id="IPMonitorAlertCountindex" runat="server" value="10" />
+                    <!--设置最多显示的页码数 可以手动设置 默认为7-->
+                    <input type="hidden" id="IPMonitorAlertVisiblePages" runat="server" value="7" />
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,173 @@
+﻿@{
+    ViewBag.Title = "IPMonitorRecordList";
+}
+<style>
+    .ip-monitor-record-list-ip {
+        width: 250px;
+        text-align: center;
+        height: 40px;
+        line-height: 37px;
+    }
+
+    .ip-monitor-record-list-region {
+        width: 187px;
+        text-align: center;
+        height: 40px;
+        line-height: 37px;
+    }
+
+    .ip-monitor-record-list-model {
+        width: 200px;
+        text-align: center;
+        height: 40px;
+        line-height: 37px;
+    }
+
+    .ip-monitor-record-list-lost-time {
+        width: 210px;
+        text-align: center;
+        height: 40px;
+        line-height: 37px;
+    }
+
+    .ip-monitor-record-list-recovery-time {
+        width: 210px;
+        text-align: center;
+        height: 40px;
+        line-height: 37px;
+    }
+</style>
+<script>
+    function GetAllRegionIPMonitorRecord() {
+        var region = "";
+        $('input:checkbox[name=Region-Checkbox]:checked').each(function (i) {
+            if (0 == i) {
+                region = $(this).val();
+            } else {
+                region += ("," + $(this).val());
+            }
+        });
+        $("#AllRegionValueIPMonitorRecord").val(region);
+    }
+
+    var RefreshIPMinotorRecord = function () {
+        GetAllRegionIPMonitorRecord();
+        $.ajax({
+            type: "POST",
+            url: "/IPMonitor/GetMonitorRecord",
+            data: $("#IPMonitorRecord-Form").serialize(),
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                $('#IPMonitorRecordList-Table').empty();
+                $.each(data.BrefIPInfoList, function (index) {
+                    $('#IPMonitorRecordList-Table').append($("<tr>" +
+                        "<td><div class='ip-monitor-record-list-ip'>" + data.BrefIPInfoList[index].IP + "</div></td>" +
+                        "<td><div class='ip-monitor-record-list-region'>" + data.BrefIPInfoList[index].Region + "</div></td>" +
+                        "<td><div class='ip-monitor-record-list-model'>" + data.BrefIPInfoList[index].Model + "</div></td>" +
+                        "<td><div class='ip-monitor-record-list-lost-time'>" + data.BrefIPInfoList[index].LostTime + "</div></td>" +
+                        "<td><div class='ip-monitor-record-list-recovery-time'>" + data.BrefIPInfoList[index].RecoveryTime + "</div></td>" +
+                        "</tr>"));
+                });
+
+                $('#IPMonitorRecordPageCount').val(data.Count);
+                loadIPMonitorRecordData($('#IPMonitorRecordPageCount').val());
+                loadIPMonitorRecordPage();
+            }
+        });
+    }
+
+    function loadIPMonitorRecordData(num) {
+        $("#IPMonitorRecordPageCount").val(num);
+    }
+
+    function getNowFormatDate1() {
+        var date = new Date();
+        var seperator1 = "/";
+        var seperator2 = ":";
+        var month = date.getMonth() + 1;
+        var strDate = date.getDate();
+
+        if (month >= 1 && month <= 9) {
+            month = "0" + month;
+        }
+        if (strDate >= 0 && strDate <= 9) {
+            strDate = "0" + strDate;
+        }
+        var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
+                + " " + date.getHours() + seperator2 + date.getMinutes()
+                + seperator2 + date.getSeconds();
+        return currentdate;
+    }
+
+    var ClickIPMinotorRecordSearch = function ()
+    {
+        $('#IPMonitorRecordCurrentPage').val(1);
+        RefreshIPMinotorRecord();
+    }
+
+    $(document).ready(function ()
+    {
+        $('#IPMonitorRecordFromDate').datetimepicker({ value: getNowFormatDate1(), step: 10 });
+        $('#IPMonitorRecordToDate').datetimepicker({ value: getNowFormatDate1(), step: 10 });
+        RefreshIPMinotorRecord();
+    });
+</script>
+<div>
+    <form id="IPMonitorRecord-Form">
+        <div>
+            <div>
+                <input type="hidden" name="Region" id="AllRegionValueIPMonitorRecord" />
+                <input type="checkbox" value="PianGuan" name="Region-Checkbox" />偏关县&nbsp;&nbsp;
+                <input type="checkbox" value="HeQu" name="Region-Checkbox" />河曲县&nbsp;&nbsp;
+                <input type="checkbox" value="BaoDe" name="Region-Checkbox" />保德县&nbsp;&nbsp;
+                <input type="checkbox" value="ShenChi" name="Region-Checkbox" />神池县&nbsp;&nbsp;
+                <input type="checkbox" value="WuZhai" name="Region-Checkbox" />五寨县&nbsp;&nbsp;
+                <input type="checkbox" value="KeLan" name="Region-Checkbox" />岢岚县&nbsp;&nbsp;
+                <input type="checkbox" value="NingWu" name="Region-Checkbox" />宁武县&nbsp;&nbsp;
+                <input type="checkbox" value="JingLe" name="Region-Checkbox" />静乐县&nbsp;&nbsp;
+                <input type="checkbox" value="YuanPing" name="Region-Checkbox" />原平县&nbsp;&nbsp;
+                <input type="checkbox" value="XiFu" name="Region-Checkbox" />忻府区&nbsp;&nbsp;
+                <input type="checkbox" value="Dai" name="Region-Checkbox" />代县&nbsp;&nbsp;
+                <input type="checkbox" value="WuTai" name="Region-Checkbox" />五台县&nbsp;&nbsp;
+                <input type="checkbox" value="DingXiang" name="Region-Checkbox" />定襄县&nbsp;&nbsp;
+                <input type="checkbox" value="FanZhi" name="Region-Checkbox" />繁峙县&nbsp;&nbsp;
+            </div>
+
+            <div class="form-inline" style="margin-top:6px;">
+                <input type="radio" name="SearchColumn" value="IP" />IP&nbsp;&nbsp;
+                <input type="radio" name="SearchColumn" value="Model" />型号&nbsp;&nbsp;
+                起始时间:<input type="text" id="IPMonitorRecordFromDate" name="FromDate" />&nbsp;&nbsp;
+                终止时间:<input type="text" id="IPMonitorRecordToDate" name="ToDate" />&nbsp;&nbsp;
+                <input type="text" class="form-control" name="SearchText" />
+                <input type="button" class="btn btn-default" onclick="ClickIPMinotorRecordSearch()" value="搜索" />
+            </div>
+        </div>
+
+        <div style="margin-top: 10px;">
+            <table class="table-bordered table-striped">
+                <tr>
+                    <th><div class="ip-monitor-record-list-ip">IP</div></th>
+                    <th><div class="ip-monitor-record-list-region">地区</div></th>
+                    <th><div class="ip-monitor-record-list-model">型号</div></th>
+                    <th><div class="ip-monitor-record-list-lost-time">丢失时间</div></th>
+                    <th><div class="ip-monitor-record-list-recovery-time">恢复时间</div></th>
+                </tr>
+            </table>
+            <table id="IPMonitorRecordList-Table" class="table-bordered table-striped"></table>
+        </div>
+        <div>
+            <div class="text-center">
+                <div>
+                    <ul class="pagination" id="IPMonitorRecordPage"></ul>
+                    <input type="hidden" id="IPMonitorRecordCurrentPage" name="PageIndex" value="1" />
+                    <input type="hidden" id="IPMonitorRecordPageCount" runat="server" />
+                    <input type="hidden" id="IPMonitorRecordPageSize" name="PageSize" runat="server" value="8" />
+                    <input type="hidden" id="IPMonitorRecordCountindex" runat="server" value="10" />
+                    <!--设置最多显示的页码数 可以手动设置 默认为7-->
+                    <input type="hidden" id="IPMonitorRecordVisiblePages" runat="server" value="7" />
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,77 @@
+﻿@model CommonContract.Model.BrefIPRegionInfo
+@{
+    ViewBag.Title = "IPMonitorCreateOrUpdate";
+}
+
+<script>
+    var SaveIPMonitor = function ()
+    {
+        $.ajax({
+            type: "POST",
+            url: "/IPMonitor/AddOrUpdate",
+            data: $('#EditIPMonitorForm').serialize(),
+            dataType: "HTML",
+            success: function (data) {
+                if (data == '') {
+                    $("#IPMonitorCreateOrEdit").css({ "display": "none" });
+                    $("#IPMonitorCreateOrEdit").dialog('close');
+                    $("#IPMonitorCreateOrEdit").empty();
+                    RefreshIPMinotorList();
+                }
+                else {
+                    $("#IPMonitorCreateOrEdit").empty();
+                    $("#IPMonitorCreateOrEdit").html(data);
+                }
+            }
+        })
+    }
+
+    $(document).ready(function () {
+        $("#SelectRegion option[value=@Model.Region]").attr("selected", "selected");
+    });
+</script>
+<div class="form-inline" style="margin-top: 14px;">
+    <div style=" color: red; margin-left: 23px;">
+        @Html.ValidationSummary()
+    </div>
+    <form id="EditIPMonitorForm">
+        <div>
+            <div style=" margin-left: 12px;">
+                <input type="hidden" name="SID" value="@Model.SID" />
+                <label>IP:</label>
+                <input type="text" class="form-control" name="IP" value="@Model.IP" />
+            </div>
+            <div style=" margin-top: 10px;">
+                <label>地区:</label>
+                <select id="SelectRegion" name="Region">
+                    <option value="PianGuan">偏关县</option>
+                    <option value="HeQu">河曲县</option>
+                    <option value="BaoDe">保德县</option>
+                    <option value="ShenChi">神池县</option>
+                    <option value="WuZhai">五寨县</option>
+                    <option value="KeLan">岢岚县</option>
+                    <option value="NingWu">宁武县</option>
+                    <option value="JingLe">静乐县</option>
+                    <option value="YuanPing">原平县</option>
+                    <option value="XiFu">忻府区</option>
+                    <option value="Dai">代县</option>
+                    <option value="WuTai">五台县</option>
+                    <option value="DingXiang">定襄县</option>
+                    <option value="FanZhi">繁峙县</option>
+                </select>
+            </div>
+            <div style=" margin-top: 6px;">
+                <label>型号:</label>
+                <input type="text" class="form-control" name="Model" value="@Model.Model" />
+            </div>
+            <div style=" margin-top: 8px;">
+                <label>电话:</label>
+                <input type="text" class="form-control" name="Telephone" value="@Model.Telephone" />
+            </div>
+            <div style="margin-top: 10px; margin-left: 208px;">
+                <input type="button" class="btn btn-default" value="确定" onclick="SaveIPMonitor()" />
+            </div>
+        </div>
+    </form>
+</div>
+

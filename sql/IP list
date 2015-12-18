@@ -1,0 +1,36 @@
+IP list
+
+6379
+
+Thread1
+
+10s从数据库拿一次 存入Cache level one
+
+Thread2
+开启时从Cache level one里拿IPList
+开启监听进程 监听每个IP
+
+当开始丢包时 存入 Cache level two set LoseTime
+
+监听ipList时扫描cacheLevelTwo 如果成功并在L2里也存在 set RecoveryTime
+
+select * from ods.alert_info;
+
+select * from ods.region_info;
+
+select * from ods.monitor_ip_info;
+
+insert into ods.monitor_ip_info(region_sid, ip, model, create_date, modified_date, mark_for_delete)
+values(5, 'www.sina.com', 'shixiaoka', now(), now(), false),
+(6, 'www.aiqiyi.com', 'asher', now(), now(), false)
+
+delete from ods.monitor_ip_info where sid in (6);
+
+"www.douyutv8.com"
+
+"www.baidsuss.com"
+
+select * from ods.fn_search_monitor_info('2015-12-05', '2015-12-05', '', '', 8, 1, 'kelan', 'r1', 'r2');
+fetch all from r1;
+
+select * from ods.ip_monitor_record where ip = 'www.baidu.com';

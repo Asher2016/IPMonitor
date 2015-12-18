@@ -1,0 +1,124 @@
+﻿@model CommonContract.Model.LogListContract
+
+@{
+    ViewBag.Title = "LogInfoListView";
+}
+<style>
+
+    .log-radio-search-div {
+        position: relative;
+        display: inline-block;
+        margin: 0px 0px 0px 44px;
+    }
+
+    .log-search-info-div {
+        position: relative;
+        display: inline-block;
+        margin-left: 22px;
+    }
+
+    .log-search-button {
+        position: relative;
+        display: inline-block;
+    }
+
+    .log-search-info-div input {
+        width: 300px;
+    }
+
+    .log-search-box {
+        position: relative;
+        top: 11px;
+    }
+</style>
+<script>
+    $('#LogInfoDatetimepickekFrom').datetimepicker({ value: getNowFormatDate(), step: 10 });
+    $('#LogInfoDatetimepickekTo').datetimepicker({ value: getNowFormatDate(false), step: 10 });
+
+    function getNowFormatDate(isNow) {
+        var date = new Date();
+        var seperator1 = "-";
+        var seperator2 = ":";
+        var month = date.getMonth() + 1;
+        var strDate = date.getDate();
+
+        if (isNow == false)
+        {
+            strDate = strDate + 1;
+        }
+        if (month >= 1 && month <= 9) {
+            month = "0" + month;
+        }
+        if (strDate >= 0 && strDate <= 9) {
+            strDate = "0" + strDate;
+        }
+        var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
+                + " " + date.getHours() + seperator2 + date.getMinutes()
+                + seperator2 + date.getSeconds();
+        return currentdate;
+    }
+
+    var LoadLogInfoList = function () {
+        $.ajax({
+            type: "POST",
+            url: "/LogInfo/SearchLogInfo",
+            data: $("#LogInfoForm").serialize(),
+            dataType: "json",
+            success: function (data) {
+                alert(data.LogInfoList);
+                alert(data.Count);
+                //$.each(data.LogInfoList, function (index) {
+                    //$("#IpUserMapList").append($("<tr onclick='EditIPUserMapView(" + data[index].SID + ")'><td>" + data[index].IPAddress + "</td><td>" + data[index].MapUserName + "</td></tr>"));
+
+                //});
+            }
+        });
+    }
+
+    $(function () {
+        loadLogInfoPagination();
+    });
+
+</script>
+<div>
+    <form id = "LogInfoForm">
+
+    </form>
+    <div class="log-search-box">
+        <div class="radio-group log-radio-search-div">
+            <input class="log-search-column" type="radio" name="LogListContract.SearchColumn" value="IP" />IP&nbsp;&nbsp;&nbsp;
+            <input class="log-search-column" type="radio" name="LogListContract.SearchColumn" value="LogLevel" />风险等级&nbsp;&nbsp;&nbsp;
+            <input class="log-search-column" type="radio" name="LogListContract.SearchColumn" value="legMessage" />信息&nbsp;&nbsp;&nbsp;
+            起始时间:<input type="text" value="2014/03/15 05:06" id="LogInfoDatetimepickekFrom" />&nbsp;&nbsp;
+            终止时间:<input type="text" value="2014/03/15 05:06" id="LogInfoDatetimepickerTo" />&nbsp;&nbsp;
+        </div>
+        <div class="log-search-info-div">
+            <input id="searchInfo" class="form-control" />
+        </div>
+        <div class="log-search-button">
+            <input type="button" class="btn btn-default" value="搜索" />
+            <input type="button" class="btn btn-default" value="添加" />
+        </div>
+    </div>
+    <div>
+        <table class="table">
+            <tr>
+                <th>IP地址</th>
+                <th>本地时间</th>
+                <th>风险等级</th>
+                <th>远程时间</th>
+                <th>信息</th>
+            </tr>
+        </table>
+        <table id="LogInfoList" class="table"></table>
+    </div>
+    <div class="text-center">
+        <ul class="pagination" id="LogInfoPagination"></ul>
+        <input type="hidden" id="LogInfoPageCount" value="1" />
+        <input type="hidden" id="LogInfoPageSize" value="8" />
+        <input type="hidden" id="LogInfoCountindex" value="10" />
+        <!--设置最多显示的页码数 可以手动设置 默认为7-->
+        <input type="hidden" id="LogInfoVisiblePages" value="7" />
+    </div>
+</div>
+

@@ -1,0 +1,47 @@
+﻿@model CommonContract.Model.UserIPInfo
+@{
+    ViewBag.Title = "CreateOrEdit";
+}
+
+<script>
+    var ClickEditUserIP = function () {
+        $.ajax({
+            type: "POST",
+            url: "/UserIPMap/AddOrUpdate",
+            data: $('#EditUserIPForm').serialize(),
+            dataType: "HTML",
+            success: function (data) {
+                if (data == '') {
+                    $("#UserIPMapCreateOrEdit").css({ "display": "none" });
+                    $("#UserIPMapCreateOrEdit").dialog('close');
+                    $("#UserIPMapCreateOrEdit").empty();
+                    RefreshUserIPMap();
+                }
+                else {
+                    $("#EditUserIPBasePage").empty();
+                    $("#EditUserIPBasePage").html(data);
+                }
+            }
+        })
+    }
+</script>
+
+<div id="EditUserIPBasePage" style=" margin-top: 16px; text-align: center;">
+    <div style=" color: red; float: left; margin-left: 81px;">
+        @Html.ValidationSummary()
+    </div>
+    <form id="EditUserIPForm" class=" form-inline" style="display: inline-table;">
+        <div style=" margin-left: 26px;">
+            <input type="hidden" value="@Model.SID" name="SID" />
+            <label for="IPUserMapIP">IP</label> : <input id="IPUserMapIP" class="form-control in" type="text" name="IPAddress" value="@Model.IPAddress" />
+        </div>
+        <div style=" margin-top: 10px;">
+            <label for="IPUserMapUsername">用户名</label> : <input id="IPUserMapUsername" class="form-control" type="text" name="UserName" value="@Model.UserName" />
+        </div>
+        <div style="float: right; margin-top: 10px;">
+            <input class="btn btn-default" type="button" id="EditUserIPInfo-OK" value="确定" onclick="ClickEditUserIP()" />
+        </div>
+        
+    </form>
+</div>
+

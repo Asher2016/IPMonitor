@@ -1,0 +1,34 @@
+﻿@model WebApplication.Models.IPUserListViewModel
+
+@{
+    ViewBag.Title = "CreateOrEdit";
+}
+<script>
+    $("#edit-ip-user-map-item-ok").click("click", function () {
+        alert("222");
+        $.ajax({
+            type: "POST",
+            url: "/IP/EditItem",
+            data: $("#ip-user-map-item-form").serialize(),
+            dataType: "json",
+            success: function (data) {
+                alert(data);
+                $("#edit-ip-user-page").css({ "display": "none" });
+                EditIPUserMapViewDialog.dialog("close");
+
+                $("#IpUserMapList").empty();
+                $.each(data, function (index) {
+                    $("#IpUserMapList").append($("<tr onclick='EditIPUserMapView(" + data[index].SID + ")'><td>" + data[index].IPAddress + "</td><td>" + data[index].MapUserName + "</td></tr>"));
+                });
+            }
+        });
+    })
+</script>
+<div>
+    <form id="ip-user-map-item-form" action="POST">
+        @Html.HiddenFor(model => model.SID)
+        <label>IP</label>：@Html.TextBoxFor(model => model.IPAddress)
+        <label>姓名</label>：@Html.TextBoxFor(model => model.MapUserName)
+        <input type="button" id="edit-ip-user-map-item-ok" value="确定" />
+    </form>
+</div>
