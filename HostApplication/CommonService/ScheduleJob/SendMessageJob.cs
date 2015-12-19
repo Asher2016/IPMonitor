@@ -29,8 +29,14 @@ namespace CommonService.ScheduleJob
                 {
                     string message = String.Format("IP:{0}  第一次丢失时间:{1}  第二次丢失时间{2}", item.IP, item.FirstLostTime.ToString("yyyy-MM-dd HH:mm:ss"), item.SecondLostTime.ToString("yyyy-MM-dd HH:mm:ss"));
                     LogHelper.Instance.Info(LogHelper.CommonService, "Begin Send ");
-                    int resultCode = SendMessage.ExecuteProcessSendMessage(String.Format("{0} \"{1}\"", item.Telephone, message));
-                    LogHelper.Instance.Info(LogHelper.CommonService, "Send Finish ");
+                    string[] telephoneArray = item.Telephone.Split(',');
+                    int resultCode = -99;
+
+                    foreach(string telephoneItem in telephoneArray)
+                    {
+                        string tempTelephoneItem = telephoneItem.Trim();
+                        resultCode = SendMessage.ExecuteProcessSendMessage(String.Format("{0} \"{1}\"", item.Telephone, message));
+                    }
 
                     if (resultCode == 0)
                     {

@@ -119,7 +119,7 @@
                         "<td><div class='ip-monitor-ip'>" + data.IPRegionList[index].IP + "</div></td>" +
                         "<td><div class='ip-monitor-region'>" + data.IPRegionList[index].RegionDisplayName + "</div></td>" +
                         "<td><div class='ip-monitor-model' title='" + data.IPRegionList[index].Model + "'>" + data.IPRegionList[index].Model + "</div></td>" +
-                        "<td><div class='ip-monitor-telephone'>" + data.IPRegionList[index].Telephone + "</div></td>" +
+                        "<td><div class='ip-monitor-telephone' title='" + data.IPRegionList[index].Telephone + "'>" + data.IPRegionList[index].Telephone + "</div></td>" +
                         "<td><div class='ip-monitor-status' id = " + data.IPRegionList[index].Region + "-" + data.IPRegionList[index].IP.replace(/\./g, '') + "><div></td>" +
                         "</tr>"));
                 });
@@ -248,7 +248,7 @@
     $(document).ready(function ()
     {
         RefreshIPMinotorList();
-        setInterval(LoadMonitorStatus, 5000);
+        RefresIPMonitorStatus = setInterval(LoadMonitorStatus, 3000);
     });
 </script>
 <form id="IPMonitorForm" method="post">

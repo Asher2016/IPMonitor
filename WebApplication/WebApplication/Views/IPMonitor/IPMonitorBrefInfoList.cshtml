@@ -1,0 +1,96 @@
+﻿@model WebApplication.Models.MonitorRecordCriteriaView
+@{
+    ViewBag.Title = "IPMonitorBrefInfoList";
+}
+<style>
+    .ip-monitor-ip {
+        width: 180px;
+        text-align: center;
+        line-height: 37px;
+    }
+
+    .ip-monitor-model {
+        width: 220px;
+        text-align: center;
+        line-height: 37px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    .ip-monitor-telephone {
+        width: 229px;
+        text-align: center;
+        line-height: 37px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    .ip-monitor-status {
+        width: 165px;
+        text-align: center;
+        line-height: 37px;
+    }
+</style>
+<script>
+    var RefreshIPMinotorBrefinfoList = function() {
+        $.ajax({
+            type: "POST",
+            url: "/IPMonitor/GetIPRegionList",
+            data: {
+                Region: "@Model.Region",
+                PageSize: 8,
+                PageIndex: 1
+            },
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                $('#IPMonitorBrefInfoListTable').empty();
+                $.each(data.IPRegionList, function (index) {
+                    $('#IPMonitorBrefInfoListTable').append($("<tr>" +
+                        "<td><div class='ip-monitor-ip'>" + data.IPRegionList[index].IP + "</div></td>" +
+                        "<td><div class='ip-monitor-model' title='" + data.IPRegionList[index].Model + "'>" + data.IPRegionList[index].Model + "</div></td>" +
+                        "<td><div class='ip-monitor-telephone'>" + data.IPRegionList[index].Telephone + "</div></td>" +
+                        "<td><div class='ip-monitor-status' id = " + data.IPRegionList[index].Region + "-" + data.IPRegionList[index].IP.replace(/\./g, '') + "><div></td>" +
+                        "</tr>"));
+                });
+            }
+        });
+    }
+
+    var ChangeIPRegionPairStatus = function (location, status) {
+        $("#" + location).text(status);
+    }
+
+    var LoadBrefMonitorStatus = function () {
+        $.ajax({
+            type: "POST",
+            url: "/IPMonitor/GetIPMonitorListStatus",
+            data: $("#IPMonitorForm").serialize(),
+            dataType: "json",
+            success: function (data) {
+                $.each(data, function (index) {
+                    ChangeIPRegionPairStatus(data[index].Location, data[index].Status);
+                })
+            } 
+        });
+    }
+
+    $(document).ready(function () {
+        RefreshIPMinotorBrefinfoList();
+        RefresIPMonitorBrefInfoStatus = setInterval(LoadBrefMonitorStatus, 3000);
+    });
+</script>
+<div>
+    <div><label style=" font-size: 22px;">@Model.DisplayRegion:</label></div>
+    <table class="table-bordered table-striped" style="margin-top: 10px;">
+        <tr>
+            <th><div class="ip-monitor-ip">IP</div></th>
+            <th><div class="ip-monitor-model">型号</div></th>
+            <th><div class="ip-monitor-telephone">电话</div></th>
+            <th><div class="ip-monitor-status">状态</div></th>
+        </tr>
+    </table>
+    <table id="IPMonitorBrefInfoListTable" class="table-bordered table-striped" style="margin-bottom: 12px;"></table>
+</div>

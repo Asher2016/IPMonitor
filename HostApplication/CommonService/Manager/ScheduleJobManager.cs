@@ -84,7 +84,7 @@ namespace CommonService.Manager
                    .Build();
 
             ITrigger trigger = TriggerBuilder.Create().WithIdentity("SendMessageJob", "SendMessageJob")
-                .WithSimpleSchedule(x => x.WithIntervalInMinutes(1).RepeatForever()).Build();
+                .WithSimpleSchedule(x => x.WithIntervalInMinutes(11).RepeatForever()).Build();
 
             scheduleJob.ScheduleJob(job, trigger);
         }

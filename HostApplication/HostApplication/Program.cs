@@ -39,6 +39,8 @@ namespace HostApplication
 
             ServiceBase.Run(ServicesToRun);
 
+            //ScheduleJobManager.Instance.StartSendMessageJob();
+
             ////string ss = DateTime.Now.ToString("MMM dd HH:mm:ss");
             ////DateTime s = DateTime.ParseExact("Nov 09 15:49:11", "MMM dd HH:mm:ss", CultureInfo.InvariantCulture);
 

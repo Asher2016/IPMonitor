@@ -112,5 +112,27 @@ namespace WebApplication.Controllers
                 ModelState.AddModelError("UserInfo.OldPassword", "旧密码错误");
             }
         }
+
+        public bool CheckSession()
+        {
+            if (null == Session["UserInfo"])
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        public bool Exit()
+        {
+            bool result = false;
+
+            Session.Remove("UserInfo");
+            result = true;
+
+            return result;
+        }
 	}
 }

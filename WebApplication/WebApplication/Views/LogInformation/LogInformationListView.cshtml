@@ -82,6 +82,13 @@
         top: 8px;
         left: 852px;
     }
+    .log-table-scroll {
+        overflow-y: scroll;
+        max-height: 347px;
+        display: inline-block;
+        width: 1024px;
+        overflow-x: hidden;
+    }
     </style >
 <script>
 
@@ -194,7 +201,7 @@
                 <input type="button" class="btn btn-default" onclick="ClickLogSearch()" value="搜索" />
             </div>
         </div>
-        <div>
+        <div style=" width: 1024px;">
             <table class="table-bordered table-striped" style="margin-top: 25px;">
                 <tr>
                     <th><div class='log-info-ip'>IP地址</div></th>
@@ -204,7 +211,7 @@
                     <th><div class='log-info-message'>信息</div></th>
                 </tr>
             </table>
-            <table id="LogInfoList" class="table-bordered table-striped"></table>
+            <table id="LogInfoList" class="table-bordered table-striped log-table-scroll"></table>
             <div id="UserIpView">
                 <input type="button" class="btn btn-default" value="IP用户列表" id="IPUserViewListButton" onclick="ClickIPUserViewListButton()" />
                 <div id="IpUserMapDIV" style="display:none">

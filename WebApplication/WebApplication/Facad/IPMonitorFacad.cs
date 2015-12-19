@@ -179,7 +179,7 @@ namespace WebApplication.Facad
                     {
                         result.Add(new IPRegionPairView() { Location = item.Key, Status = "Red" });
                     }
-                    else if (item.Where(x => x.Status == "Unknow").Count() > 0 || item.Where(x => x.Status == "Invalid").Count() > 0)
+                    else if (item.Where(x => x.Status == "Invalid").Count() > 0)
                     {
                         result.Add(new IPRegionPairView() { Location = item.Key, Status = "Yellow" });
                     }
@@ -187,10 +187,10 @@ namespace WebApplication.Facad
                     {
                         result.Add(new IPRegionPairView() { Location = item.Key, Status = "Green" });
                     }
-                    //else if (item.Select(x => x.Status == "Unknow").Count() > 0)
-                    //{
-                    //    result.Add(new IPRegionPairView() { Region = item.Key, Status = "Gray" });
-                    //}
+                    else if (item.Where(x => x.Status == "Unknow").Count() > 0)
+                    {
+                        result.Add(new IPRegionPairView() { Location = item.Key, Status = "Gray" });
+                    }
                 }
             }
 

@@ -11,18 +11,46 @@
         display: inline;
         position: absolute;
         background-size: cover;
-        background-position: 58px;
+        background-position: 20px;
+        cursor: pointer;
+    }
+
+    .status-comments {
+        background: url("/Frontend/jpg/status.png");
+        width: 20px;
+        height: 20px;
+        display: inline;
+        position: absolute;
+        background-size: cover;
+        background-position: 20px;
+    }
+
+    .status-comments-float-left {
+        display: inline-block;
+        position: relative;
+        left: 8px;
+        float: left;
+        margin: 23px 33px 0px 2px;
+    }
+
+    .status-comments-title {
+        position: relative;
+        left: 24px;
     }
 
     .Green {
         background-position: 0px;
     }
 
-    .Yellow {
-        background-position: 39px;
+    .Red {
+        background-position: 40px;
     }
 
-    .Red {
+    .Yellow {
+        background-position: 60px;
+    }
+
+    .Gray {
         background-position: 20px;
     }
 
@@ -97,12 +125,49 @@
     }
 </style>
 <script>
+    var HomeRegionMonitorIPDialog;
+    var RefresIPMonitorBrefInfoStatus;
+
+    var GetRegionIPInfo = function (region)
+    {
+        $.ajax({
+            url: "/IPMonitor/GetIPMonitorBrefInfoListView?region=" + region,
+            type: "GET",
+            dataType: 'HTML',
+            async: false,
+            success: function (data)
+            {
+                if (data != '') {
+                    $("#HomeRegionMonitorIP").css({ "display": "block" });
+                    $("#HomeRegionMonitorIP").empty();
+                    $("#HomeRegionMonitorIP").html(data);
+                    HomeRegionMonitorIPDialog = $("#HomeRegionMonitorIP").dialog({
+                        autoOpen: true,
+                        width: 830,
+                        modal: true,
+                        resizable: false,
+                        title: "IP监控管理",
+                        close: function () {
+                            $("#HomeRegionMonitorIP").css({ "display": "none" });
+                            $("#HomeRegionMonitorIP").empty();
+                            clearInterval(RefresIPMonitorBrefInfoStatus);
+                        }
+                    });
+                }
+                else
+                {
+                    UserLogin();
+                }
+            }
+        });
+    }
+
     var ChangeStatus = function (id, status)
     {
         $('#' + id).removeClass('Red');
         $('#' + id).removeClass('Green');
         $('#' + id).removeClass('Yellow');
-
+        $('#' + id).removeClass('Gray');
         $('#' + id).addClass(status);
     }
 
@@ -128,32 +193,71 @@
             $($('.status')[index]).removeClass('Red');
             $($('.status')[index]).removeClass('Green');
             $($('.status')[index]).removeClass('Yellow');
-            $($('.status')[index]).addClass('Green');
+            $($('.status')[index]).removeClass('Gray');
+            $($('.status')[index]).addClass('Gray');
+        });
+    }
+
+    var CheckSession = function ()
+    {
+        $.ajax({
+            Type: "GET",
+            url: "/User/CheckSession",
+            success: function (data)
+            {
+                if (data == "True")
+                {
+                    $("#OptionMenu").empty();
+                    $("#OptionMenu").append($("<div class='title-option map_site_login' onclick=Exit()>退出</div>"));
+                    $("#OptionMenu").append($("<div class='title-option' onclick=ChangePassword()>修改密码</div>"));
+                    $("#OptionMenu").append($("<div class='title-option' onclick=LoadLogInfoList()>网络日志</div>"));
+                    $("#OptionMenu").append($("<div class='title-option' id='ip_manage' onclick=LoadIPMonitorList()>IP监控</div>"));
+                }
+            }
         });
     }
 
     $(document).ready()
     {
+        CheckSession();
         setInterval(LoadStatus, 5000);
     }
 </script>
 <div class="text-center" style="background-color: #2592bd; height: 700px;">
+    <div style="font-size: 35px; margin-bottom: -34px;">
+        <label class="label">忻州市电力监控</label>
+    </div>
     <div style=" width: 100%; height: 100%; display: inline; position: relative;">
-        <div id="PianGuan" class="status"></div>
-        <div id="HeQu" class="status"></div>
-        <div id="Wuzhai" class="status"></div>
-        <div id="BaoDe" class="status"></div>
-        <div id="ShenChi" class="status"></div>
-        <div id="KeLan" class="status"></div>
-        <div id="NingWu" class="status"></div>
-        <div id="JingLe" class="status"></div>
-        <div id="YuanPing" class="status"></div>
-        <div id="XiFu" class="status"></div>
-        <div id="Dai" class="status"></div>
-        <div id="WuTai" class="status"></div>
-        <div id="DingXiang" class="status"></div>
-        <div id="FanZhi" class="status"></div>
+        <div id="PianGuan" class="status" onclick="GetRegionIPInfo(this.id)"></div>
+        <div id="HeQu" class="status" onclick="GetRegionIPInfo(this.id)"></div>
+        <div id="Wuzhai" class="status" onclick="GetRegionIPInfo(this.id)"></div>
+        <div id="BaoDe" class="status" onclick="GetRegionIPInfo(this.id)"></div>
+        <div id="ShenChi" class="status" onclick="GetRegionIPInfo(this.id)"></div>
+        <div id="KeLan" class="status" onclick="GetRegionIPInfo(this.id)"></div>
+        <div id="NingWu" class="status" onclick="GetRegionIPInfo(this.id)"></div>
+        <div id="JingLe" class="status" onclick="GetRegionIPInfo(this.id)"></div>
+        <div id="YuanPing" class="status" onclick="GetRegionIPInfo(this.id)"></div>
+        <div id="XiFu" class="status" onclick="GetRegionIPInfo(this.id)"></div>
+        <div id="Dai" class="status" onclick="GetRegionIPInfo(this.id)"></div>
+        <div id="WuTai" class="status" onclick="GetRegionIPInfo(this.id)"></div>
+        <div id="DingXiang" class="status" onclick="GetRegionIPInfo(this.id)"></div>
+        <div id="FanZhi" class="status" onclick="GetRegionIPInfo(this.id)"></div>
         <img style="height: 600px; width: 1000px; margin-top: 25px;" src="@Url.Content("~/Frontend/jpg/bg.png")" />
     </div>
+    <div>
+        <div class="status-comments-float-left">
+            <div id="Comments-Gray" class="status-comments Gray"></div><label class="status-comments-title">未开始</label>
+        </div>
+        <div class="status-comments-float-left">
+            <div id="Comments-Green" class="status-comments Green"></div><label class="status-comments-title">畅通</label>
+        </div>
+        <div class="status-comments-float-left">
+            <div id="Comments-Yellow" class="status-comments Yellow"></div><label class="status-comments-title">阻塞</label>
+        </div>
+        <div class="status-comments-float-left">
+            <div id="Comments-Red" class="status-comments Red"></div><label class="status-comments-title">非法</label>
+        </div>
+    </div>
+    <div id="HomeRegionMonitorIP" style="display:none"></div>
 </div>
 

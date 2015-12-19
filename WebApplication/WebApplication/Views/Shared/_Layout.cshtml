@@ -125,6 +125,7 @@
         }
 
         var IPMonitorDivDialog;
+        var RefresIPMonitorStatus;
         var IPMonitorDiv = function (message) {
             $("#IPMonitorDiv").css({ "display": "block" });
             $("#IPMonitorDiv").empty();
@@ -137,6 +138,7 @@
                 title: "IP监控管理",
                 close: function () {
                     $("#IPMonitorDiv").css({ "display": "none" });
+                    clearInterval(RefresIPMonitorStatus);
                 }
             });
         }
@@ -152,9 +154,19 @@
             });
         }
         
-        var Exit = function() {
-            $("#OptionMenu").empty();
-            $("#OptionMenu").append("<div class=' title-option map_site_login' onclick=UserLogin()>登陆</div>");
+        var Exit = function () {
+            $.ajax({
+                url: "/User/Exit",
+                type: "GET",
+                success: function (data)
+                {
+                    if (data == "True")
+                    {
+                        $("#OptionMenu").empty();
+                        $("#OptionMenu").append("<div class=' title-option map_site_login' onclick=UserLogin()>登陆</div>");
+                    }
+                }
+            });
         }
 
         var ChangePasswdDivDialog;

@@ -210,6 +210,7 @@
     <Content Include="Views\IPMonitor\IPMonitorRecordList.cshtml" />
     <Content Include="Views\IPMonitor\AlertInfoList.cshtml" />
     <Content Include="Views\User\ChangePassword.cshtml" />
+    <Content Include="Views\IPMonitor\IPMonitorBrefInfoList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -275,6 +276,7 @@
     <Compile Include="Models\BrefIPInfoView.cs" />
     <Compile Include="Models\IPRegionPairView.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
+    <Compile Include="Models\MonitorRecordCriteriaView.cs" />
     <Compile Include="Models\MonitorRecordListViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\LogHelper.cs" />

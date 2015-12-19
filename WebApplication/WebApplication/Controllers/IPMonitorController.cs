@@ -92,10 +92,15 @@ namespace WebApplication.Controllers
                 ModelState.AddModelError("IP", "此IP地址已被监听.");
             }
 
+            string[] telephoneArray = brefInfo.Telephone.Trim().Split(',');
 
-            if (!Regex.IsMatch(brefInfo.Telephone, @"^1\d{10}$"))
+            foreach (string item in telephoneArray)
             {
-                ModelState.AddModelError("Telephone", "电话格式不正确.");
+                string tempItem = item.Trim();
+                if (!Regex.IsMatch(tempItem, @"^1\d{10}$"))
+                {
+                    ModelState.AddModelError("Telephone", tempItem + " 电话格式不正确.");
+                }
             }
         }
 
@@ -147,6 +152,65 @@ namespace WebApplication.Controllers
             List<IPRegionPairView> result = facad.GetIPMonitorListStatus(criteria);
 
             return Json(result);
+        }
+
+        public ActionResult GetIPMonitorBrefInfoListView(string region)
+        {
+            if (null == Session["UserInfo"])
+            {
+                return null;
+            }
+
+            MonitorRecordCriteriaView criteria = new MonitorRecordCriteriaView();
+            criteria.Region = region;
+
+            switch (region)
+            {
+                case "PianGuan":
+                        criteria.DisplayRegion = "偏关县";
+                        break;
+                case "HeQu":
+                        criteria.DisplayRegion = "河曲县";
+                        break;
+                case "BaoDe":
+                        criteria.DisplayRegion = "保德县";
+                        break;
+                case "ShenChi":
+                        criteria.DisplayRegion = "神池县";
+                        break;
+                case "WuZhai":
+                        criteria.DisplayRegion = "五寨县";
+                        break;
+                case "KeLan":
+                        criteria.DisplayRegion = "岢岚县";
+                        break;
+                case "NingWu":
+                        criteria.DisplayRegion = "宁武县";
+                        break;
+                case "JingLe":
+                        criteria.DisplayRegion = "静乐县";
+                        break;
+                case "YuanPing":
+                        criteria.DisplayRegion = "原平县";
+                        break;
+                case "XiFu":
+                        criteria.DisplayRegion = "忻府区";
+                        break;
+                case "Dai":
+                        criteria.DisplayRegion = "代县";
+                        break;
+                case "WuTai":
+                        criteria.DisplayRegion = "五台县";
+                        break;
+                case "DingXiang":
+                        criteria.DisplayRegion = "定襄县";
+                        break;
+                case "FanZhi":
+                        criteria.DisplayRegion = "繁峙县";
+                        break;
+            }
+
+            return PartialView("IPMonitorBrefInfoList", criteria);
         }
 	}
 }
