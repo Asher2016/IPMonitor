@@ -1,25 +1,4 @@
-﻿using CommonConst;
-using CommonContract.Model;
-using CommonService;
-using CommonService.LogInformation;
-using CommonService.Manager;
-using CommonService.ScheduleJob;
-using CommonService.Service;
-using DataAccess.DAO;
-using DataAccess.Model;
-using PlatForm.Util;
-using Quartz;
-using Quartz.Impl;
-using ServiceStack.Redis;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Net.NetworkInformation;
-using System.ServiceProcess;
-using System.Text;
-using System.Threading;
-using System.Linq;
+﻿using System.ServiceProcess;
 
 namespace HostApplication
 {
