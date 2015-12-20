@@ -2,16 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace CommonContract.Model
 {
-    public class BrefSendMessageInfo
+    public class PreAlertInfo
     {
         public long SID { get; set; }
 
         public string IP { get; set; }
-
-        public string Telephone { get; set; }
 
         public DateTime FirstLostTime { get; set; }
 

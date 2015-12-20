@@ -24,6 +24,5 @@ C:\workspace\2-11272015\AsherWorkspace\HostApplication\CommonConst\obj\Debug\Com
 C:\workspace\2-11272015\AsherWorkspace\HostApplication\CommonConst\obj\Debug\CommonConst.pdb
 C:\AsherWorkSpace\IPMonitor\HostApplication\CommonConst\bin\Debug\CommonConst.dll
 C:\AsherWorkSpace\IPMonitor\HostApplication\CommonConst\bin\Debug\CommonConst.pdb
-C:\AsherWorkSpace\IPMonitor\HostApplication\CommonConst\obj\Debug\CommonConst.csprojResolveAssemblyReference.cache
 C:\AsherWorkSpace\IPMonitor\HostApplication\CommonConst\obj\Debug\CommonConst.dll
 C:\AsherWorkSpace\IPMonitor\HostApplication\CommonConst\obj\Debug\CommonConst.pdb

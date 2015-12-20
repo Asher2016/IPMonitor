@@ -20,15 +20,15 @@ namespace PlatForm.Util
         private static List<string> tempList = new List<string>();
 
         private static object lockForRecord = new object();
-        private static object lockForHistory = new object();
-        private static object lockForAlert = new object();
-        private static object lockForTempList = new object();
+        private static object lockForAlertRecord = new object();
 
         private static List<BrefIPInfo> lostRecord = new List<BrefIPInfo>();
         private static List<string> recordRecoveryList = new List<string>(); //wait for recovery
         private static List<BrefIPInfo> recoveryRecord = new List<BrefIPInfo>();
         private static List<string> invalidRecord = new List<string>();
-        private static List<BrefIPInfo> alertList = new List<BrefIPInfo>();
+        private static List<BrefAlertInfo> alertList = new List<BrefAlertInfo>();
+        private static List<string> alertRecoveryList = new List<string>();
+
         public static void PushIPStack(List<string> ipList)
         {
             foreach (string ipItem in ipList)
@@ -41,27 +41,48 @@ namespace PlatForm.Util
         {
             cts.Cancel();
             invalidRecord.Clear();
-            lostRecord.Clear();
+            recordRecoveryList.Clear();
         }
 
-        public static List<BrefIPInfo> GetAlertInfo()
+        public static List<BrefAlertInfo> GetAlertInfo()
         {
-            List<BrefIPInfo> list = new List<BrefIPInfo>();
+            List<BrefAlertInfo> list = new List<BrefAlertInfo>();
 
-            lock(lockForAlert)
+            lock (lockForRecord)
             {
                 if (alertList.Count > 0)
                 {
-                    foreach (BrefIPInfo info in alertList)
+                    foreach (BrefAlertInfo info in alertList)
                     {
                         list.Add(info);
                     }
                 }
 
                 alertList.Clear();
+                alertRecoveryList.Clear();
             }
 
             return list;
+        }
+
+        public static void SetPreAlertInfo(List<BrefAlertInfo> list)
+        {
+            lock (lockForRecord)
+            {
+                alertList.Clear();
+                alertList.AddRange(list);
+                alertRecoveryList.Clear();
+                alertRecoveryList.AddRange(list.Select(x => x.IP));
+            }
+        }
+
+        public static void CleanData()
+        {
+            alertList.Clear();
+            alertRecoveryList.Clear();
+
+            lostRecord.Clear();
+            recoveryRecord.Clear();
         }
 
         public static List<BrefIPInfo> GetRecord()
@@ -79,10 +100,7 @@ namespace PlatForm.Util
                 }
 
                 lostRecord.Clear();
-            }
 
-            lock (lockForHistory)
-            {
                 if (recoveryRecord.Count > 0)
                 {
                     foreach (BrefIPInfo info in recoveryRecord)
@@ -93,7 +111,6 @@ namespace PlatForm.Util
 
                 recoveryRecord.Clear();
             }
-
 
             return list;
         }
@@ -144,15 +161,30 @@ namespace PlatForm.Util
                         {
                             if (recordRecoveryList.Contains(ip))
                             {
-                                recoveryRecord.Add(new BrefIPInfo() { IP = ip, RecoveryTime = DateTime.Now, LostTime = lostRecord.OrderBy(x => x.LostTime).Where(x => x.IP == ip).FirstOrDefault().LostTime });
-                                recordRecoveryList.Remove(ip);
+                                DateTime firstLostTime = lostRecord.OrderBy(x => x.LostTime).Where(x => x.IP == ip).FirstOrDefault().LostTime;
+                                recoveryRecord.Add(new BrefIPInfo() { IP = ip, RecoveryTime = DateTime.Now, LostTime = firstLostTime });
+                                recordRecoveryList = recordRecoveryList.Where(x => x != ip).ToList();
+                                lostRecord = lostRecord.Where(x => x.IP != ip && x.LostTime != firstLostTime).ToList();
 
                                 if (invalidRecord.Contains(ip))
                                 {
-                                    invalidRecord.Remove(ip);
+                                    invalidRecord = invalidRecord.Where(x => x != ip).ToList();
                                 }
 
                                 RedisHelper.UpdateIP(ip, LocalIPStatus.Unimpeded);
+                            }
+
+                            if (alertRecoveryList.Count > 0 && alertRecoveryList.Exists(x => x == ip))
+                            {
+                                foreach (BrefAlertInfo item in alertList)
+                                {
+                                    if (item.IP.Equals(ip))
+                                    {
+                                        item.RecoveryTime = DateTime.Now;
+                                    }
+                                }
+
+                                alertRecoveryList = alertRecoveryList.Where(x => x != ip).ToList();
                             }
                         }
                     }
@@ -177,15 +209,27 @@ namespace PlatForm.Util
                                 }
                                 else
                                 {
-                                    DateTime preIPDateTime = lostRecord.Where(x => x.IP == ip).OrderBy(x => x.LostTime)
+                                    DateTime preIPDateTime = lostRecord.Where(x => x.IP == ip).OrderByDescending(x => x.LostTime)
                                         .Select(x => x.LostTime)
                                         .FirstOrDefault();
 
-                                    if (preIPDateTime.AddSeconds(10) > DateTime.Now
-                                        && alertList.Where(x => x.IP == ip).Count() == 0)
+                                    if (preIPDateTime.AddSeconds(10) > DateTime.Now)
                                     {
+                                        if (alertList.Exists(x => x.IP == ip))
+                                        {
+                                            alertList = alertList.Where(x => x.IP != ip).ToList();
 
-                                        alertList.Add(new BrefIPInfo() { IP = ip, LostTime = preIPDateTime, RecoveryTime = DateTime.Now });
+                                            alertList.Add(new BrefAlertInfo() { IP = ip, FirstLostTime = preIPDateTime, SecondLostTime = DateTime.Now });
+                                        }
+                                        else
+                                        {
+                                            alertList.Add(new BrefAlertInfo() { IP = ip, FirstLostTime = preIPDateTime, SecondLostTime = DateTime.Now });
+                                        }
+
+                                        if (!alertRecoveryList.Exists(x => x == ip))
+                                        {
+                                            alertRecoveryList.Add(ip);
+                                        }
                                     }
 
                                     lostRecord.Add(new BrefIPInfo() { IP = ip, LostTime = DateTime.Now });

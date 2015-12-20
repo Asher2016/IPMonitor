@@ -73,6 +73,41 @@ namespace DataAccess.DAO
             return result;
         }
 
+        public void DeleteOldData()
+        {
+            using (PgSqlConnection connection = ConnectionUtil.Instance.GetPgSqlConnection())
+            {
+                connection.Open();
+
+                using (PgSqlTransaction transaction = connection.BeginTransaction(IsolationLevel.ReadCommitted))
+                {
+                    try
+                    {
+                        using (PgSqlCommand command = connection.CreateCommand())
+                        {
+                            command.CommandText = "DELETE FROM ods.log_information WHERE local_time <= (now() AT TIME ZONE 'UTC-8') - '6 month'::interval";
+
+                            try
+                            {
+                                command.ExecuteNonQuery();
+                            }
+                            catch (Exception exception)
+                            {
+                                transaction.Rollback();
+                                throw exception;
+                            }
+
+                            transaction.Commit();
+                        }
+                    }
+                    finally
+                    {
+                        connection.Close();
+                    }
+                }
+            }
+        }
+
         public void Dispose()
         {
         }

@@ -72,7 +72,7 @@ namespace CommonService.Manager
                    .Build();
 
             ITrigger trigger = TriggerBuilder.Create().WithIdentity("MonitorIP", "MonitorIP")
-                .WithSimpleSchedule(x => x.WithIntervalInMinutes(10).RepeatForever()).Build();
+                .WithSimpleSchedule(x => x.WithIntervalInMinutes(2).RepeatForever()).Build();
 
             scheduleJob.ScheduleJob(job, trigger);
         }

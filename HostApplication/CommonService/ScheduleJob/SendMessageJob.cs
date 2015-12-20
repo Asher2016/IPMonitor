@@ -27,7 +27,12 @@ namespace CommonService.ScheduleJob
 
                 foreach(BrefSendMessageInfo item in sendMessageInfo)
                 {
-                    string message = String.Format("IP:{0}  第一次丢失时间:{1}  第二次丢失时间{2}", item.IP, item.FirstLostTime.ToString("yyyy-MM-dd HH:mm:ss"), item.SecondLostTime.ToString("yyyy-MM-dd HH:mm:ss"));
+                    string message = String.Format("IP:{0}  第一次丢失时间: {1}  第二次丢失时间: {2}  恢复时间: {3}.",
+                        item.IP,
+                        item.FirstLostTime.ToString("yyyy-MM-dd HH:mm:ss"),
+                        item.SecondLostTime.ToString("yyyy-MM-dd HH:mm:ss"),
+                        item.RecoveryTime == DateTime.MinValue ? "未恢复" : item.RecoveryTime.ToString("yyyy-MM-dd HH:mm:ss"));
+
                     LogHelper.Instance.Info(LogHelper.CommonService, "Begin Send ");
                     string[] telephoneArray = item.Telephone.Split(',');
                     int resultCode = -99;

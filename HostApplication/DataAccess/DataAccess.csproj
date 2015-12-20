@@ -33,15 +33,15 @@
   <ItemGroup>
     <Reference Include="Devart.Data, Version=5.0.973.0, Culture=neutral, PublicKeyToken=09af7300eec23701, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files (x86)\Devart\dotConnect\PostgreSQL\Devart.Data.dll</HintPath>
+      <HintPath>..\..\Lib\Devart.Data.dll</HintPath>
     </Reference>
     <Reference Include="Devart.Data.PostgreSql, Version=7.3.181.0, Culture=neutral, PublicKeyToken=09af7300eec23701, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files (x86)\Devart\dotConnect\PostgreSQL\Devart.Data.PostgreSql.dll</HintPath>
+      <HintPath>..\..\Lib\Devart.Data.PostgreSql.dll</HintPath>
     </Reference>
     <Reference Include="Devart.Data.PostgreSql.Vs, Version=7.3.181.0, Culture=neutral, PublicKeyToken=09af7300eec23701, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files (x86)\Devart\dotConnect\PostgreSQL\Devart.Data.PostgreSql.Vs.dll</HintPath>
+      <HintPath>..\..\Lib\Devart.Data.PostgreSql.Vs.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

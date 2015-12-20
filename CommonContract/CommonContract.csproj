@@ -64,6 +64,7 @@
     <Compile Include="Model\LogListContract.cs" />
     <Compile Include="Model\MonitorRecordCriteria.cs" />
     <Compile Include="Model\MonitorRecordListModel.cs" />
+    <Compile Include="Model\PreAlertInfo.cs" />
     <Compile Include="Model\UserInfo.cs" />
     <Compile Include="Model\UserIPCriteria.cs" />
     <Compile Include="Model\UserIPInfo.cs" />

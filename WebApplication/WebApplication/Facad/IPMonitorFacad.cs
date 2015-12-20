@@ -239,7 +239,7 @@ namespace WebApplication.Facad
                                 item.Status = "畅通";
                                 break;
                             case "Invalid":
-                                item.Status = "非法";
+                                item.Status = "断开";
                                 break;
                         }
                     }

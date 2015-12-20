@@ -135,7 +135,7 @@
                 width: 1100,
                 modal: true,
                 resizable: true,
-                title: "IP监控管理",
+                title: "网络监控管理",
                 close: function () {
                     $("#IPMonitorDiv").css({ "display": "none" });
                     clearInterval(RefresIPMonitorStatus);
@@ -202,7 +202,7 @@
 </head>
 <body>
     <div class="title-background">
-        <div class="title-home">IP监控平台</div>
+        <div class="title-home">信息网络监控平台</div>
         <div id="OptionMenu" class="title-option">
             <div class=" title-option map_site_login" onclick=UserLogin()>登陆</div>
         </div>
@@ -215,7 +215,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - Net Workmonitor</p>
+            <p>&copy; @DateTime.Now.Year - Network Monitor</p>
         </footer>
     </div>
 

@@ -27,6 +27,9 @@ namespace CommonContract.Model
         public DateTime SecondLostTime { get; set; }
 
         [DataMember]
+        public DateTime RecoveryTime { get; set; }
+
+        [DataMember]
         public bool IsSend { get; set; }
     }
 }

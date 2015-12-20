@@ -1,6 +1,7 @@
 ﻿using CommonConst;
 using CommonService.LogInformation;
 using CommonService.Manager;
+using DataAccess.DAO;
 using DataAccess.Model;
 using PlatForm.Util;
 using Quartz;
@@ -26,6 +27,11 @@ namespace CommonService.ScheduleJob
             CutomerDataBase customDB = (CutomerDataBase)context.JobDetail.JobDataMap[ScheduleJobConst.CustomDB];
             string tableStruct = (string)context.JobDetail.JobDataMap[ScheduleJobConst.TableStruct];
             string targetFile = string.Empty;
+
+            using (LogInfoDAO dao = new LogInfoDAO())
+            {
+                dao.DeleteOldData();
+            }
 
             // Stop 3CSyslog Process
             try

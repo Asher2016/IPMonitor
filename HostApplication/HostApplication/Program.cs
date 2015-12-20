@@ -1,4 +1,5 @@
-﻿using System.ServiceProcess;
+﻿using CommonService.Manager;
+using System.ServiceProcess;
 
 namespace HostApplication
 {
@@ -18,6 +19,8 @@ namespace HostApplication
 
             ServiceBase.Run(ServicesToRun);
 
+            //ScheduleJobManager.Instance.StartCopyLogInfo();
+            //ScheduleJobManager.Instance.StartMonitorIPJob();
             //ScheduleJobManager.Instance.StartSendMessageJob();
 
             ////string ss = DateTime.Now.ToString("MMM dd HH:mm:ss");

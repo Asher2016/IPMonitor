@@ -25,12 +25,12 @@
         background-position: 20px;
     }
 
-    .status-comments-float-left {
-        display: inline-block;
-        position: relative;
-        left: 8px;
-        float: left;
-        margin: 23px 33px 0px 2px;
+    .status-comments-float-right {
+        display: inline;
+        position: absolute;
+        float: right;
+        bottom: 20px;
+        right: 43px;
     }
 
     .status-comments-title {
@@ -146,7 +146,7 @@
                         width: 830,
                         modal: true,
                         resizable: false,
-                        title: "IP监控管理",
+                        title: "网络监控管理",
                         close: function () {
                             $("#HomeRegionMonitorIP").css({ "display": "none" });
                             $("#HomeRegionMonitorIP").empty();
@@ -211,7 +211,7 @@
                     $("#OptionMenu").append($("<div class='title-option map_site_login' onclick=Exit()>退出</div>"));
                     $("#OptionMenu").append($("<div class='title-option' onclick=ChangePassword()>修改密码</div>"));
                     $("#OptionMenu").append($("<div class='title-option' onclick=LoadLogInfoList()>网络日志</div>"));
-                    $("#OptionMenu").append($("<div class='title-option' id='ip_manage' onclick=LoadIPMonitorList()>IP监控</div>"));
+                    $("#OptionMenu").append($("<div class='title-option' id='ip_manage' onclick=LoadIPMonitorList()>网络监控</div>"));
                 }
             }
         });
@@ -223,9 +223,9 @@
         setInterval(LoadStatus, 5000);
     }
 </script>
-<div class="text-center" style="background-color: #2592bd; height: 700px;">
+<div class="text-center" style="background-color: #2592bd; height: 700px; position: relative;">
     <div style="font-size: 35px; margin-bottom: -34px;">
-        <label class="label">忻州市电力监控</label>
+        <label class="label">忻州市信息网络监控平台</label>
     </div>
     <div style=" width: 100%; height: 100%; display: inline; position: relative;">
         <div id="PianGuan" class="status" onclick="GetRegionIPInfo(this.id)"></div>
@@ -244,19 +244,13 @@
         <div id="FanZhi" class="status" onclick="GetRegionIPInfo(this.id)"></div>
         <img style="height: 600px; width: 1000px; margin-top: 25px;" src="@Url.Content("~/Frontend/jpg/bg.png")" />
     </div>
-    <div>
-        <div class="status-comments-float-left">
-            <div id="Comments-Gray" class="status-comments Gray"></div><label class="status-comments-title">未开始</label>
-        </div>
-        <div class="status-comments-float-left">
-            <div id="Comments-Green" class="status-comments Green"></div><label class="status-comments-title">畅通</label>
-        </div>
-        <div class="status-comments-float-left">
-            <div id="Comments-Yellow" class="status-comments Yellow"></div><label class="status-comments-title">阻塞</label>
-        </div>
-        <div class="status-comments-float-left">
-            <div id="Comments-Red" class="status-comments Red"></div><label class="status-comments-title">非法</label>
-        </div>
+    <div class="status-comments-float-right">
+        <ul style="list-style-type: none;">
+            <li class="text-left" style="margin-left: -1px;"><div id="Comments-Gray" class="status-comments Gray"></div><label class="status-comments-title">未开始进行检测</label></li>
+            <li class = "text-left"><div id="Comments-Green" class="status-comments Green"></div><label class="status-comments-title">网络状态正常</label></liclass>
+            <li class = "text-left"><div id="Comments-Yellow" class="status-comments Yellow"></div><label class="status-comments-title">检测网络已断开</label></li>
+            <li class = "text-left"><div id="Comments-Red" class="status-comments Red"></div><label class="status-comments-title">网络存在阻塞状态</label></li>
+        </ul>
     </div>
     <div id="HomeRegionMonitorIP" style="display:none"></div>
 </div>

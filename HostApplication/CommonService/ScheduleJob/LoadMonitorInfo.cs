@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CommonService.ScheduleJob
@@ -19,7 +20,10 @@ namespace CommonService.ScheduleJob
 
             try
             {
-                List<BrefIPInfo> alertList = IPMonitorHelper.GetAlertInfo();
+                IPMonitorHelper.StopMonitorThread();
+
+                Thread.Sleep(3000);
+                List<BrefAlertInfo> alertList = IPMonitorHelper.GetAlertInfo();
                 List<BrefIPInfo> RecordList = IPMonitorHelper.GetRecord();
 
                 using (IPMonitorDAO dao = new IPMonitorDAO())
@@ -32,8 +36,6 @@ namespace CommonService.ScheduleJob
                     dao.LoadAlertRecord(alertList);
                 }
 
-                IPMonitorHelper.StopMonitorThread();
-
                 using (IPMonitorDAO dao = new IPMonitorDAO())
                 {
                     result = dao.GetIpListForMonitor();
@@ -43,6 +45,16 @@ namespace CommonService.ScheduleJob
 
                 IPMonitorHelper.PushIPStack(result.Select(x => x.IP).Distinct().ToList());
 
+                List<BrefAlertInfo> preAlertList = new List<BrefAlertInfo>();
+
+                using (AlertDAO dao = new AlertDAO())
+                {
+                    preAlertList = dao.GetPreNotRecoveryAlert();
+                }
+
+                IPMonitorHelper.SetPreAlertInfo(preAlertList);
+
+                IPMonitorHelper.CleanData();
                 IPMonitorHelper.StartMonitorThread();
             }
             catch (Exception e)
