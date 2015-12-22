@@ -1,0 +1,48 @@
+#coding=utf-8
+import urllib
+import re
+import os
+import datetime
+import time
+
+newsListFilePath = os.getcwd()+os.path.sep
+
+def getHtml(url):
+    page = urllib.urlopen(url)
+    html = page.read().decode('gbk')
+    page.close();
+    return html
+
+def getImg(html):
+    reg = r'<a.*?href=\"http:\/\/news.163.com.*?\">.*?[^\x00-\xff]{5,}</a>'
+    new163Re = re.compile(reg)
+    new163List = re.findall(new163Re,html)
+    
+    with open(newsListFilePath+'newslist.txt','w') as newslistFile:
+        for item in new163List: 
+            url,message = convert163Data(item)
+            print url+' '+message+'\n'
+            newslistFile.write(url+' '+message+'\n')
+
+def convert163Data(str): 
+    tempStr = convertTab(str)
+    list = tempStr.split('"');
+    
+    return [list[1],list[2]]
+
+def convertTab(str):
+    str = str.replace(' target=\"_blank\"','').replace(' class=\"ac01\"','').replace(' class=\"ac02\"','').replace(' class=\"ac03\"','')
+    return str.replace('</a>','').replace('>',"").replace('<a','')
+
+def printOut(str):
+    url,message = convert163Data(str)
+    print url+' '+message+'\n'
+    with open(newsListFilePath+'newslist.txt','w') as newslistFile:
+        newslistFile.write(url+' '+message+'\n')
+
+html = getHtml("http://news.163.com")
+
+
+getImg(html)
+
+#print printOut(string)
