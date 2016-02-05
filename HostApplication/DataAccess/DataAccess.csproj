@@ -58,6 +58,7 @@
     <Compile Include="DAO\ConfigDAO.cs" />
     <Compile Include="DAO\IPMonitorDAO.cs" />
     <Compile Include="DAO\LogInfoDAO.cs" />
+    <Compile Include="DAO\LogInfoGuide.cs" />
     <Compile Include="DAO\UserDAO.cs" />
     <Compile Include="DAO\UserIPDAO.cs" />
     <Compile Include="Model\CopyLogConfig.cs" />

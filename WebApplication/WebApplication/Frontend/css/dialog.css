@@ -29,6 +29,7 @@
 	text-overflow: ellipsis;
 }
 .ui-dialog .ui-dialog-titlebar-close {
+    background-image: url('image/icon_close.png');
 	position: absolute;
 	right: .3em;
 	top: 50%;
@@ -36,6 +37,7 @@
 	margin: -10px 0 0 0;
 	padding: 1px;
 	height: 20px;
+    background-position: inherit;
 }
 .ui-dialog .ui-dialog-content {
 	position: relative;

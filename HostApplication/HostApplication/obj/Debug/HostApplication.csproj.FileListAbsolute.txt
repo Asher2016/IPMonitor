@@ -254,3 +254,17 @@ C:\AsherWorkSpace\IPMonitor\HostApplication\HostApplication\bin\Debug\ServiceSta
 C:\AsherWorkSpace\IPMonitor\HostApplication\HostApplication\obj\Debug\HostApplication.csprojResolveAssemblyReference.cache
 C:\AsherWorkSpace\IPMonitor\HostApplication\HostApplication\obj\Debug\HostApplication.exe
 C:\AsherWorkSpace\IPMonitor\HostApplication\HostApplication\obj\Debug\HostApplication.pdb
+C:\AsherWorkspace\ASPNet\IPMonitor\HostApplication\HostApplication\bin\Debug\HostApplication.exe
+C:\AsherWorkspace\ASPNet\IPMonitor\HostApplication\HostApplication\bin\Debug\Common.Logging.Core.dll
+C:\AsherWorkspace\ASPNet\IPMonitor\HostApplication\HostApplication\bin\Debug\Common.Logging.dll
+C:\AsherWorkspace\ASPNet\IPMonitor\HostApplication\HostApplication\bin\Debug\CommonContract.dll
+C:\AsherWorkspace\ASPNet\IPMonitor\HostApplication\HostApplication\bin\Debug\CommonService.dll
+C:\AsherWorkspace\ASPNet\IPMonitor\HostApplication\HostApplication\bin\Debug\DataAccess.dll
+C:\AsherWorkspace\ASPNet\IPMonitor\HostApplication\HostApplication\bin\Debug\log4net.dll
+C:\AsherWorkspace\ASPNet\IPMonitor\HostApplication\HostApplication\bin\Debug\PlatForm.dll
+C:\AsherWorkspace\ASPNet\IPMonitor\HostApplication\HostApplication\bin\Debug\Quartz.dll
+C:\AsherWorkspace\ASPNet\IPMonitor\HostApplication\HostApplication\bin\Debug\ServiceStack.Common.dll
+C:\AsherWorkspace\ASPNet\IPMonitor\HostApplication\HostApplication\bin\Debug\ServiceStack.Interfaces.dll
+C:\AsherWorkspace\ASPNet\IPMonitor\HostApplication\HostApplication\bin\Debug\ServiceStack.Redis.dll
+C:\AsherWorkspace\ASPNet\IPMonitor\HostApplication\HostApplication\bin\Debug\ServiceStack.Text.dll
+C:\AsherWorkspace\ASPNet\IPMonitor\HostApplication\HostApplication\bin\Debug\CommonService.pdb

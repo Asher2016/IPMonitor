@@ -117,6 +117,9 @@
   <ItemGroup>
     <Content Include="Frontend\css\bootstrap-table.min.css" />
     <Content Include="Frontend\css\dialog.css" />
+    <Content Include="Frontend\css\image\icon_close.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Frontend\css\image\ui-bg_diagonals-thick_18_b81900_40x40.png" />
     <Content Include="Frontend\css\image\ui-bg_diagonals-thick_20_666666_40x40.png" />
     <Content Include="Frontend\css\image\ui-bg_diagonals-thick_8_333333_40x40.png" />

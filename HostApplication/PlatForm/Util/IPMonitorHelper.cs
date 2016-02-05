@@ -152,10 +152,9 @@ namespace PlatForm.Util
                 for (int i = 0; i < 20; i++)
                 {
                     byte[] buffer = Encoding.ASCII.GetBytes(data);
-                    System.Net.NetworkInformation.PingReply reply = p.Send(ip, 2000, buffer, options);
-                    string replyData = Encoding.Default.GetString(reply.Buffer);
+                    System.Net.NetworkInformation.PingReply reply = p.Send(ip, 10000, buffer, options);
 
-                    if (replyData.Equals(data))
+                    if (reply.Status == IPStatus.Success)
                     {
                         lock (lockForRecord)
                         {
@@ -209,11 +208,12 @@ namespace PlatForm.Util
                                 }
                                 else
                                 {
-                                    DateTime preIPDateTime = lostRecord.Where(x => x.IP == ip).OrderByDescending(x => x.LostTime)
+                                    DateTime preIPDateTime = lostRecord.Where(x => x.IP == ip)
+                                        .OrderByDescending(x => x.LostTime)
                                         .Select(x => x.LostTime)
                                         .FirstOrDefault();
 
-                                    if (preIPDateTime.AddSeconds(10) > DateTime.Now)
+                                    if (preIPDateTime.AddSeconds(15) > DateTime.Now)
                                     {
                                         if (alertList.Exists(x => x.IP == ip))
                                         {
@@ -239,7 +239,7 @@ namespace PlatForm.Util
                         }
                     }
 
-                    Thread.Sleep(300);
+                    Thread.Sleep(1000);
                 }
             }
         }

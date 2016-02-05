@@ -1,5 +1,11 @@
-﻿using CommonService.Manager;
+﻿using CommonConst;
+using CommonContract.Model;
+using CommonService.Manager;
+using DataAccess.DAO;
+using PlatForm.Util;
+using System.Collections.Generic;
 using System.ServiceProcess;
+using System.Threading;
 
 namespace HostApplication
 {
@@ -134,6 +140,7 @@ namespace HostApplication
             //IPMonitorHelper.StopMonitorThread();
             //IPMonitorHelper.StartMonitorThread();
 
+            //Thread.Sleep(60000);
 
             //LocalIPStatus status = RedisHelper.GetIPStatus("www.baidu.com");
             //LocalIPStatus status2 = RedisHelper.GetIPStatus("www.baidsuss.com");
@@ -143,7 +150,7 @@ namespace HostApplication
             //LocalIPStatus status6 = RedisHelper.GetIPStatus("www.iqiyi.com");
             //LocalIPStatus status7 = RedisHelper.GetIPStatus("www.douyutv8.com");
 
-            //List<BrefIPInfo> l2 = IPMonitorHelper.GetAlertInfo();
+            //List<BrefAlertInfo> l2 = IPMonitorHelper.GetAlertInfo();
             //List<BrefIPInfo> l3 = IPMonitorHelper.GetRecord();
 
             //List<BrefIPInfo> brefIpInfoList = new List<BrefIPInfo>();

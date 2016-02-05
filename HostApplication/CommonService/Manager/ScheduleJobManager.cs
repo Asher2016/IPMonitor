@@ -72,7 +72,7 @@ namespace CommonService.Manager
                    .Build();
 
             ITrigger trigger = TriggerBuilder.Create().WithIdentity("MonitorIP", "MonitorIP")
-                .WithSimpleSchedule(x => x.WithIntervalInMinutes(2).RepeatForever()).Build();
+                .WithSimpleSchedule(x => x.WithIntervalInMinutes(10).RepeatForever()).Build();
 
             scheduleJob.ScheduleJob(job, trigger);
         }
@@ -84,7 +84,7 @@ namespace CommonService.Manager
                    .Build();
 
             ITrigger trigger = TriggerBuilder.Create().WithIdentity("SendMessageJob", "SendMessageJob")
-                .WithSimpleSchedule(x => x.WithIntervalInMinutes(11).RepeatForever()).Build();
+                .WithSimpleSchedule(x => x.WithIntervalInMinutes(12).RepeatForever()).Build();
 
             scheduleJob.ScheduleJob(job, trigger);
         }

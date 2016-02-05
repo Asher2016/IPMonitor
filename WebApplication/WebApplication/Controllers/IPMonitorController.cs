@@ -81,11 +81,11 @@ namespace WebApplication.Controllers
 
         public void Validate(BrefIPRegionInfo brefInfo)
         {
-            IPAddress temp;
-            if (!IPAddress.TryParse(brefInfo.IP, out temp))
-            {
-                ModelState.AddModelError("IP", "IP地址格式错误.");
-            }
+            //IPAddress temp;
+            //if (!IPAddress.TryParse(brefInfo.IP, out temp))
+            //{
+            //    ModelState.AddModelError("IP", "IP地址格式错误.");
+            //}
 
             if (facad.IsExist(brefInfo.SID, brefInfo.IP))
             {

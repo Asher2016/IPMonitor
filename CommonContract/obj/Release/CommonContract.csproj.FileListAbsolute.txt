@@ -6,3 +6,7 @@ C:\AsherWorkSpace\IPMonitor\CommonContract\bin\Release\CommonContract.dll
 C:\AsherWorkSpace\IPMonitor\CommonContract\bin\Release\CommonContract.pdb
 C:\AsherWorkSpace\IPMonitor\CommonContract\obj\Release\CommonContract.dll
 C:\AsherWorkSpace\IPMonitor\CommonContract\obj\Release\CommonContract.pdb
+C:\AsherWorkspace\ASPNet\IPMonitor\CommonContract\bin\Release\CommonContract.dll
+C:\AsherWorkspace\ASPNet\IPMonitor\CommonContract\bin\Release\CommonContract.pdb
+C:\AsherWorkspace\ASPNet\IPMonitor\CommonContract\obj\Release\CommonContract.dll
+C:\AsherWorkspace\ASPNet\IPMonitor\CommonContract\obj\Release\CommonContract.pdb

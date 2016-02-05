@@ -177,11 +177,11 @@ namespace WebApplication.Facad
                 {
                     if (item.Where(x => x.Status == "Impeded").Count() > 0)
                     {
-                        result.Add(new IPRegionPairView() { Location = item.Key, Status = "Red" });
+                        result.Add(new IPRegionPairView() { Location = item.Key, Status = "Yellow" });
                     }
                     else if (item.Where(x => x.Status == "Invalid").Count() > 0)
                     {
-                        result.Add(new IPRegionPairView() { Location = item.Key, Status = "Yellow" });
+                        result.Add(new IPRegionPairView() { Location = item.Key, Status = "Red" });
                     }
                     else if (item.Where(x => x.Status == "Unimpeded").Count() > 0)
                     {
