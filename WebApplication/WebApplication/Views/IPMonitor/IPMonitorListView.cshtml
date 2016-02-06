@@ -128,8 +128,6 @@
                 });
 
                 $('#IPMonitorPageCount').val(data.Count);
-                loadIPMonitorData($('#IPMonitorPageCount').val());
-                loadIPMonitorPage();
             }
         });
     }
@@ -196,11 +194,19 @@
     {
         $('#IPMonitorCurrentPage').val(1);
         RefreshIPMinotorList();
+
+        var pageCount = $('#IPMonitorPageCount').val();
+
+        if (pageCount == 0)
+        { $('#IPMonitorPageCount').val(1) }
+        exeIPMonitorData($('#IPMonitorPageCount').val(), "change");
     }
 
     $(document).ready(function ()
     {
         RefreshIPMinotorList();
+        loadIPMonitorData($('#IPMonitorPageCount').val());
+        loadIPMonitorPage();
         RefresIPMonitorStatus = setInterval(LoadMonitorStatus, 3000);
     });
 </script>

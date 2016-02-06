@@ -96,9 +96,7 @@
         }
     </style>
     <script>
-        $(document).ready(function ()
-        {
-        })
+        $(document).ready(function () { })
 
         var onClickIpManager = function () {
             $('.option-ip-manage').fadeToggle(500);
@@ -115,6 +113,7 @@
                 }
             });
         }
+
         var ShowLoginDiv = function (message) {
             $("#UserLoginDiv").css({ "display": "block" });
             $("#UserLoginDiv").empty();
@@ -130,6 +129,7 @@
                 }
             });
         }
+
         var LogInfoDiv = function (message) {
             $("#LogInfoDiv").css({ "display": "block" });
             $("#LogInfoDiv").empty();
@@ -190,7 +190,6 @@
         
         var IPMonitorRecordListDialog;
         var LoadIPMonitorRecordList = function () {
-            alert('LoadIPMonitorRecordList');
             $.ajax({
                 type: "GET",
                 url: "/IPMonitor/MonitorRecoedView",
@@ -216,7 +215,6 @@
 
         var IPMonitorAlertInfoDialog;
         var LoadAlertInfoList = function () {
-            alert('LoadAlertInfoList');
             $.ajax({
                 type: "GET",
                 url: "/IPMonitor/AlertInfoView",
@@ -316,7 +314,7 @@
         </div>
     </div>
     <div class="option-ip-manage">
-        <div class="sub-item" onclick=LoadIPMonitorList()><span class="sub-item-message">网络监控</span></div>
+        <div class="sub-item" onclick=LoadIPMonitorList()><span class="sub-item-message">监控管理</span></div>
         <div class="sub-item" onclick=LoadIPMonitorRecordList()><span class="sub-item-message">IP监控记录</span></div>
         <div class="sub-item" onclick=LoadAlertInfoList()><span class="sub-item-message">IP警报记录</span></div>
     </div>

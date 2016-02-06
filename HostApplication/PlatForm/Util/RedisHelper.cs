@@ -52,7 +52,6 @@ namespace PlatForm.Util
                     {
                         redisClient.Set<List<IPRegionPair>>(RedisConst.CurrentMonitorIPList, ipList);
                     }
-                    var ss = redisClient.Get<List<IPRegionPair>>(RedisConst.CurrentMonitorIPList);
                 }
             }
         }

@@ -99,8 +99,8 @@ namespace WebApplication.Facad
                         IP = item.IP,
                         Region = item.Region,
                         Model = item.Model,
-                        LostTime = item.LostTime == null ? string.Empty : item.LostTime.ToString("yyyy-MM-dd HH:mm:ss"),
-                        RecoveryTime = item.RecoveryTime == null ? string.Empty : item.RecoveryTime == DateTime.MinValue ? "未恢复" : item.RecoveryTime.ToString("yyyy-MM-dd HH:mm:ss")
+                        LostTime = item.LostTime == null ? "" : item.LostTime.ToString("yyyy-MM-dd HH:mm:ss"),
+                        RecoveryTime = item.RecoveryTime == null ? "" : item.RecoveryTime == DateTime.MinValue ? "未恢复" : item.RecoveryTime.ToString("yyyy-MM-dd HH:mm:ss")
                     });
             }
             result.BrefIPInfoList = list;

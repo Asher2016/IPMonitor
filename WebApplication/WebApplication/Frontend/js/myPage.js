@@ -70,7 +70,7 @@ function loadIPMonitorPage() {
     $.jqPaginator('#IPMonitorListPage', {
         totalPages: parseInt($("#IPMonitorCountindex").val()),
         visiblePages: parseInt($("#IPMonitorVisiblePages").val()),
-        currentPage: parseInt($('#IPMonitorCurrentPage').val()),
+        currentPage: 1,
         first: '<li class="first"><a href="javascript:RefreshIPMinotorList();">首页</a></li>',
         prev: '<li class="prev"><a href="javascript:RefreshIPMinotorList();"><i class="arrow arrow2"></i>上一页</a></li>',
         next: '<li class="next"><a href="javascript:RefreshIPMinotorList();">下一页<i class="arrow arrow3"></i></a></li>',
@@ -78,8 +78,8 @@ function loadIPMonitorPage() {
         page: '<li class="page"><a href="javascript:RefreshIPMinotorList();">{{page}}</a></li>',
         onPageChange: function (num, type) {
             if (type == "change") {
-                $('#IPMonitorCurrentPage').val(num);
                 exeIPMonitorData(num, type);
+                $('#IPMonitorCurrentPage').val(num);
             }
         }
     });

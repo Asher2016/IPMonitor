@@ -216,7 +216,6 @@ namespace DataAccess.DAO
                 }
 
                 RedisHelper.DeleteCache(brefIpRegionInfo.IP);
-                IPMonitorHelper.Equals("ss","s");
                 List<IPRegionPair> result = new List<IPRegionPair>();
 
                 using (IPMonitorDAO dao = new IPMonitorDAO())
