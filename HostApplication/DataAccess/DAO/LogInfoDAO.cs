@@ -33,6 +33,7 @@ namespace DataAccess.DAO
                         command.Parameters.Add(new PgSqlParameter("_search_text", PgSqlType.VarChar)).Value = criteria.SearchText;
                         command.Parameters.Add(new PgSqlParameter("_page_size", PgSqlType.Interval)).Value = criteria.PageSize;
                         command.Parameters.Add(new PgSqlParameter("_page_index", PgSqlType.Interval)).Value = criteria.PageIndex;
+                        command.Parameters.Add(new PgSqlParameter("_log_type", PgSqlType.SmallInt)).Value = criteria.LogType;
 
                         using (PgSqlDataReader reader = command.ExecuteReader())
                         {

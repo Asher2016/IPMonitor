@@ -94,15 +94,37 @@
             position: relative;
             top: 5px;
         }
+        .option-log-manage {
+            position: absolute;
+            background: #000;
+            text-align: center;
+            z-index: 3;
+            height: 175px;
+            width: 100px;
+            float: right;
+            right: 342px;
+            color: #fff;
+            font-size: 16px;
+            display: none;
+        }
     </style>
     <script>
-        $(document).ready(function () { })
+        $(document).ready(function () {
+            $('.text-center').unbind();
+            $('.text-center').bind('mouseenter', function () {
+                $('.option-ip-manage').fadeOut(500);
+                $('.option-log-manage').fadeOut(500);
+            });
+        })
 
         var onClickIpManager = function () {
             $('.option-ip-manage').fadeToggle(500);
         }
 
-        var LogInfoDivDialog;
+        var onClickLogManager = function () {
+            $('.option-log-manage').fadeToggle(500);
+        }
+
         var UserLoginDivDialog;
         var UserLogin = function () {
             $.ajax({
@@ -130,31 +152,64 @@
             });
         }
 
-        var LogInfoDiv = function (message) {
-            $("#LogInfoDiv").css({ "display": "block" });
-            $("#LogInfoDiv").empty();
-            $("#LogInfoDiv").html(message);
-            LogInfoDivDialog = $("#LogInfoDiv").dialog({
+        var ClientLogInfoDivDialog;
+        var ClientLogInfoDiv = function (message) {
+            $("#ClientLogInfoDiv").css({ "display": "block" });
+            $("#ClientLogInfoDiv").empty();
+            $("#ClientLogInfoDiv").html(message);
+            ClientLogInfoDivDialog = $("#ClientLogInfoDiv").dialog({
                 autoOpen: true,
                 width: 1070,
                 modal: true,
                 resizable: true,
-                title: "路由器日志管理",
+                title: "客户端日志",
                 close: function () {
-                    $("#LogInfoDiv").css({ "display": "none" });
+                    $("#ClientLogInfoDiv").css({ "display": "none" });
+                    $("#ClientLogInfoDiv").empty();
                 }
             });
         }
 
-        var LoadLogInfoList = function () {
+        var LoadClientLogInfoList = function () {
             $.ajax({
                 type: "GET",
-                url: "/LogInformation/ListView",
+                url: "/LogInformation/ClientListView",
                 dataType: "html",
                 success: function (msg) {
-                    LogInfoDiv(msg);
+                    ClientLogInfoDiv(msg);
                 }
             });
+            $('.option-log-manage').fadeToggle(500);
+        }
+
+        var InterchangerLogInfoDivDialog;
+        var InterchangerLogInfoDiv = function (message) {
+            $("#InterchangerLogInfoDiv").css({ "display": "block" });
+            $("#InterchangerLogInfoDiv").empty();
+            $("#InterchangerLogInfoDiv").html(message);
+            ClientLogInfoDivDialog = $("#InterchangerLogInfoDiv").dialog({
+                autoOpen: true,
+                width: 1070,
+                modal: true,
+                resizable: true,
+                title: "交换机日志",
+                close: function () {
+                    $("#InterchangerLogInfoDiv").css({ "display": "none" });
+                    $("#InterchangerLogInfoDiv").empty();
+                }
+            });
+        }
+
+        var LoadInterchangerLogInfoList = function () {
+            $.ajax({
+                type: "GET",
+                url: "/LogInformation/InterchangerListView",
+                dataType: "html",
+                success: function (msg) {
+                    InterchangerLogInfoDiv(msg);
+                }
+            });
+            $('.option-log-manage').fadeToggle(500);
         }
 
         var IPMonitorDivDialog;
@@ -304,6 +359,32 @@
                     + seperator2 + date.getSeconds();
             return currentdate;
         }
+
+        var IPUserMapDivDialog;
+
+        var LoadIPUserViewList = function () {
+            $.ajax({
+                type: "GET",
+                url: "/UserIPMap/ListView",
+                dataType: "HTML",
+                success: function (data) {
+                    $("#IpUserMapDIV").css({ "display": "block" });
+                    $("#IpUserMapDIV").empty();
+                    $("#IpUserMapDIV").html(data);
+                    IPUserMapDivDialog = $("#IpUserMapDIV").dialog({
+                        autoOpen: true,
+                        width: 600,
+                        modal: true,
+                        resizable: false,
+                        title: "IP用户关联表",
+                        close: function () {
+                            $("#IpUserMapDIV").css({ "display": "none" });
+                        }
+                    });
+                }
+            });
+            $('.option-log-manage').fadeToggle(500);
+        }
     </script>
 </head>
 <body>
@@ -318,12 +399,21 @@
         <div class="sub-item" onclick=LoadIPMonitorRecordList()><span class="sub-item-message">IP监控记录</span></div>
         <div class="sub-item" onclick=LoadAlertInfoList()><span class="sub-item-message">IP警报记录</span></div>
     </div>
-    <div id="LogInfoDiv" style="display:none"></div>
+    <div class="option-log-manage">
+        <div class="sub-item" onclick=LoadInterchangerLogInfoList()><span class="sub-item-message">交换机日志</span></div>
+        <div class="sub-item" onclick=LoadClientLogInfoList()><span class="sub-item-message">客户端日志</span></div>
+        <div class="sub-item" onclick=LoadIPUserViewList()><span class="sub-item-message">IP用户管理</span></div>
+        <div class="sub-item" ><span class="sub-item-message">风险说明</span></div>
+        <div class="sub-item" ><span class="sub-item-message">信息说明</span></div>
+    </div>
+    <div id="ClientLogInfoDiv" style="display:none"></div>
+    <div id="InterchangerLogInfoDiv" style="display:none"></div>
     <div id="UserLoginDiv" style="display:none"></div>
     <div id="IPMonitorDiv" style="display:none"></div>
     <div id="ChangePasswdDiv" style="display:none"></div>
     <div id="IPMonitorRecordListPage" style="display:none"></div>
     <div id="AlertInfoListPage" style="display:none"></div>
+    <div id="IpUserMapDIV" style="display:none"></div>
     <div style="z-index:2;">
         @RenderBody()
         <hr />

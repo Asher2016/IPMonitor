@@ -207,7 +207,7 @@
     <Content Include="Views\User\LoginView.cshtml" />
     <Content Include="Views\LogInfoList.cshtml" />
     <Content Include="Views\LogInfo\LogInfoListView.cshtml" />
-    <Content Include="Views\LogInformation\LogInformationListView.cshtml" />
+    <Content Include="Views\LogInformation\ClientLogInformationListView.cshtml" />
     <Content Include="Views\UserIPMap\ListView.cshtml" />
     <Content Include="Views\UserIPMap\CreateOrEdit.cshtml" />
     <Content Include="Views\IPMonitor\IPMonitorListView.cshtml" />
@@ -216,6 +216,7 @@
     <Content Include="Views\IPMonitor\AlertInfoList.cshtml" />
     <Content Include="Views\User\ChangePassword.cshtml" />
     <Content Include="Views\IPMonitor\IPMonitorBrefInfoList.cshtml" />
+    <Content Include="Views\LogInformation\InterchangerLogInformationListView.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -28,5 +28,8 @@ namespace CommonContract.Model
 
         [DataMember]
         public int PageIndex { get; set; }
+
+        [DataMember]
+        public short LogType { get; set; }
     }
 }

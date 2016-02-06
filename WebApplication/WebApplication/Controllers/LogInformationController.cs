@@ -15,9 +15,14 @@ namespace WebApplication.Controllers
         LogInformationFacad facad = new LogInformationFacad();
         //
         // GET: /LogInformation/
-        public ActionResult ListView()
+        public ActionResult ClientListView()
         {
-            return PartialView("LogInformationListView");
+            return PartialView("ClientLogInformationListView");
+        }
+
+        public ActionResult InterchangerListView()
+        {
+            return PartialView("InterchangerLogInformationListView");
         }
 
         [HttpPost]

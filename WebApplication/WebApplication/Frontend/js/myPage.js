@@ -41,7 +41,7 @@ function loadUserIPMappage() {
     $.jqPaginator('#UserIPMapListPage', {
         totalPages: parseInt($("#UserIPMapCountindex").val()),
         visiblePages: parseInt($("#UserIPMapVisiblePages").val()),
-        currentPage: parseInt($('#UserIPMapCurrentPage').val()),
+        currentPage: 1,
         first: '<li class="first"><a href="javascript:RefreshUserIPMap();">首页</a></li>',
         prev: '<li class="prev"><a href="javascript:RefreshUserIPMap();"><i class="arrow arrow2"></i>上一页</a></li>',
         next: '<li class="next"><a href="javascript:RefreshUserIPMap();">下一页<i class="arrow arrow3"></i></a></li>',
@@ -49,8 +49,8 @@ function loadUserIPMappage() {
         page: '<li class="page"><a href="javascript:RefreshUserIPMap();">{{page}}</a></li>',
         onPageChange: function (num, type) {
             if (type == "change") {
-                $('#UserIPMapCurrentPage').val(num);
                 exeUserIPMapData(num, type);
+                $('#UserIPMapCurrentPage').val(num);
             }
         }
     });

@@ -1,6 +1,5 @@
-﻿
-@{
-    ViewBag.Title = "LogInformationListView";
+﻿@{
+    ViewBag.Title = "InterchangerLogInformationListView";
 }
 
 <style>
@@ -30,6 +29,7 @@
         position: relative;
         top: 11px;
     }
+
     .log-info-table-th {
         border: solid 1px;
         border-color: gray;
@@ -42,46 +42,56 @@
             position: relative;
             margin: 42px 0px 0px 0px;
         }
+
     .log-info-table-tr {
         border: solid;
         border-width: 0px 0px 1px 1px;
         border-color: gray;
     }
+
         .log-info-table-tr td {
             border: solid;
             border-color: gray;
             border-width: 0px 0px 1px 1px;
         }
+
     .log-info-ip {
         width: 160px;
         text-align: center;
     }
+
     .log-info-local-time {
         width: 130px;
         text-align: center;
     }
+
     .log-info-remote-time {
         width: 130px;
         text-align: center;
     }
+
     .log-info-level {
         width: 100px;
         text-align: center;
     }
+
     .log-info-message {
         width: 480px;
         text-align: center;
     }
+
     .log-info-base-page {
         position: relative;
         margin: 0px 0px 0px 20px;
     }
+
     #IPUserViewListButton {
         display: inline;
         position: absolute;
         top: 8px;
         left: 852px;
     }
+
     .log-table-scroll {
         overflow-y: scroll;
         max-height: 347px;
@@ -89,7 +99,7 @@
         width: 1024px;
         overflow-x: hidden;
     }
-    </style >
+</style>
 <script>
 
 
@@ -123,7 +133,7 @@
         $.ajax({
             type: "POST",
             url: "/LogInformation/SearchLogInfo",
-            data: $("#LogInfoForm").serialize(),
+            data: $("#InterchangerLogInfoForm").serialize(),
             dataType: "json",
             async: false,
             success: function (data) {
@@ -141,8 +151,7 @@
         });
     }
 
-    var ClickLogSearch = function ()
-    {
+    var ClickLogSearch = function () {
         $('#LogInfoCurrentPage').val(1);
         RefreshList();
         var pageCount = $('#LogInfoPageCount').val();
@@ -159,35 +168,10 @@
         loadLogInfoData($('#LogInfoPageCount').val())
         loadLogInfopage();
     });
-
-    var IPUserMapDivDialog;
-    
-    var ClickIPUserViewListButton = function ()
-    {
-        $.ajax({
-            type: "GET",
-            url: "/UserIPMap/ListView",
-            dataType: "HTML",
-            success: function (data) {
-                $("#IpUserMapDIV").css({ "display": "block" });
-                $("#IpUserMapDIV").empty();
-                $("#IpUserMapDIV").html(data);
-                IPUserMapDivDialog = $("#IpUserMapDIV").dialog({
-                    autoOpen: true,
-                    width: 600,
-                    modal: true,
-                    resizable: false,
-                    title: "IP用户关联表",
-                    close: function () {
-                        $("#IpUserMapDIV").css({ "display": "none" });
-                    }
-                });
-            }
-        });
-    }
 </script>
 <div class="log-info-base-page">
-    <form id="LogInfoForm" method="post">
+    <form id="InterchangerLogInfoForm" method="post">
+        <input type="hidden" name="LogType" value="1" />
         <div class="log-search-box">
             <div class="radio-group log-radio-search-div">
                 <input class="log-search-column" type="radio" name="SearchColumn" value="ip_address" checked="checked" />IP&nbsp;&nbsp;&nbsp;
@@ -212,12 +196,6 @@
                 </tr>
             </table>
             <table id="LogInfoList" class="table-bordered table-striped log-table-scroll"></table>
-            <div id="UserIpView">
-                <input type="button" class="btn btn-default" value="IP用户列表" id="IPUserViewListButton" onclick="ClickIPUserViewListButton()" />
-                <div id="IpUserMapDIV" style="display:none">
-
-                </div>
-            </div>
         </div>
         <div class="text-center">
             <div>

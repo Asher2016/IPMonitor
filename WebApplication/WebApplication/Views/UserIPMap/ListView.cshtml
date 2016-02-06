@@ -88,8 +88,6 @@
                 });
 
                 $('#UserIPMapPageCount').val(data.Count);
-                loadUserIPMapData($('#UserIPMapPageCount').val());
-                loadUserIPMappage();
             }
         });
     }
@@ -125,7 +123,6 @@
             type: "POST",
             url: "/UserIPMap/Delete?sid="+sid,
             success: function (data) {
-                $("#UserIPMapCurrentPage").val(1);
                 RefreshUserIPMap();
             }
         });
@@ -155,6 +152,17 @@
         });
     }
 
+    function ClickUserIpSearch() {
+        $('#UserIPMapCurrentPage').val(1);
+        RefreshIPMinotorAlert();
+
+        var pageCount = $('#UserIPMapPageCount').val();
+
+        if (pageCount == 0)
+        { $('#UserIPMapPageCount').val(1) }
+        exeIPMonitorAlertData($('#UserIPMapPageCount').val(), "change");
+    }
+
     function loadUserIPMapData(num) {
         $("#UserIPMapPageCount").val(num);
     }
@@ -162,6 +170,8 @@
     $(document).ready(function ()
     {
         RefreshUserIPMap();
+        loadUserIPMapData($('#UserIPMapPageCount').val());
+        loadUserIPMappage();
     });
 </script>
 <div>
@@ -173,7 +183,7 @@
             </div>
             <div class="form-group">
                 <input class="form-control" type="text" name="SearchText" value="" style="width: 411px;" />
-                <input class='btn btn-default' type="button" value="确定" id="UserIPMapSearchButton" onclick="RefreshUserIPMap()" />
+                <input class='btn btn-default' type="button" value="搜索" id="UserIPMapSearchButton" onclick="RefreshUserIPMap()" />
             </div>
             <div>
                 <input class='btn btn-default' type="button" value="添加" id="UserIPMapAddButton" onclick="ClickUserIPMapCreate()" />
