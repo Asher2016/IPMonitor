@@ -191,7 +191,9 @@
     <Content Include="Frontend\js\jquery.pager.js" />
     <Content Include="Frontend\js\jquery.validate.js" />
     <Content Include="Frontend\js\mouse.js" />
-    <Content Include="Frontend\js\myPage.js" />
+    <Content Include="Frontend\js\myPage.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Frontend\js\position.js" />
     <Content Include="Frontend\js\resizable.js" />
     <Content Include="Frontend\js\tableExport.js" />

@@ -4,14 +4,17 @@
 
 <style>
     .alert-info-ip {
-        width: 180px;
+        width: 140px;
         text-align: center;
         height: 40px;
         line-height: 37px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
     }
 
     .alert-info-region {
-        width: 120px;
+        width: 73px;
         text-align: center;
         height: 40px;
         line-height: 37px;
@@ -28,21 +31,28 @@
     }
 
     .alert-info-first-lost-time {
-        width: 210px;
+        width: 190px;
         text-align: center;
         height: 40px;
         line-height: 37px;
     }
 
     .alert-info-second-lost-time {
-        width: 210px;
+        width: 190px;
         text-align: center;
         height: 40px;
         line-height: 37px;
     }
 
+    .alert-info-recovery-time {
+        width: 190px;
+        text-align: center;
+        height: 40px;
+        line-height: 37px;
+    }
+    
     .alert-info-status {
-        width: 165px;
+        width: 100px;
         text-align: center;
         height: 40px;
         line-height: 37px;
@@ -74,11 +84,12 @@
                 $('#IPMonitorAlertList-Table').empty();
                 $.each(data.BrefAlertInfoList, function (index) {
                     $('#IPMonitorAlertList-Table').append($("<tr>" +
-                        "<td><div class='alert-info-ip'>" + data.BrefAlertInfoList[index].IP + "</div></td>" +
+                        "<td><div class='alert-info-ip' title='" + data.BrefAlertInfoList[index].IP + "'>" + data.BrefAlertInfoList[index].IP + "</div></td>" +
                         "<td><div class='alert-info-region'>" + data.BrefAlertInfoList[index].Region + "</div></td>" +
                         "<td><div class='alert-info-model'>" + data.BrefAlertInfoList[index].Model + "</div></td>" +
                         "<td><div class='alert-info-first-lost-time'>" + data.BrefAlertInfoList[index].FirstLostTime + "</div></td>" +
                         "<td><div class='alert-info-second-lost-time'>" + data.BrefAlertInfoList[index].SecondLostTime + "</div></td>" +
+                        "<td><div class='alert-info-recovery-time'>" + data.BrefAlertInfoList[index].RecoveryTime + "</div></td>" +
                         "<td><div class='alert-info-status'>" + data.BrefAlertInfoList[index].IsSend + "</div></td>" +
                         "</tr>"));
                 });
@@ -96,6 +107,12 @@
     {
         $('#IPMonitorAlertCurrentPage').val(1);
         RefreshIPMinotorAlert();
+
+        var pageCount = $('#IPMonitorAlertPageCount').val();
+
+        if (pageCount == 0)
+        { $('#IPMonitorAlertPageCount').val(1) }
+        exeIPMonitorAlertData($('#IPMonitorAlertPageCount').val(), "change");
     }
 
     $(document).ready(function () {
@@ -123,7 +140,7 @@
                 <input type="checkbox" value="NingWu" name="Region-Checkbox-Alert" />宁武县&nbsp;&nbsp;
                 <input type="checkbox" value="JingLe" name="Region-Checkbox-Alert" />静乐县&nbsp;&nbsp;
                 <input type="checkbox" value="YuanPing" name="Region-Checkbox-Alert" />原平县&nbsp;&nbsp;
-                <input type="checkbox" value="XiFuQu" name="Region-Checkbox-Alert" />忻府区&nbsp;&nbsp;
+                <input type="checkbox" value="XiFu" name="Region-Checkbox-Alert" />忻府区&nbsp;&nbsp;
                 <input type="checkbox" value="Dai" name="Region-Checkbox-Alert" />代县&nbsp;&nbsp;
                 <input type="checkbox" value="WuTai" name="Region-Checkbox-Alert" />五台县&nbsp;&nbsp;
                 <input type="checkbox" value="DingXiang" name="Region-Checkbox-Alert" />定襄县&nbsp;&nbsp;
@@ -147,6 +164,7 @@
                     <th><div class="alert-info-model">型号</div></th>
                     <th><div class="alert-info-first-lost-time">丢失时间</div></th>
                     <th><div class="alert-info-second-lost-time">第二次丢失时间</div></th>
+                    <th><div class="alert-info-recovery-time">恢复时间</div></th>
                     <th><div class="alert-info-status">状态</div></th>
                 </tr>
             </table>

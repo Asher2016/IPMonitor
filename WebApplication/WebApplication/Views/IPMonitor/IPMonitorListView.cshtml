@@ -12,6 +12,9 @@
         width: 180px;
         text-align: center;
         line-height: 37px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
     }
     .ip-monitor-region {
         width: 90px;
@@ -170,56 +173,6 @@
         $("#AllRegionValue").val(region);
     }
 
-    var IPMonitorRecordListDialog;
-    var loadIPMonitorRecordList = function ()
-    {
-        $.ajax({
-            type: "GET",
-            url: "/IPMonitor/MonitorRecoedView",
-            dataType: "html",
-            success: function (msg) {
-                $("#IPMonitorRecordListPage").css({ "display": "block" });
-                $("#IPMonitorRecordListPage").empty();
-                $("#IPMonitorRecordListPage").html(msg);
-                IPMonitorRecordListDialog = $("#IPMonitorRecordListPage").dialog({
-                    autoOpen: true,
-                    width: 1100,
-                    modal: true,
-                    resizable: false,
-                    title: "IP监控记录",
-                    close: function () {
-                        $("#IPMonitorRecordListPage").css({ "display": "none" });
-                    }
-                });
-            }
-        });
-    }
-
-    var IPMonitorAlertInfoDialog;
-    var loadAlertInfoList = function ()
-    {
-        $.ajax({
-            type: "GET",
-            url: "/IPMonitor/AlertInfoView",
-            dataType: "html",
-            success: function (msg) {
-                $("#AlertInfoListPage").css({ "display": "block" });
-                $("#AlertInfoListPage").empty();
-                $("#AlertInfoListPage").html(msg);
-                IPMonitorRecordListDialog = $("#AlertInfoListPage").dialog({
-                    autoOpen: true,
-                    width: 1100,
-                    modal: true,
-                    resizable: false,
-                    title: "IP警报记录",
-                    close: function () {
-                        $("#AlertInfoListPage").css({ "display": "none" });
-                    }
-                });
-            }
-        });
-    }
-
     var LoadMonitorStatus = function () {
         $.ajax({
             type: "POST",
@@ -301,8 +254,4 @@
         </div>
         <div id="IPMonitorCreateOrEdit"></div>
     </div>
-    <input type="button" class="btn btn-default" value="IP监控记录" onclick="loadIPMonitorRecordList()" />
-    <input type="button" class="btn btn-default" value="IP警报记录" onclick="loadAlertInfoList()" />
-    <div id="IPMonitorRecordListPage" style="display:none"></div>
-    <div id="AlertInfoListPage" style="display:none"></div>
 </form>

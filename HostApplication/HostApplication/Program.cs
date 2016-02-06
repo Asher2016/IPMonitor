@@ -1,6 +1,7 @@
 ﻿using CommonConst;
 using CommonContract.Model;
 using CommonService.Manager;
+using CommonService.Service;
 using DataAccess.DAO;
 using PlatForm.Util;
 using System.Collections.Generic;
@@ -227,6 +228,18 @@ namespace HostApplication
             //string a = MD5Customer.MD5Encrypt("xrs123!@#", "Monitor?");
             //new UserService().ChangePasswd(new UserInfo() { SID = 1, NewPassword = a});
 
+            ////Test LogInfoGuide
+            //LogInfoService service = new LogInfoService();
+
+            //List<LogLevelGuide> result = service.GetLogLevelGuideList();
+
+            //LogInfoGuideList list = service.SearchLogInfoGuideList(new LogInfoGuideCriteria()
+            //{
+            //    SearchColumn = "keywords",
+            //    SearchText = "",
+            //    PageIndex = 1,
+            //    PageSize = 10
+            //});
         }
     }
 }

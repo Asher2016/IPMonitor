@@ -74,8 +74,6 @@
                 });
 
                 $('#IPMonitorRecordPageCount').val(data.Count);
-                loadIPMonitorRecordData($('#IPMonitorRecordPageCount').val());
-                loadIPMonitorRecordPage();
             }
         });
     }
@@ -107,6 +105,12 @@
     {
         $('#IPMonitorRecordCurrentPage').val(1);
         RefreshIPMinotorRecord();
+
+        var pageCount = $('#IPMonitorRecordPageCount').val();
+
+        if (pageCount == 0)
+        { $('#IPMonitorRecordPageCount').val(1) }
+        exeIPMonitorRecordData($('#IPMonitorRecordPageCount').val(), "change");
     }
 
     $(document).ready(function ()
@@ -114,6 +118,8 @@
         $('#IPMonitorRecordFromDate').datetimepicker({ value: getNowFormatDate1(), step: 10 });
         $('#IPMonitorRecordToDate').datetimepicker({ value: getNowFormatDate1(), step: 10 });
         RefreshIPMinotorRecord();
+        loadIPMonitorRecordData($('#IPMonitorRecordPageCount').val());
+        loadIPMonitorRecordPage();
     });
 </script>
 <div>

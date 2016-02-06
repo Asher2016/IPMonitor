@@ -64,6 +64,7 @@
     <Compile Include="Model\LogInfoGuideCriteria.cs" />
     <Compile Include="Model\LogInfoGuideList.cs" />
     <Compile Include="Model\LogInfoGuideModel.cs" />
+    <Compile Include="Model\LogLevelGuide.cs" />
     <Compile Include="Model\LogListContract.cs" />
     <Compile Include="Model\MonitorRecordCriteria.cs" />
     <Compile Include="Model\MonitorRecordListModel.cs" />

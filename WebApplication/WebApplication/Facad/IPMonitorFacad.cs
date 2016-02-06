@@ -143,7 +143,8 @@ namespace WebApplication.Facad
                         Model = item.Model,
                         IsSend = item.IsSend == true ? "已发" : "未发",
                         FirstLostTime = item.FirstLostTime.ToString("yyyy-MM-dd HH:mm:ss"),
-                        SecondLostTime = item.SecondLostTime.ToString("yyyy-MM-dd HH:mm:ss")
+                        SecondLostTime = item.SecondLostTime.ToString("yyyy-MM-dd HH:mm:ss"),
+                        RecoveryTime = item.RecoveryTime.ToString("yyyy-MM-dd HH:mm:ss")
                     });
             }
             result.BrefAlertInfoList = list;

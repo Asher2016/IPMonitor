@@ -339,7 +339,8 @@ namespace DataAccess.DAO
                                     Model = reader[2].ToString(),
                                     FirstLostTime = DateTime.Parse(reader[3].ToString()),
                                     SecondLostTime = DateTime.Parse(reader[4].ToString()),
-                                    IsSend = bool.Parse(reader[5].ToString())
+                                    RecoveryTime = DateTime.Parse(reader[5].ToString()),
+                                    IsSend = bool.Parse(reader[6].ToString())
                                 });
                             }
 

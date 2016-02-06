@@ -271,6 +271,7 @@ C:\AsherWorkSpace\IPMonitor\WebApplication\WebApplication\obj\Debug\WebApplicati
 C:\AsherWorkSpace\IPMonitor\WebApplication\WebApplication\obj\Debug\WebApplication.dll
 C:\AsherWorkSpace\IPMonitor\WebApplication\WebApplication\obj\Debug\WebApplication.pdb
 C:\AsherWorkspace\ASPNet\IPMonitor\WebApplication\WebApplication\bin\Frontend\css\image\icon_close.png
+C:\AsherWorkspace\ASPNet\IPMonitor\WebApplication\WebApplication\bin\Frontend\js\myPage.js
 C:\AsherWorkspace\ASPNet\IPMonitor\WebApplication\WebApplication\bin\WebApplication.dll.config
 C:\AsherWorkspace\ASPNet\IPMonitor\WebApplication\WebApplication\bin\WebApplication.dll
 C:\AsherWorkspace\ASPNet\IPMonitor\WebApplication\WebApplication\bin\WebApplication.pdb

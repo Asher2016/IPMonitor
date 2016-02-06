@@ -12,7 +12,7 @@ namespace DataAccess.DAO
 {
     public class LogInfoGuide : IDisposable
     {
-        public LogInfoGuideList SearchList(LogInfoGuideCriteria criteria)
+        public LogInfoGuideList SearchLogInfoGuideList(LogInfoGuideCriteria criteria)
         {
             LogInfoGuideList result = new LogInfoGuideList();
             List<LogInfoGuideModel> logInfoList = new List<LogInfoGuideModel>();
@@ -67,6 +67,42 @@ namespace DataAccess.DAO
                     {
                         connection.Close();
                     }
+                }
+            }
+
+            return result;
+        }
+
+        public List<LogLevelGuide> GetLogLevelGuideList()
+        {
+            List<LogLevelGuide> result = new List<LogLevelGuide>();
+
+            using (PgSqlConnection connection = ConnectionUtil.Instance.GetPgSqlConnection())
+            {
+                connection.Open();
+                PgSqlCommand command = connection.CreateCommand();
+                command.CommandType = CommandType.Text;
+                command.CommandText = "SELECT log_level, number, description FROM ods.log_level_guide;";
+
+                try
+                {
+                    using (PgSqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            result.Add(new LogLevelGuide()
+                            {
+                                LogLevel = (string)reader[0],
+                                Number = (short)reader[1],
+                                Description = (string)reader[2]
+
+                            });
+                        }
+                    }
+                }
+                catch (Exception exception)
+                {
+                    throw exception;
                 }
             }
 

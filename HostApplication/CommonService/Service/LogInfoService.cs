@@ -22,5 +22,29 @@ namespace CommonService.Service
 
             return result;
         }
+
+        public LogInfoGuideList SearchLogInfoGuideList(LogInfoGuideCriteria criteria)
+        {
+            LogInfoGuideList result = null;
+
+            using (LogInfoGuide dao = new LogInfoGuide())
+            {
+                result = dao.SearchLogInfoGuideList(criteria);
+            }
+
+            return result;
+        }
+
+        public List<LogLevelGuide> GetLogLevelGuideList()
+        {
+            List<LogLevelGuide> result = null;
+
+            using (LogInfoGuide dao = new LogInfoGuide())
+            {
+                result = dao.GetLogLevelGuideList();
+            }
+
+            return result;
+        }
     }
 }

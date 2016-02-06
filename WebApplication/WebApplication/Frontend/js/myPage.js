@@ -99,7 +99,7 @@ function loadIPMonitorRecordPage() {
     $.jqPaginator('#IPMonitorRecordPage', {
         totalPages: parseInt($("#IPMonitorRecordCountindex").val()),
         visiblePages: parseInt($("#IPMonitorRecordVisiblePages").val()),
-        currentPage: parseInt($('#IPMonitorRecordCurrentPage').val()),
+        currentPage: 1,
         first: '<li class="first"><a href="javascript:RefreshIPMinotorRecord();">首页</a></li>',
         prev: '<li class="prev"><a href="javascript:RefreshIPMinotorRecord();"><i class="arrow arrow2"></i>上一页</a></li>',
         next: '<li class="next"><a href="javascript:RefreshIPMinotorRecord();">下一页<i class="arrow arrow3"></i></a></li>',
@@ -107,8 +107,8 @@ function loadIPMonitorRecordPage() {
         page: '<li class="page"><a href="javascript:RefreshIPMinotorRecord();">{{page}}</a></li>',
         onPageChange: function (num, type) {
             if (type == "change") {
-                $('#IPMonitorRecordCurrentPage').val(num);
                 exeIPMonitorRecordData(num, type);
+                $('#IPMonitorRecordCurrentPage').val(num);
             }
         }
     });
@@ -128,7 +128,7 @@ function loadIPMonitorAlertPage() {
     $.jqPaginator('#IPMonitorAlertPage', {
         totalPages: parseInt($("#IPMonitorAlertCountindex").val()),
         visiblePages: parseInt($("#IPMonitorAlertVisiblePages").val()),
-        currentPage: parseInt($('#IPMonitorAlertCurrentPage').val()),
+        currentPage: 1,
         first: '<li class="first"><a href="javascript:RefreshIPMinotorAlert();">首页</a></li>',
         prev: '<li class="prev"><a href="javascript:RefreshIPMinotorAlert();"><i class="arrow arrow2"></i>上一页</a></li>',
         next: '<li class="next"><a href="javascript:RefreshIPMinotorAlert();">下一页<i class="arrow arrow3"></i></a></li>',
@@ -136,8 +136,8 @@ function loadIPMonitorAlertPage() {
         page: '<li class="page"><a href="javascript:RefreshIPMinotorAlert();">{{page}}</a></li>',
         onPageChange: function (num, type) {
             if (type == "change") {
-                $('#IPMonitorAlertCurrentPage').val(num);
                 exeIPMonitorAlertData(num, type);
+                $('#IPMonitorAlertCurrentPage').val(num);
             }
         }
     });

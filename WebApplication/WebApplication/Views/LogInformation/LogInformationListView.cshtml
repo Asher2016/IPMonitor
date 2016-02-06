@@ -152,7 +152,7 @@
         exeLogInfoData($('#LogInfoPageCount').val(), "change");
     }
 
-    $(function () {
+    $(document).ready(function () {
         $('#LogInfoDatetimepickerFrom').datetimepicker({ value: getNowFormatDate(), step: 10 });
         $('#LogInfoDatetimepickerTo').datetimepicker({ value: getNowFormatDate(), step: 10 });
         RefreshList();

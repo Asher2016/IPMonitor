@@ -65,11 +65,44 @@
             height: auto;
             width: 740px;
         }
+
+        .option-ip-manage {
+            position: absolute;
+            background: #000;
+            text-align: center;
+            z-index: 3;
+            height: 105px;
+            width: 100px;
+            float: right;
+            right: 500px;
+            color: #fff;
+            font-size: 16px;
+            display: none;
+        }
+
+        .sub-item {
+            height: 35px;
+            cursor: pointer;
+        }
+
+        .sub-item:hover {
+            background-color:#fff;
+            color: #000;
+        }
+
+        .sub-item-message {
+            position: relative;
+            top: 5px;
+        }
     </style>
     <script>
         $(document).ready(function ()
         {
         })
+
+        var onClickIpManager = function () {
+            $('.option-ip-manage').fadeToggle(500);
+        }
 
         var LogInfoDivDialog;
         var UserLoginDivDialog;
@@ -141,6 +174,7 @@
                     clearInterval(RefresIPMonitorStatus);
                 }
             });
+            $('.option-ip-manage').fadeToggle(500);
         }
 
         var LoadIPMonitorList = function () {
@@ -154,6 +188,58 @@
             });
         }
         
+        var IPMonitorRecordListDialog;
+        var LoadIPMonitorRecordList = function () {
+            alert('LoadIPMonitorRecordList');
+            $.ajax({
+                type: "GET",
+                url: "/IPMonitor/MonitorRecoedView",
+                dataType: "html",
+                success: function (msg) {
+                    $("#IPMonitorRecordListPage").css({ "display": "block" });
+                    $("#IPMonitorRecordListPage").empty();
+                    $("#IPMonitorRecordListPage").html(msg);
+                    IPMonitorRecordListDialog = $("#IPMonitorRecordListPage").dialog({
+                        autoOpen: true,
+                        width: 1100,
+                        modal: true,
+                        resizable: false,
+                        title: "IP监控记录",
+                        close: function () {
+                            $("#IPMonitorRecordListPage").css({ "display": "none" });
+                        }
+                    });
+                }
+            });
+            $('.option-ip-manage').fadeToggle(500);
+        }
+
+        var IPMonitorAlertInfoDialog;
+        var LoadAlertInfoList = function () {
+            alert('LoadAlertInfoList');
+            $.ajax({
+                type: "GET",
+                url: "/IPMonitor/AlertInfoView",
+                dataType: "html",
+                success: function (msg) {
+                    $("#AlertInfoListPage").css({ "display": "block" });
+                    $("#AlertInfoListPage").empty();
+                    $("#AlertInfoListPage").html(msg);
+                    IPMonitorRecordListDialog = $("#AlertInfoListPage").dialog({
+                        autoOpen: true,
+                        width: 1100,
+                        modal: true,
+                        resizable: false,
+                        title: "IP警报记录",
+                        close: function () {
+                            $("#AlertInfoListPage").css({ "display": "none" });
+                        }
+                    });
+                }
+            });
+            $('.option-ip-manage').fadeToggle(500);
+        }
+
         var Exit = function () {
             $.ajax({
                 url: "/User/Exit",
@@ -198,20 +284,49 @@
                 }
             });
         }
+
+        var getNowFormatDate = function (isNow) {
+            var date = new Date();
+            var seperator1 = "/";
+            var seperator2 = ":";
+            var month = date.getMonth() + 1;
+            var strDate = date.getDate();
+
+            if (isNow == false) {
+                strDate = strDate + 1;
+            }
+            if (month >= 1 && month <= 9) {
+                month = "0" + month;
+            }
+            if (strDate >= 0 && strDate <= 9) {
+                strDate = "0" + strDate;
+            }
+            var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
+                    + " " + date.getHours() + seperator2 + date.getMinutes()
+                    + seperator2 + date.getSeconds();
+            return currentdate;
+        }
     </script>
 </head>
 <body>
     <div class="title-background">
         <div class="title-home">信息网络监控平台</div>
         <div id="OptionMenu" class="title-option">
-            <div class=" title-option map_site_login" onclick=UserLogin()>登陆</div>
+            <div class="title-option map_site_login" onclick=UserLogin()>登陆</div>
         </div>
+    </div>
+    <div class="option-ip-manage">
+        <div class="sub-item" onclick=LoadIPMonitorList()><span class="sub-item-message">网络监控</span></div>
+        <div class="sub-item" onclick=LoadIPMonitorRecordList()><span class="sub-item-message">IP监控记录</span></div>
+        <div class="sub-item" onclick=LoadAlertInfoList()><span class="sub-item-message">IP警报记录</span></div>
     </div>
     <div id="LogInfoDiv" style="display:none"></div>
     <div id="UserLoginDiv" style="display:none"></div>
     <div id="IPMonitorDiv" style="display:none"></div>
     <div id="ChangePasswdDiv" style="display:none"></div>
-    <div>
+    <div id="IPMonitorRecordListPage" style="display:none"></div>
+    <div id="AlertInfoListPage" style="display:none"></div>
+    <div style="z-index:2;">
         @RenderBody()
         <hr />
         <footer>

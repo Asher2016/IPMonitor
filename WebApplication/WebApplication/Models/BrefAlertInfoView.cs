@@ -17,6 +17,8 @@ namespace WebApplication.Models
 
         public string SecondLostTime { get; set; }
 
+        public string RecoveryTime { get; set; }
+
         public string IsSend { get; set; }
     }
 }
