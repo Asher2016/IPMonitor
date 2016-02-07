@@ -22,5 +22,6 @@ C:\AsherWorkSpace\IPMonitor\CommonContract\obj\Debug\CommonContract.dll
 C:\AsherWorkSpace\IPMonitor\CommonContract\obj\Debug\CommonContract.pdb
 C:\AsherWorkspace\ASPNet\IPMonitor\CommonContract\bin\Debug\CommonContract.dll
 C:\AsherWorkspace\ASPNet\IPMonitor\CommonContract\bin\Debug\CommonContract.pdb
+C:\AsherWorkspace\ASPNet\IPMonitor\CommonContract\obj\Debug\CommonContract.csprojResolveAssemblyReference.cache
 C:\AsherWorkspace\ASPNet\IPMonitor\CommonContract\obj\Debug\CommonContract.dll
 C:\AsherWorkspace\ASPNet\IPMonitor\CommonContract\obj\Debug\CommonContract.pdb

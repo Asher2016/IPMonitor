@@ -21,8 +21,9 @@ namespace CommonService.ScheduleJob
             try
             {
                 IPMonitorHelper.StopMonitorThread();
+                 
 
-                Thread.Sleep(3000);
+                Thread.Sleep(15000);
                 List<BrefAlertInfo> alertList = IPMonitorHelper.GetAlertInfo();
                 List<BrefIPInfo> RecordList = IPMonitorHelper.GetRecord();
 

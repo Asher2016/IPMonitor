@@ -66,6 +66,11 @@ namespace PlatForm.Util
                     {
                         redisClient.Add(string.Format(RedisConst.IPMonitorIPList, ip), LocalIPStatus.Unimpeded);
                     }
+                    else
+                    {
+                        redisClient.Remove(string.Format(RedisConst.IPMonitorIPList, ip));
+                        redisClient.Add(string.Format(RedisConst.IPMonitorIPList, ip), LocalIPStatus.Unimpeded);
+                    }
                 }
             }
         }

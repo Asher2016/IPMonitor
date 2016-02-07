@@ -141,107 +141,121 @@ namespace PlatForm.Util
 
             RedisHelper.LoadIP(ip);
 
-            LogHelper.Instance.Info(LogHelper.CommonService, "TaskStart……" + ip);
-            string data = "Test Data!";
             Ping p = new Ping();
             PingOptions options = new PingOptions();
 
             while (true)
             {
-                data = "Test Data!";
-                for (int i = 0; i < 20; i++)
+                try
                 {
-                    byte[] buffer = Encoding.ASCII.GetBytes(data);
-                    System.Net.NetworkInformation.PingReply reply = p.Send(ip, 10000, buffer, options);
+                    PingReply reply = p.Send(ip, 10000);
 
                     if (reply.Status == IPStatus.Success)
                     {
-                        lock (lockForRecord)
+                        ReplySuccess(ip);
+                    }
+                    else
+                    {
+                        ReplyFail(ip);
+                    }
+                }
+                catch
+                {
+                    ReplyFail(ip);
+                }
+                finally
+                {
+                    Thread.Sleep(1000);
+                }
+            }
+        }
+
+        private static void ReplySuccess(string ip)
+        {
+            lock (lockForRecord)
+            {
+                if (recordRecoveryList.Contains(ip))
+                {
+                    DateTime firstLostTime = lostRecord.OrderBy(x => x.LostTime).Where(x => x.IP == ip).FirstOrDefault().LostTime;
+                    recoveryRecord.Add(new BrefIPInfo() { IP = ip, RecoveryTime = DateTime.Now, LostTime = firstLostTime });
+                    recordRecoveryList = recordRecoveryList.Where(x => x != ip).ToList();
+                    lostRecord = lostRecord.Where(x => x.IP != ip && x.LostTime != firstLostTime).ToList();
+
+                    if (invalidRecord.Contains(ip))
+                    {
+                        invalidRecord = invalidRecord.Where(x => x != ip).ToList();
+                    }
+
+                    RedisHelper.UpdateIP(ip, LocalIPStatus.Unimpeded);
+                }
+
+                if (alertRecoveryList.Count > 0 && alertRecoveryList.Exists(x => x == ip))
+                {
+                    foreach (BrefAlertInfo item in alertList)
+                    {
+                        if (item.IP.Equals(ip))
                         {
-                            if (recordRecoveryList.Contains(ip))
-                            {
-                                DateTime firstLostTime = lostRecord.OrderBy(x => x.LostTime).Where(x => x.IP == ip).FirstOrDefault().LostTime;
-                                recoveryRecord.Add(new BrefIPInfo() { IP = ip, RecoveryTime = DateTime.Now, LostTime = firstLostTime });
-                                recordRecoveryList = recordRecoveryList.Where(x => x != ip).ToList();
-                                lostRecord = lostRecord.Where(x => x.IP != ip && x.LostTime != firstLostTime).ToList();
+                            item.RecoveryTime = DateTime.Now;
+                        }
+                    }
 
-                                if (invalidRecord.Contains(ip))
-                                {
-                                    invalidRecord = invalidRecord.Where(x => x != ip).ToList();
-                                }
+                    alertRecoveryList = alertRecoveryList.Where(x => x != ip).ToList();
+                }
+            }
+        }
 
-                                RedisHelper.UpdateIP(ip, LocalIPStatus.Unimpeded);
-                            }
+        private static void ReplyFail(string ip)
+        {
+            lock (lockForRecord)
+            {
+                if (!invalidRecord.Contains(ip))
+                {
+                    if (!recordRecoveryList.Contains(ip))
+                    {
+                        recordRecoveryList.Add(ip);
+                    }
 
-                            if (alertRecoveryList.Count > 0 && alertRecoveryList.Exists(x => x == ip))
-                            {
-                                foreach (BrefAlertInfo item in alertList)
-                                {
-                                    if (item.IP.Equals(ip))
-                                    {
-                                        item.RecoveryTime = DateTime.Now;
-                                    }
-                                }
-
-                                alertRecoveryList = alertRecoveryList.Where(x => x != ip).ToList();
-                            }
+                    if (lostRecord.Where(x => x.IP == ip).Count() > 10)
+                    {
+                        if (!invalidRecord.Contains(ip))
+                        {
+                            invalidRecord.Add(ip);
+                            RedisHelper.UpdateIP(ip, LocalIPStatus.Invalid);
                         }
                     }
                     else
                     {
-                        lock(lockForRecord)
+                        DateTime preIPDateTime = lostRecord.Where(x => x.IP == ip)
+                            .OrderByDescending(x => x.LostTime)
+                            .Select(x => x.LostTime)
+                            .FirstOrDefault();
+
+                        if (preIPDateTime.AddSeconds(15) > DateTime.Now)
                         {
-                            if (!invalidRecord.Contains(ip))
+                            if (alertList.Exists(x => x.IP == ip))
                             {
-                                if (!recordRecoveryList.Contains(ip))
-                                {
-                                    recordRecoveryList.Add(ip);
-                                }
+                                alertList = alertList.Where(x => x.IP != ip).ToList();
 
-                                if (lostRecord.Where(x => x.IP == ip).Count() > 10)
-                                {
-                                    if (!invalidRecord.Contains(ip))
-                                    {
-                                        invalidRecord.Add(ip);
-                                        RedisHelper.UpdateIP(ip, LocalIPStatus.Invalid);
-                                    }
-                                }
-                                else
-                                {
-                                    DateTime preIPDateTime = lostRecord.Where(x => x.IP == ip)
-                                        .OrderByDescending(x => x.LostTime)
-                                        .Select(x => x.LostTime)
-                                        .FirstOrDefault();
+                                alertList.Add(new BrefAlertInfo() { IP = ip, FirstLostTime = preIPDateTime, SecondLostTime = DateTime.Now });
+                            }
+                            else
+                            {
+                                alertList.Add(new BrefAlertInfo() { IP = ip, FirstLostTime = preIPDateTime, SecondLostTime = DateTime.Now });
+                            }
 
-                                    if (preIPDateTime.AddSeconds(15) > DateTime.Now)
-                                    {
-                                        if (alertList.Exists(x => x.IP == ip))
-                                        {
-                                            alertList = alertList.Where(x => x.IP != ip).ToList();
-
-                                            alertList.Add(new BrefAlertInfo() { IP = ip, FirstLostTime = preIPDateTime, SecondLostTime = DateTime.Now });
-                                        }
-                                        else
-                                        {
-                                            alertList.Add(new BrefAlertInfo() { IP = ip, FirstLostTime = preIPDateTime, SecondLostTime = DateTime.Now });
-                                        }
-
-                                        if (!alertRecoveryList.Exists(x => x == ip))
-                                        {
-                                            alertRecoveryList.Add(ip);
-                                        }
-                                    }
-
-                                    lostRecord.Add(new BrefIPInfo() { IP = ip, LostTime = DateTime.Now });
-                                    RedisHelper.UpdateIP(ip, LocalIPStatus.Impeded);
-                                }
+                            if (!alertRecoveryList.Exists(x => x == ip))
+                            {
+                                alertRecoveryList.Add(ip);
                             }
                         }
-                    }
 
-                    Thread.Sleep(1000);
+                        lostRecord.Add(new BrefIPInfo() { IP = ip, LostTime = DateTime.Now });
+                        RedisHelper.UpdateIP(ip, LocalIPStatus.Impeded);
+                    }
                 }
             }
+
+            Thread.Sleep(3000);
         }
     }
 }
