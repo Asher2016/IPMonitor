@@ -142,3 +142,32 @@ function loadIPMonitorAlertPage() {
         }
     });
 }
+
+function exeLogInfoGuideData(num, type) {
+    loadLogInfoGuideData(num);
+    loadLogInfoGuidePage();
+}
+
+function loadLogInfoGuidePage() {
+    var myLogInfoGuidePageCount = parseInt($("#LogInfoGuidePageCount").val());
+    var myLogInfoGuidePageSize = parseInt($("#LogInfoGuidePageSize").val());
+    var userLogInfoGuideCountindex = myLogInfoGuidePageCount % myLogInfoGuidePageSize > 0 ? (myLogInfoGuidePageCount / myLogInfoGuidePageSize) + 1 : (myLogInfoGuidePageCount / myLogInfoGuidePageSize);
+    $("#LogInfoGuideCountindex").val(userLogInfoGuideCountindex);
+
+    $.jqPaginator('#LogInfoGuidePage', {
+        totalPages: parseInt($("#LogInfoGuideCountindex").val()),
+        visiblePages: parseInt($("#LogInfoGuideVisiblePages").val()),
+        currentPage: 1,
+        first: '<li class="first"><a href="javascript:RefreshLogInfoGuideList();">首页</a></li>',
+        prev: '<li class="prev"><a href="javascript:RefreshLogInfoGuideList();"><i class="arrow arrow2"></i>上一页</a></li>',
+        next: '<li class="next"><a href="javascript:RefreshLogInfoGuideList();">下一页<i class="arrow arrow3"></i></a></li>',
+        last: '<li class="last"><a href="javascript:RefreshLogInfoGuideList();">末页</a></li>',
+        page: '<li class="page"><a href="javascript:RefreshLogInfoGuideList();">{{page}}</a></li>',
+        onPageChange: function (num, type) {
+            if (type == "change") {
+                exeLogInfoGuideData(num, type);
+                $('#LogInfoGuideCurrentPage').val(num);
+            }
+        }
+    });
+}

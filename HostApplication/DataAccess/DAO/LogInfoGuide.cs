@@ -16,7 +16,7 @@ namespace DataAccess.DAO
         {
             LogInfoGuideList result = new LogInfoGuideList();
             List<LogInfoGuideModel> logInfoList = new List<LogInfoGuideModel>();
-            result.GuideList = logInfoList;
+            result.GuideInfoList = logInfoList;
 
             using (PgSqlConnection connection = ConnectionUtil.Instance.GetPgSqlConnection())
             {
@@ -39,7 +39,7 @@ namespace DataAccess.DAO
                         {
                             while (reader.Read())
                             {
-                                result.GuideList.Add(new LogInfoGuideModel()
+                                result.GuideInfoList.Add(new LogInfoGuideModel()
                                 {
                                     KeyWords = reader[0].ToString(),
                                     LogLevel = reader[1].ToString(),
@@ -81,28 +81,30 @@ namespace DataAccess.DAO
             {
                 connection.Open();
                 PgSqlCommand command = connection.CreateCommand();
-                command.CommandType = CommandType.Text;
-                command.CommandText = "SELECT log_level, number, description FROM ods.log_level_guide;";
-
-                try
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "ods.fn_log_level_guide_list";
+                using (PgSqlTransaction transaction = connection.BeginTransaction(IsolationLevel.ReadCommitted))
                 {
-                    using (PgSqlDataReader reader = command.ExecuteReader())
+                    try
                     {
-                        while (reader.Read())
+                        using (PgSqlDataReader reader = command.ExecuteReader())
                         {
-                            result.Add(new LogLevelGuide()
+                            while (reader.Read())
                             {
-                                LogLevel = (string)reader[0],
-                                Number = (short)reader[1],
-                                Description = (string)reader[2]
+                                result.Add(new LogLevelGuide()
+                                {
+                                    LogLevel = (string)reader[0],
+                                    Number = (short)reader[1],
+                                    Description = (string)reader[2]
 
-                            });
+                                });
+                            }
                         }
                     }
-                }
-                catch (Exception exception)
-                {
-                    throw exception;
+                    catch (Exception exception)
+                    {
+                        throw exception;
+                    }
                 }
             }
 

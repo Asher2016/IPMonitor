@@ -47,5 +47,40 @@ namespace WebApplication.Manager
 
             return result;
         }
+
+
+        public LogInfoGuideList SearchLogInfoGuideList(LogInfoGuideCriteria criteria)
+        {
+            LogInfoGuideList result = new LogInfoGuideList();
+
+            try
+            {
+                result = service.SearchLogInfoGuideList(criteria);
+            }
+            catch (FaultException exception)
+            {
+                LogHelper.Instance.Error(LogHelper.WebSite, exception.Message);
+                throw new Exception("Internal Server Error.", exception.InnerException);
+            }
+
+            return result;
+        } 
+
+        public List<LogLevelGuide> GetLogLevelGuideList()
+        {
+            List<LogLevelGuide> result = new List<LogLevelGuide>();
+
+            try
+            {
+                result = service.GetLogLevelGuideList();
+            }
+            catch (FaultException exception)
+            {
+                LogHelper.Instance.Error(LogHelper.WebSite, exception.Message);
+                throw new Exception("Internal Server Error.", exception.InnerException);
+            }
+
+            return result;
+        }
     }
 }

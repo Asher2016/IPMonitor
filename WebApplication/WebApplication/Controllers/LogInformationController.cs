@@ -32,5 +32,31 @@ namespace WebApplication.Controllers
 
             return Json(list);
         }
+
+        public ActionResult LogLevelGuideListView()
+        {
+            return PartialView("LogLevelGuideListView");
+        }
+
+        [HttpPost]
+        public JsonResult GetLogLevelGuideList()
+        {
+            List<LogLevelGuide> list = facad.GetLogLevelGuideList();
+
+            return Json(list);
+        }
+
+        public ActionResult LogInfoGuideListView()
+        {
+            return PartialView("LogInfoGuideListView");
+        }
+
+        [HttpPost]
+        public JsonResult SearchLogInfoGuideList(LogInfoGuideCriteria criteria)
+        {
+            LogInfoGuideList list = facad.SearchLogInfoGuideList(criteria);
+
+            return Json(list);
+        }
 	}
 }

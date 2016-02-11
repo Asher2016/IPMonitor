@@ -1,0 +1,102 @@
+﻿
+@{
+    ViewBag.Title = "LogInfoGuideListView";
+}
+<style>
+    .log-info-guide-keywords {
+        width: 260px;
+        text-align: center;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    .log-info-guide-log-level {
+        width: 80px;
+        text-align: center;
+    }
+
+    .log-info-guide-log-information {
+        width: 230px;
+        text-align: center;
+    }
+
+    .log-info-guide-solution {
+        width: 390px;
+        text-align: center;
+    }
+</style>
+<script>
+    function loadLogInfoGuideData(num) {
+        $("#LogInfoGuideCurrentPage").val(num);
+    }
+
+    var RefreshLogInfoGuideList = function () {
+        $.ajax({
+            type: "POST",
+            url: "/LogInformation/SearchLogInfoGuideList",
+            data: $("#LogInfoGuideForm").serialize(),
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                $("#LogInfoGuideList").empty();
+                $.each(data.GuideInfoList, function (index) {
+                    $("#LogInfoGuideList").append($("<tr><td><div class='log-info-guide-keywords' title='" + data.GuideInfoList[index].KeyWords + "'>" + data.GuideInfoList[index].KeyWords + "</div></td><td><div class='log-info-guide-log-level'>"
+                        + data.GuideInfoList[index].LogLevel + "</div></td><td><div class='log-info-guide-log-information'>"
+                        + data.GuideInfoList[index].LogInformation + "</div></td><td><div class='log-info-guide-solution'>"
+                        + data.GuideInfoList[index].Solution + "</div></td></tr>"));
+                })
+
+                $('#LogInfoGuidePageCount').val(data.Count);
+            }
+        });
+    }
+
+    var ClickLogInfoGuideSearchButton = function () {
+        $('#LogInfoGuideCurrentPage').val(1);
+        RefreshLogInfoGuideList();
+        var pageCount = $('#LogInfoGuidePageCount').val();
+
+        if (pageCount == 0)
+        { $('#LogInfoGuidePageCount').val(1) }
+        exeLogInfoGuideData($('#LogInfoGuidePageCount').val(), "change");
+
+    }
+
+    $(document).ready(function () {
+        RefreshLogInfoGuideList();
+        loadLogInfoGuideData($('#LogInfoGuidePageCount').val())
+        loadLogInfoGuidePage();
+    });
+</script>
+<div>
+    <form id="LogInfoGuideForm" method="post">
+        <div>
+            <input name="SearchColumn" type="hidden" value="keywords" />
+            <input id="searchInfoGuide" name="SearchText" class="form-control" style="display: inline-block; width: 650px;" />
+            <input type="button" class="btn btn-default" onclick=ClickLogInfoGuideSearchButton() value="搜索" />
+        </div>
+        <div style="margin-top: 15px;">
+            <table class="table-bordered table-striped">
+                <tr>
+                    <th><div class="log-info-guide-keywords">关键字</div></th>
+                    <th><div class="log-info-guide-log-level">风险等级</div></th>
+                    <th><div class="log-info-guide-log-information">日志信息</div></th>
+                    <th><div class="log-info-guide-solution">解决方案</div></th>
+                </tr>
+            </table>
+            <table id="LogInfoGuideList" class="table-bordered table-striped "></table>
+        </div>
+        <div class="text-center">
+            <div>
+                <ul class="pagination" id="LogInfoGuidePage"></ul>
+                <input type="hidden" id="LogInfoGuideCurrentPage" name="PageIndex" value="1" />
+                <input type="hidden" id="LogInfoGuidePageCount" runat="server" />
+                <input type="hidden" id="LogInfoGuidePageSize" name="PageSize" runat="server" value="8" />
+                <input type="hidden" id="LogInfoGuideCountindex" runat="server" value="10" />
+                <!--设置最多显示的页码数 可以手动设置 默认为7-->
+                <input type="hidden" id="LogInfoGuideVisiblePages" runat="server" value="7" />
+            </div>
+        </div>
+    </form>
+</div>

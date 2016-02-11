@@ -1,0 +1,60 @@
+﻿
+@{
+    ViewBag.Title = "LogLevelGuideListView";
+}
+
+<style>
+    .log-guide-level {
+        width: 140px;
+        text-align: center;
+        height: 40px;
+        line-height: 37px;
+    }
+
+    .log-guide-number {
+        width: 140px;
+        text-align: center;
+        height: 40px;
+        line-height: 37px;
+    }
+
+    .log-guide-description {
+        width: 277px;
+        text-align: center;
+        height: 40px;
+        line-height: 37px;
+    }
+</style>
+<script>
+    var RefreshList = function () {
+        $.ajax({
+            type: "POST",
+            url: "/LogInformation/GetLogLevelGuideList",
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                $("#LogLevelGuideList").empty();
+                $.each(data, function (index) {
+                    $("#LogLevelGuideList").append($("<tr><td><div class='log-guide-level'>"
+                        + data[index].LogLevel + "</div></td><td><div class='log-guide-number'>"
+                        + data[index].Number + "</div></td><td><div class='log-guide-description'>"
+                        + data[index].Description + "</div></td></tr>"));
+                })
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        RefreshList();
+    })
+</script>
+<div style=" width: 575px;">
+    <table class="table-bordered table-striped" style="margin-top: 25px;">
+        <tr>
+            <th><div class='log-guide-level'>严重等级</div></th>
+            <th><div class='log-guide-number'>数值</div></th>
+            <th><div class='log-guide-description'>描述</div></th>
+        </tr>
+    </table>
+    <table id="LogLevelGuideList" class="table-bordered table-striped log-table-scroll" style="margin-bottom: 20px;"></table>
+</div>

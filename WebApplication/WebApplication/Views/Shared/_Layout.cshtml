@@ -385,6 +385,56 @@
             });
             $('.option-log-manage').fadeToggle(500);
         }
+
+        var LogLevelGuideDivDialog;
+        var LoadLogLevelGuideViewList = function () {
+            $.ajax({
+                type: "GET",
+                url: "/LogInformation/LogLevelGuideListView",
+                dataType: "HTML",
+                success: function (data) {
+                    $("#LogLevelGuideDiv").css({ "display": "block" });
+                    $("#LogLevelGuideDiv").empty();
+                    $("#LogLevelGuideDiv").html(data);
+                    LogLevelGuideDivDialog = $("#LogLevelGuideDiv").dialog({
+                        autoOpen: true,
+                        width: 599,
+                        modal: true,
+                        resizable: false,
+                        title: "风险说明",
+                        close: function () {
+                            $("#LogLevelGuideDiv").css({ "display": "none" });
+                        }
+                    });
+                }
+            });
+            $('.option-log-manage').fadeToggle(500);
+        }
+
+        var LogInfoGuideDivDialog;
+        var LoadLogInfoGuideViewList = function () {
+            $.ajax({
+                type: "GET",
+                url: "/LogInformation/LogInfoGuideListView",
+                dataType: "HTML",
+                success: function (data) {
+                    $("#LogInfoGuideDiv").css({ "display": "block" });
+                    $("#LogInfoGuideDiv").empty();
+                    $("#LogInfoGuideDiv").html(data);
+                    LogInfoGuideDivDialog = $("#LogInfoGuideDiv").dialog({
+                        autoOpen: true,
+                        width: 1000,
+                        modal: true,
+                        resizable: false,
+                        title: "日志信息说明",
+                        close: function () {
+                            $("#LogInfoGuideDiv").css({ "display": "none" });
+                        }
+                    });
+                }
+            });
+            $('.option-log-manage').fadeToggle(500);
+        }
     </script>
 </head>
 <body>
@@ -403,8 +453,8 @@
         <div class="sub-item" onclick=LoadInterchangerLogInfoList()><span class="sub-item-message">交换机日志</span></div>
         <div class="sub-item" onclick=LoadClientLogInfoList()><span class="sub-item-message">客户端日志</span></div>
         <div class="sub-item" onclick=LoadIPUserViewList()><span class="sub-item-message">IP用户管理</span></div>
-        <div class="sub-item" ><span class="sub-item-message">风险说明</span></div>
-        <div class="sub-item" ><span class="sub-item-message">信息说明</span></div>
+        <div class="sub-item" onclick=LoadLogLevelGuideViewList()><span class="sub-item-message">风险说明</span></div>
+        <div class="sub-item" onclick=LoadLogInfoGuideViewList()><span class="sub-item-message">日志信息说明</span></div>
     </div>
     <div id="ClientLogInfoDiv" style="display:none"></div>
     <div id="InterchangerLogInfoDiv" style="display:none"></div>
@@ -414,6 +464,8 @@
     <div id="IPMonitorRecordListPage" style="display:none"></div>
     <div id="AlertInfoListPage" style="display:none"></div>
     <div id="IpUserMapDIV" style="display:none"></div>
+    <div id="LogLevelGuideDiv" style="display:none"></div>
+    <div id="LogInfoGuideDiv" style="display:none"></div>
     <div style="z-index:2;">
         @RenderBody()
         <hr />

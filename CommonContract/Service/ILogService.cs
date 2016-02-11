@@ -14,5 +14,13 @@ namespace CommonContract.Service
         [OperationContract]
         [FaultContract(typeof(FaultException))]
         LogListContract SearchList(LogCriteria criteria);
+
+        [OperationContract]
+        [FaultContract(typeof(FaultException))]
+        LogInfoGuideList SearchLogInfoGuideList(LogInfoGuideCriteria criteria);
+
+        [OperationContract]
+        [FaultContract(typeof(FaultException))]
+        List<LogLevelGuide> GetLogLevelGuideList();
     }
 }

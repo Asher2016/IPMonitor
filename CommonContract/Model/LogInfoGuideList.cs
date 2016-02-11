@@ -12,7 +12,7 @@ namespace CommonContract.Model
     public class LogInfoGuideList
     {
         [DataMember]
-        public List<LogInfoGuideModel> GuideList { get; set; }
+        public List<LogInfoGuideModel> GuideInfoList { get; set; }
 
         [DataMember]
         public long Count { get; set; }

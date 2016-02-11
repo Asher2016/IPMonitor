@@ -25,11 +25,13 @@ namespace CommonService.ScheduleJob
 
                 Thread.Sleep(15000);
                 List<BrefAlertInfo> alertList = IPMonitorHelper.GetAlertInfo();
-                List<BrefIPInfo> RecordList = IPMonitorHelper.GetRecord();
+                List<BrefIPInfo> recordList = IPMonitorHelper.GetRecord();
 
+                alertList = alertList.Where(alert => alert.FirstLostTime.AddSeconds(3) > alert.SecondLostTime).ToList();
+                
                 using (IPMonitorDAO dao = new IPMonitorDAO())
                 {
-                    dao.LoadMonitorRecord(RecordList);
+                    dao.LoadMonitorRecord(recordList);
                 }
 
                 using (AlertDAO dao = new AlertDAO())
