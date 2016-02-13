@@ -25,6 +25,15 @@
         width: 390px;
         text-align: center;
     }
+
+    .log-info-guide-table-scroll {
+        overflow-y: scroll;
+        max-height: 344px;
+        display: inline-block;
+        width: 1024px;
+        overflow-x: hidden;
+        margin-top: -1px;
+    }
 </style>
 <script>
     function loadLogInfoGuideData(num) {
@@ -69,7 +78,7 @@
         loadLogInfoGuidePage();
     });
 </script>
-<div>
+<div style="width: 985px; ">
     <form id="LogInfoGuideForm" method="post">
         <div>
             <input name="SearchColumn" type="hidden" value="keywords" />
@@ -85,7 +94,7 @@
                     <th><div class="log-info-guide-solution">解决方案</div></th>
                 </tr>
             </table>
-            <table id="LogInfoGuideList" class="table-bordered table-striped "></table>
+            <table id="LogInfoGuideList" class="table-bordered table-striped log-info-guide-table-scroll"></table>
         </div>
         <div class="text-center">
             <div>

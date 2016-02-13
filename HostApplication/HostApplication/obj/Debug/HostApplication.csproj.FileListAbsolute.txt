@@ -254,7 +254,6 @@ C:\AsherWorkSpace\IPMonitor\HostApplication\HostApplication\bin\Debug\ServiceSta
 C:\AsherWorkSpace\IPMonitor\HostApplication\HostApplication\obj\Debug\HostApplication.csprojResolveAssemblyReference.cache
 C:\AsherWorkSpace\IPMonitor\HostApplication\HostApplication\obj\Debug\HostApplication.exe
 C:\AsherWorkSpace\IPMonitor\HostApplication\HostApplication\obj\Debug\HostApplication.pdb
-C:\AsherWorkspace\ASPNet\IPMonitor\HostApplication\HostApplication\bin\Debug\Quartz.dll
 C:\AsherWorkspace\ASPNet\IPMonitor\HostApplication\HostApplication\bin\Debug\PSQL\libeay32.dll
 C:\AsherWorkspace\ASPNet\IPMonitor\HostApplication\HostApplication\bin\Debug\PSQL\libintl-8.dll
 C:\AsherWorkspace\ASPNet\IPMonitor\HostApplication\HostApplication\bin\Debug\PSQL\libpq.dll
@@ -275,6 +274,7 @@ C:\AsherWorkspace\ASPNet\IPMonitor\HostApplication\HostApplication\bin\Debug\Dat
 C:\AsherWorkspace\ASPNet\IPMonitor\HostApplication\HostApplication\bin\Debug\Devart.Data.PostgreSql.Vs.dll
 C:\AsherWorkspace\ASPNet\IPMonitor\HostApplication\HostApplication\bin\Debug\log4net.dll
 C:\AsherWorkspace\ASPNet\IPMonitor\HostApplication\HostApplication\bin\Debug\PlatForm.dll
+C:\AsherWorkspace\ASPNet\IPMonitor\HostApplication\HostApplication\bin\Debug\Quartz.dll
 C:\AsherWorkspace\ASPNet\IPMonitor\HostApplication\HostApplication\bin\Debug\ServiceStack.Common.dll
 C:\AsherWorkspace\ASPNet\IPMonitor\HostApplication\HostApplication\bin\Debug\ServiceStack.Interfaces.dll
 C:\AsherWorkspace\ASPNet\IPMonitor\HostApplication\HostApplication\bin\Debug\ServiceStack.Redis.dll

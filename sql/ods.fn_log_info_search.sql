@@ -88,7 +88,8 @@ BEGIN
 					WHEN _log_type = _interchanger_log
 						THEN  log_info.ip_address = any(_ip_user_map_array)
 					WHEN _log_type = _client_log
-						THEN log_info.ip_address != all(_ip_user_map_array)
+						THEN array_length(_ip_user_map_array, 1) IS NULL
+						OR log_info.ip_address != all(_ip_user_map_array)
 				END
 			);
 
