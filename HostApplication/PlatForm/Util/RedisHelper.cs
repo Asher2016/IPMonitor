@@ -79,8 +79,8 @@ namespace PlatForm.Util
         {
             using (RedisClient redisClient = new RedisClient(RedisIP, 6379))
             {
-                using (RedisLock redisLock = new RedisLock(redisClient, string.Format(RedisConst.IPMonitorIPLock, ip)))
-                {
+                //using (RedisLock redisLock = new RedisLock(redisClient, string.Format(RedisConst.IPMonitorIPLock, ip)))
+                //{
                     if (redisClient.Exists(string.Format(RedisConst.IPMonitorIPList, ip)) < 1)
                     {
                         redisClient.Add(string.Format(RedisConst.IPMonitorIPList, ip), ipStatus);
@@ -89,7 +89,7 @@ namespace PlatForm.Util
                     {
                         redisClient.Set(string.Format(RedisConst.IPMonitorIPList, ip), ipStatus);
                     }
-                }
+                //}
             }
         }
 

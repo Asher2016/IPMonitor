@@ -4,6 +4,7 @@ using CommonService.Manager;
 using CommonService.Service;
 using DataAccess.DAO;
 using PlatForm.Util;
+using System;
 using System.Collections.Generic;
 using System.ServiceProcess;
 using System.Threading;
@@ -151,8 +152,41 @@ namespace HostApplication
             //LocalIPStatus status6 = RedisHelper.GetIPStatus("www.iqiyi.com");
             //LocalIPStatus status7 = RedisHelper.GetIPStatus("www.douyutv8.com");
 
+
+            //IPMonitorHelper.StopMonitorThread();
+
             //List<BrefAlertInfo> l2 = IPMonitorHelper.GetAlertInfo();
             //List<BrefIPInfo> l3 = IPMonitorHelper.GetRecord();
+
+            //List<BrefAlertInfo> l4 = IPMonitorHelper.GetAlertInfo();
+            //List<BrefIPInfo> l5 = IPMonitorHelper.GetRecord();
+
+            //list.Add("www.baidu.com");
+            //list.Add("www.baidsuss.com");
+            //list.Add("www.youku.com");
+            //list.Add("www.sina.com");
+            //list.Add("www.qidian.com");
+            //list.Add("www.iqiyi.com");
+            //list.Add("www.douyutv8.com");
+
+            //IPMonitorHelper.PushIPStack(list);
+            //IPMonitorHelper.StopMonitorThread();
+            //IPMonitorHelper.StartMonitorThread();
+
+            //Thread.Sleep(60000);
+
+            //LocalIPStatus status1 = RedisHelper.GetIPStatus("www.baidu.com");
+            //LocalIPStatus status12 = RedisHelper.GetIPStatus("www.baidsuss.com");
+            //LocalIPStatus status13 = RedisHelper.GetIPStatus("www.youku.com");
+            //LocalIPStatus status14 = RedisHelper.GetIPStatus("www.sina.com");
+            //LocalIPStatus status15 = RedisHelper.GetIPStatus("www.qidian.com");
+            //LocalIPStatus status16 = RedisHelper.GetIPStatus("www.iqiyi.com");
+            //LocalIPStatus status17 = RedisHelper.GetIPStatus("www.douyutv8.com");
+
+            //IPMonitorHelper.StopMonitorThread();
+
+            //List<BrefAlertInfo> l21 = IPMonitorHelper.GetAlertInfo();
+            //List<BrefIPInfo> l31 = IPMonitorHelper.GetRecord();
 
             //List<BrefIPInfo> brefIpInfoList = new List<BrefIPInfo>();
             //brefIpInfoList.Add(new BrefIPInfo() { IP = "1", LostTime = DateTime.Now, RecoveryTime = DateTime.Now });

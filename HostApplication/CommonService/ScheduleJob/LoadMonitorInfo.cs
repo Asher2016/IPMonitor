@@ -21,14 +21,22 @@ namespace CommonService.ScheduleJob
             try
             {
                 IPMonitorHelper.StopMonitorThread();
-                 
 
-                Thread.Sleep(15000);
                 List<BrefAlertInfo> alertList = IPMonitorHelper.GetAlertInfo();
                 List<BrefIPInfo> recordList = IPMonitorHelper.GetRecord();
 
-                alertList = alertList.Where(alert => alert.FirstLostTime.AddSeconds(3) > alert.SecondLostTime).ToList();
-                
+                alertList = alertList.Where(alert =>
+                    (
+                        alert.SecondLostTime > alert.FirstLostTime &&
+                        (alert.RecoveryTime == null || alert.RecoveryTime == DateTime.MinValue || alert.RecoveryTime > alert.SecondLostTime) &&
+                        alert.SecondLostTime.Day == alert.FirstLostTime.Day &&
+                        alert.SecondLostTime.Hour == alert.FirstLostTime.Hour &&
+                        alert.SecondLostTime.Second - alert.FirstLostTime.Second >= 1 &&
+                        alert.SecondLostTime.Hour - alert.FirstLostTime.Hour < 1
+                    )).ToList();
+
+                alertList = alertList.Where(alert => alert.SID == 0 || alert.SID != 0 && (alert.RecoveryTime != DateTime.MinValue)).ToList();
+
                 using (IPMonitorDAO dao = new IPMonitorDAO())
                 {
                     dao.LoadMonitorRecord(recordList);
@@ -44,6 +52,17 @@ namespace CommonService.ScheduleJob
                     result = dao.GetIpListForMonitor();
                 }
 
+                //List<IPRegionPair> testIP = new List<IPRegionPair>();
+                //testIP.Add(new IPRegionPair() { IP = "www.baidu.com", Region = "PianGuan" });
+                //testIP.Add(new IPRegionPair() { IP = "127.0.0.1", Region = "PianGuan" });
+                //testIP.Add(new IPRegionPair() { IP = "11.1.1.1", Region = "PianGuan" });
+                //testIP.Add(new IPRegionPair() { IP = "www.youku.com", Region = "PianGuan" });
+                //testIP.Add(new IPRegionPair() { IP = "www.163.com", Region = "PianGuan" });
+
+                //RedisHelper.LoadIPList(testIP);
+
+                //IPMonitorHelper.PushIPStack(testIP.Select(x => x.IP).Distinct().ToList());
+
                 RedisHelper.LoadIPList(result);
 
                 IPMonitorHelper.PushIPStack(result.Select(x => x.IP).Distinct().ToList());
@@ -55,9 +74,10 @@ namespace CommonService.ScheduleJob
                     preAlertList = dao.GetPreNotRecoveryAlert();
                 }
 
-                IPMonitorHelper.SetPreAlertInfo(preAlertList);
-
                 IPMonitorHelper.CleanData();
+
+                IPMonitorHelper.SetPreAlertInfo(preAlertList);
+                
                 IPMonitorHelper.StartMonitorThread();
             }
             catch (Exception e)

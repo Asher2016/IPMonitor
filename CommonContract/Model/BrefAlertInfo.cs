@@ -12,6 +12,9 @@ namespace CommonContract.Model
     public class BrefAlertInfo
     {
         [DataMember]
+        public long SID { get; set; }
+
+        [DataMember]
         public string IP { get; set; }
 
         [DataMember]

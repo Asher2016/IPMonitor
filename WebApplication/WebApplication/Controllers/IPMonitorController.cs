@@ -92,14 +92,16 @@ namespace WebApplication.Controllers
                 ModelState.AddModelError("IP", "此IP地址已被监听.");
             }
 
-            string[] telephoneArray = brefInfo.Telephone.Trim().Split(',');
+            if (!string.IsNullOrWhiteSpace(brefInfo.Telephone)){
+                string[] telephoneArray = brefInfo.Telephone.Trim().Split(',');
 
-            foreach (string item in telephoneArray)
-            {
-                string tempItem = item.Trim();
-                if (!Regex.IsMatch(tempItem, @"^1\d{10}$"))
+                foreach (string item in telephoneArray)
                 {
-                    ModelState.AddModelError("Telephone", tempItem + " 电话格式不正确.");
+                    string tempItem = item.Trim();
+                    if (!Regex.IsMatch(tempItem, @"^1\d{10}$"))
+                    {
+                        ModelState.AddModelError("Telephone", tempItem + " 电话格式不正确.");
+                    }
                 }
             }
         }

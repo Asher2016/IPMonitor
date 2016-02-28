@@ -31,7 +31,6 @@ namespace CommonContract.Model
         public string Model { get; set; }
 
         [DataMember]
-        [Required(ErrorMessage = "电话不能为空")]
         public string Telephone { get; set; }
 
         [DataMember]

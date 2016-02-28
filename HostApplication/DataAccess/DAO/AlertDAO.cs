@@ -59,11 +59,12 @@ namespace DataAccess.DAO
         public PgSqlRow ConvertToPgSqlRow(BrefAlertInfo baseEntity, PgSqlConnection connection, bool isToArray = false)
         {
             PgSqlRow row = new PgSqlRow("ods.tvp_alert_info", connection);
-            row[0] = baseEntity.IP;
-            row[1] = baseEntity.FirstLostTime;
-            row[2] = baseEntity.SecondLostTime;
-            row[3] = false;
-            row[4] = string.IsNullOrEmpty(baseEntity.RecoveryTime.ToString()) ? DateTime.MinValue : baseEntity.RecoveryTime;
+            row[0] = baseEntity.SID;
+            row[1] = baseEntity.IP;
+            row[2] = baseEntity.FirstLostTime;
+            row[3] = baseEntity.SecondLostTime;
+            row[4] = false;
+            row[5] = string.IsNullOrEmpty(baseEntity.RecoveryTime.ToString()) ? DateTime.MinValue : baseEntity.RecoveryTime;
             return row;
         }
 
@@ -147,7 +148,10 @@ namespace DataAccess.DAO
                 connection.Open();
                 PgSqlCommand command = connection.CreateCommand();
                 command.CommandType = CommandType.Text;
-                command.CommandText = "with temp_table AS( SELECT alert.ip, alert.first_lost_time, alert.second_lost_time, row_number() over(partition by alert.ip order by alert.first_lost_time desc) as index FROM ods.alert_info AS alert INNER JOIN ods.monitor_ip_info AS monitor ON alert.ip = monitor.ip WHERE monitor.mark_for_delete = FALSE AND alert.recovery_time is null order by ip, first_lost_time desc ) SELECT * FROM temp_table where index = 1;";
+                command.CommandText = "with temp_table AS( SELECT alert.sid, alert.ip, alert.first_lost_time, alert.second_lost_time, row_number() over(partition by alert.ip order by alert.first_lost_time desc) as index FROM ods.alert_info AS alert INNER JOIN ods.monitor_ip_info AS monitor ON alert.ip = monitor.ip WHERE monitor.mark_for_delete = FALSE AND alert.recovery_time = '0001-01-01 00:00:00' and alert.create_date > :from and alert.create_date < :to order by ip, first_lost_time desc ) SELECT * FROM temp_table where index = 1;";
+                //command.CommandText = "with temp_table AS( SELECT alert.sid, alert.ip, alert.first_lost_time, alert.second_lost_time, row_number() over(partition by alert.ip order by alert.first_lost_time desc) as index FROM ods.alert_info AS alert WHERE alert.recovery_time = '0001-01-01 00:00:00' order by ip, first_lost_time desc ) SELECT * FROM temp_table where index = 1;";
+                command.Parameters.Add(new PgSqlParameter("from", PgSqlType.TimeStamp)).Value = DateTime.Now.Date;
+                command.Parameters.Add(new PgSqlParameter("to", PgSqlType.TimeStamp)).Value = DateTime.Now.AddDays(1).Date;
 
                 try
                 {
@@ -157,10 +161,43 @@ namespace DataAccess.DAO
                         {
                             result.Add(new BrefAlertInfo()
                             {
-                                IP = reader[0].ToString(),
-                                FirstLostTime = DateTime.Parse(reader[1].ToString()),
-                                SecondLostTime = DateTime.Parse(reader[2].ToString()),
+                                SID = long.Parse(reader[0].ToString()),
+                                IP = reader[1].ToString(),
+                                FirstLostTime = DateTime.Parse(reader[2].ToString()),
+                                SecondLostTime = DateTime.Parse(reader[3].ToString()),
                             });
+                        }
+                    }
+                }
+                catch (Exception exception)
+                {
+                    throw exception;
+                }
+            }
+
+            return result;
+        }
+
+        public List<string> GetTodayAlert()
+        {
+            List<string> result = new List<string>();
+
+            using (PgSqlConnection connection = ConnectionUtil.Instance.GetPgSqlConnection())
+            {
+                connection.Open();
+                PgSqlCommand command = connection.CreateCommand();
+                command.CommandType = CommandType.Text;
+                command.CommandText = "select * from ods.alert_info where create_date > :from and create_date < :to";
+                command.Parameters.Add(new PgSqlParameter("from", PgSqlType.TimeStamp)).Value = DateTime.Now.Date;
+                command.Parameters.Add(new PgSqlParameter("to", PgSqlType.TimeStamp)).Value = DateTime.Now.AddDays(1).Date;
+
+                try
+                {
+                    using (PgSqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            result.Add(reader[0].ToString());
                         }
                     }
                 }
