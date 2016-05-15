@@ -61,6 +61,7 @@
     <Compile Include="DAO\LogInfoGuide.cs" />
     <Compile Include="DAO\UserDAO.cs" />
     <Compile Include="DAO\UserIPDAO.cs" />
+    <Compile Include="Model\IPMonitorConfig.cs" />
     <Compile Include="Model\CopyLogConfig.cs" />
     <Compile Include="Model\CutomerDataBase.cs" />
     <Compile Include="Model\DateFormatInfo.cs" />

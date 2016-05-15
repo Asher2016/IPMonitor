@@ -190,6 +190,7 @@
         $("#" + location).text(status);
     }
 
+    var IPMinotorListJqPagination;
     var ClickIPMinotorListSearch = function ()
     {
         $('#IPMonitorCurrentPage').val(1);
@@ -199,14 +200,27 @@
 
         if (pageCount == 0)
         { $('#IPMonitorPageCount').val(1) }
-        exeIPMonitorData($('#IPMonitorPageCount').val(), "change");
+        IPMinotorListJqPagination.resetPagination(
+            parseInt($('#IPMonitorCurrentPage').val(), 10),
+            Math.ceil(parseInt($('#IPMonitorPageCount').val(), 10) / parseInt($('#IPMonitorPageSize').val(), 10)));
     }
 
     $(document).ready(function ()
     {
         RefreshIPMinotorList();
-        loadIPMonitorData($('#IPMonitorPageCount').val());
-        loadIPMonitorPage();
+        // loadIPMonitorData($('#IPMonitorPageCount').val());
+        // loadIPMonitorPage();
+        IPMinotorListJqPagination = $('.pagination').jqPagination({
+            current_page: 1,
+            link_string: '#',
+            max_page: Math.ceil(parseInt($('#IPMonitorPageCount').val(), 10) / parseInt($('#IPMonitorPageSize').val(), 10)),
+            page_string: '第 {current_page} 页 / 共 {max_page} 页',
+            paged: function (page) {
+                console.log(page);
+                $('#IPMonitorCurrentPage').val(page);
+                RefreshIPMinotorList();
+            }
+        });
         RefresIPMonitorStatus = setInterval(LoadMonitorStatus, 3000);
     });
 </script>
@@ -247,17 +261,16 @@
             </tr>
         </table>
         <table id="IPMonitorListTable" class="table-bordered table-striped"></table>
-        <div class="text-center">
-            <div>
-                <ul class="pagination" id="IPMonitorListPage"></ul>
-                <input type="hidden" id="IPMonitorCurrentPage" name="PageIndex" value="1" />
-                <input type="hidden" id="IPMonitorPageCount" runat="server" />
-                <input type="hidden" id="IPMonitorPageSize" name="PageSize" runat="server" value="8" />
-                <input type="hidden" id="IPMonitorCountindex" runat="server" value="10" />
-                <!--设置最多显示的页码数 可以手动设置 默认为7-->
-                <input type="hidden" id="IPMonitorVisiblePages" runat="server" value="7" />
-            </div>
+        <div class="gigantic pagination">
+            <a href="#" class="first" data-action="first">&laquo;</a>
+            <a href="#" class="previous" data-action="previous">&lsaquo;</a>
+            <input type="text" readonly="readonly" />
+            <a href="#" class="next" data-action="next">&rsaquo;</a>
+            <a href="#" class="last" data-action="last">&raquo;</a>
         </div>
+        <input type="hidden" id="IPMonitorCurrentPage" name="PageIndex" value="1" />
+        <input type="hidden" id="IPMonitorPageCount" />
+        <input type="hidden" id="IPMonitorPageSize" name="PageSize" value="8" />
         <div id="IPMonitorCreateOrEdit"></div>
     </div>
 </form>

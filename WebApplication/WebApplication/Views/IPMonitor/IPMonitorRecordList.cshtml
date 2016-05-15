@@ -101,6 +101,7 @@
         return currentdate;
     }
 
+    var IPMonitorRecordJqPagination;
     var ClickIPMinotorRecordSearch = function ()
     {
         $('#IPMonitorRecordCurrentPage').val(1);
@@ -110,7 +111,9 @@
 
         if (pageCount == 0)
         { $('#IPMonitorRecordPageCount').val(1) }
-        exeIPMonitorRecordData($('#IPMonitorRecordPageCount').val(), "change");
+        IPMonitorRecordJqPagination.resetPagination(
+            parseInt($('#IPMonitorRecordCurrentPage').val(), 10),
+            Math.ceil(parseInt($('#IPMonitorRecordPageCount').val(), 10) / parseInt($('#IPMonitorRecordPageSize').val(), 10)));
     }
 
     $(document).ready(function ()
@@ -118,8 +121,21 @@
         $('#IPMonitorRecordFromDate').datetimepicker({ value: getNowFormatDate1(), step: 10 });
         $('#IPMonitorRecordToDate').datetimepicker({ value: getNowFormatDate1(), step: 10 });
         RefreshIPMinotorRecord();
-        loadIPMonitorRecordData($('#IPMonitorRecordPageCount').val());
-        loadIPMonitorRecordPage();
+        //loadIPMonitorRecordData($('#IPMonitorRecordPageCount').val());
+        //loadIPMonitorRecordPage();
+        console.log('IPMonitorRecordPageSize', parseInt($('#IPMonitorRecordPageSize').val(), 10));
+        console.log('IPMonitorRecordCurrentPage', parseInt($('#IPMonitorRecordCurrentPage').val(), 10));
+        IPMonitorRecordJqPagination = $('.pagination').jqPagination({
+            current_page: 1,
+            link_string: '#',
+            max_page: Math.ceil(parseInt($('#IPMonitorRecordPageCount').val(), 10) / parseInt($('#IPMonitorRecordPageSize').val(), 10)),
+            page_string: '第 {current_page} 页 / 共 {max_page} 页',
+            paged: function (page) {
+                console.log(page);
+                $('#IPMonitorRecordCurrentPage').val(page);
+                RefreshIPMinotorRecord();
+            }
+        });
     });
 </script>
 <div>
@@ -165,18 +181,15 @@
             </table>
             <table id="IPMonitorRecordList-Table" class="table-bordered table-striped"></table>
         </div>
-        <div>
-            <div class="text-center">
-                <div>
-                    <ul class="pagination" id="IPMonitorRecordPage"></ul>
-                    <input type="hidden" id="IPMonitorRecordCurrentPage" name="PageIndex" value="1" />
-                    <input type="hidden" id="IPMonitorRecordPageCount" runat="server" />
-                    <input type="hidden" id="IPMonitorRecordPageSize" name="PageSize" runat="server" value="8" />
-                    <input type="hidden" id="IPMonitorRecordCountindex" runat="server" value="10" />
-                    <!--设置最多显示的页码数 可以手动设置 默认为7-->
-                    <input type="hidden" id="IPMonitorRecordVisiblePages" runat="server" value="7" />
-                </div>
-            </div>
+        <div class="gigantic pagination">
+            <a href="#" class="first" data-action="first">&laquo;</a>
+            <a href="#" class="previous" data-action="previous">&lsaquo;</a>
+            <input type="text" readonly="readonly" />
+            <a href="#" class="next" data-action="next">&rsaquo;</a>
+            <a href="#" class="last" data-action="last">&raquo;</a>
         </div>
+        <input type="hidden" id="IPMonitorRecordCurrentPage" name="PageIndex" value="1" />
+        <input type="hidden" id="IPMonitorRecordPageCount" />
+        <input type="hidden" id="IPMonitorRecordPageSize" name="PageSize" value="8" />
     </form>
 </div>

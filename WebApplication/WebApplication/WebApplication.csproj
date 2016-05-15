@@ -165,6 +165,7 @@
     <Content Include="Frontend\css\image\ui-icons_ffcf29_256x240.png" />
     <Content Include="Frontend\css\image\ui-icons_ffd27a_256x240.png" />
     <Content Include="Frontend\css\image\ui-icons_ffffff_256x240.png" />
+    <Content Include="Frontend\css\jqpagination.css" />
     <Content Include="Frontend\css\jquery-ui.css" />
     <Content Include="Frontend\css\jquery-ui.min.css" />
     <Content Include="Frontend\css\jquery-ui.structure.min.css" />
@@ -187,6 +188,7 @@
     <Content Include="Frontend\js\draggable.js" />
     <Content Include="Frontend\js\jqPaginator.min.js" />
     <Content Include="Frontend\js\jquery.datetimepicker.js" />
+    <Content Include="Frontend\js\jquery.jqpagination.js" />
     <Content Include="Frontend\js\jquery.page.js" />
     <Content Include="Frontend\js\jquery.pager.js" />
     <Content Include="Frontend\js\jquery.validate.js" />

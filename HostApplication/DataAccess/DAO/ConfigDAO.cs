@@ -35,6 +35,34 @@ namespace DataAccess.DAO
             return customerDataBase;
         }
 
+        public IPMonitorConfig GetIPMonitorConfig()
+        {
+            IPMonitorConfig ipMonitorConfig = null;
+            string configData = string.Empty;
+
+            using (PgSqlConnection connection = ConnectionUtil.Instance.GetPgSqlConnection())
+            {
+                try
+                {
+                    connection.Open();
+                    PgSqlCommand command = connection.CreateCommand();
+                    command.CommandText = @"SELECT config_data from config.start_up_config WHERE config_type = 'IPMonitorConfig' AND mark_for_delete = FALSE;";
+                    configData = (string)command.ExecuteScalar();
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+
+            if (!string.IsNullOrEmpty(configData))
+            {
+                ipMonitorConfig = XmlConvertor.XmlToObject<IPMonitorConfig>(configData);
+            }
+
+            return ipMonitorConfig;
+        }
+
         public void Dispose()
         {
         }

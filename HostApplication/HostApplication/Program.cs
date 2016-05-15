@@ -2,6 +2,7 @@
 using CommonContract.Model;
 using CommonService.Manager;
 using CommonService.Service;
+using DataAccess;
 using DataAccess.DAO;
 using PlatForm.Util;
 using System;
@@ -130,13 +131,7 @@ namespace HostApplication
             //    string s = redisClient.Get<string>("testt1");
             //}
             //List<string> list = new List<string>();
-            //list.Add("www.baidu.com");
-            //list.Add("www.baidsuss.com");
-            //list.Add("www.youku.com");
-            //list.Add("www.sina.com");
-            //list.Add("www.qidian.com");
             //list.Add("www.iqiyi.com");
-            //list.Add("www.douyutv8.com");
 
             //IPMonitorHelper.PushIPStack(list);
             //IPMonitorHelper.StopMonitorThread();
@@ -144,16 +139,14 @@ namespace HostApplication
 
             //Thread.Sleep(60000);
 
+            //LocalIPStatus status6 = RedisHelper.GetIPStatus("www.iqiyi.com");
+            //IPMonitorHelper.StopMonitorThread();
             //LocalIPStatus status = RedisHelper.GetIPStatus("www.baidu.com");
             //LocalIPStatus status2 = RedisHelper.GetIPStatus("www.baidsuss.com");
             //LocalIPStatus status3 = RedisHelper.GetIPStatus("www.youku.com");
             //LocalIPStatus status4 = RedisHelper.GetIPStatus("www.sina.com");
             //LocalIPStatus status5 = RedisHelper.GetIPStatus("www.qidian.com");
-            //LocalIPStatus status6 = RedisHelper.GetIPStatus("www.iqiyi.com");
             //LocalIPStatus status7 = RedisHelper.GetIPStatus("www.douyutv8.com");
-
-
-            //IPMonitorHelper.StopMonitorThread();
 
             //List<BrefAlertInfo> l2 = IPMonitorHelper.GetAlertInfo();
             //List<BrefIPInfo> l3 = IPMonitorHelper.GetRecord();
@@ -274,6 +267,10 @@ namespace HostApplication
             //    PageIndex = 1,
             //    PageSize = 10
             //});
+
+            //using (ConfigDAO dao = new ConfigDAO()) {
+            //    IPMonitorConfig configData =  dao.GetIPMonitorConfig();
+            //}
         }
     }
 }
